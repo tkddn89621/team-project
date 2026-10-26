@@ -68,7 +68,9 @@ npm run dev -- --host
 | 파일 | 내용 | 없으면 |
 |---|---|---|
 | `backend/.env` | `GOOGLE_VISION_API_KEY=...` | 사진 대신 **파일 이름**으로 인식하는 시연 모드 (`starbucks.jpg` → 스타벅스) |
-| `frontend/.env` | `VITE_DEMO_GPS=37.56650,126.97800` | 위치 없이 동작 ('근처 매장' 후보가 안 나옴) |
+| `backend/.env` | `KAKAO_REST_API_KEY=...` | 근처 실제 매장 검색 없이 seed.py 시연용 좌표만 사용 |
+| `backend/.env` | `ANTHROPIC_API_KEY=...` | 애매한 사진을 Claude가 판단하는 단계를 건너뜀 (규칙 결과 그대로) |
+| `frontend/.env` | `VITE_DEMO_GPS=37.56650,126.97800` | 폰의 실제 GPS 사용 (https에서만) |
 | `frontend/.env` | `VITE_DEMO_HOUR=13` | 실제 현재 시각 기준 → 07~15시가 아니면 신한 카페·음식점 할인이 꺼져 시연 대본과 달라짐 |
 
 `.env.example` 을 복사해서 `.env` 로 만들고 값을 채우세요.
@@ -78,6 +80,10 @@ npm run dev -- --host
 2. `Cloud Vision API` 검색 → 사용
 3. `사용자 인증 정보` → 사용자 인증 정보 만들기 → **API 키** → API 제한: Cloud Vision API만 체크
 4. `backend/.env` 에 `GOOGLE_VISION_API_KEY=AIza...` 저장 → 백엔드 재시작
+
+**카카오 키** (근처 실제 매장): https://developers.kakao.com → 앱 → 앱 생성 → 플랫폼 키의 **REST API 키** → 제품 설정 → 카카오맵 사용 ON. 장소 검색 하루 10만 건 무료 (사진 1장당 5건)
+
+**Claude 키** (애매한 사진 판단): https://console.anthropic.com → API 키. 유료(애매한 사진 1장당 약 15~20원)지만 Claude Max·Team 구독자는 claude.ai 결제 설정 → API credits에서 월 크레딧 연결 가능
 
 > ⚠️ API 키는 커밋·단톡방 공유 금지. 각자 발급하거나 1:1로 전달.
 > 서비스 계정 키(JSON)는 조직 정책으로 막혀 있을 수 있어서 API 키 방식을 씁니다.
@@ -106,8 +112,8 @@ npm run dev -- --host
 | 3.1 추천 3단계 정렬 (결제금액 → 실적 시급도 → 우리카드) | ✅ |
 | 전월실적 구간·시간대·정액·최소금액 조건 | ✅ |
 | 4.1 간판 OCR (Google Vision 로고·글자) | ✅ |
-| 4.1 음식 사진 → 업종 추론 | ✅ 업종까지 (브랜드는 GPS·로고로 좁힘) |
-| 4.1 GPS 반경 30m 매장 매칭 | ⚠️ 로직 완료, 위치·매장 좌표는 시연용 고정값 (지도 API 미연동) |
+| 4.1 음식 사진 → 업종 추론 | ✅ 업종까지 + 애매하면 Claude가 사진·근처 매장 보고 판단 |
+| 4.1 GPS 반경 매장 매칭 | ✅ 카카오 로컬 API로 실제 근처 매장 (반경 50m, 실내 GPS 오차 고려) |
 | 4.2 인식 결과 직접 검색·수정 / 후보 칩 | ✅ |
 | 4.2 카드번호 마스킹 | ⚠️ 끝 4자리 마스킹 표기만, 보안 안내 문구는 없음 |
 | 4.2 마이데이터 연동 유도 팝업 | ✅ 연동 전엔 우리카드만, 연동하면 타사 카드 등장 (목업) |

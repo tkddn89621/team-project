@@ -1,5 +1,8 @@
 """브랜드 인식: 로고 + 텍스트(OCR) + 사진 속 사물(라벨) + GPS → 후보 + 신뢰도.
 
+detect() 가 사진을 분석하고(Vision), decide() 가 근처 매장(카카오 로컬·시연용 좌표)과 합쳐 후보를 정한다.
+둘을 나눠 둔 건 Vision 호출과 카카오 검색을 동시에 하기 위해서 (main.create_recognition).
+
 환경변수 (backend/.env 에 적어도 됨)
   GOOGLE_VISION_API_KEY=API키                      → 실제 Vision 호출 (서비스 계정 키가 막힌 조직용)
   GOOGLE_APPLICATION_CREDENTIALS=서비스계정.json   → 실제 Vision 호출
@@ -16,12 +19,13 @@ CONF_TEXT = 0.75         # OCR 텍스트만으로 찾음 → 사용자 확인 �
 CONF_IMAGE = 0.55        # 사진 속 사물로 업종만 추정
 CONF_GPS = 0.50          # 근처 매장이라는 것만으로 추정
 GPS_BOOST = 0.15         # 다른 근거로 찾은 후보가 근처에도 있으면 가산
-GPS_RADIUS_M = 30
+GPS_RADIUS_M = 50       # 실내에선 GPS가 20~50m 틀어져서 기획서 30m보다 넓게
 
 # Vision 라벨(사진 속 사물) → 업종. 로고/글씨로 못 찾았을 때만 사용
+# 'fast food'·'junk food' 같은 넓은 라벨은 과자에도 붙어서 넣지 않음 (구체적인 사물만)
 LABEL_CATEGORY = {
     "hamburger": "패스트푸드", "burger": "패스트푸드", "cheeseburger": "패스트푸드",
-    "fast food": "패스트푸드", "french fries": "패스트푸드",
+    "french fries": "패스트푸드",
     "coffee": "카페", "coffee cup": "카페", "latte": "카페", "espresso": "카페", "cappuccino": "카페",
     "popcorn": "영화", "cosmetics": "뷰티", "book": "서점",
 }
@@ -41,6 +45,12 @@ def _alias_pattern(alias: str) -> re.Pattern:
     if re.fullmatch(r"[a-z0-9 .'&-]+", alias):
         return re.compile(rf"(?<![a-z]){body}(?![a-z])")
     return re.compile(body)
+
+
+def brand_in_text(b: Brand, text: str) -> bool:
+    """브랜드 alias가 text(간판 글씨·카카오 매장명 등)에 들어 있나"""
+    t = _norm(text)
+    return any(_alias_pattern(a).search(t) for a in _alias_list(b))
 
 
 def _cand(b: Brand, confidence: float, source: str) -> dict:
@@ -80,7 +90,8 @@ def infer_from_labels(labels: List[Tuple[str, float]], brands: List[Brand]) -> l
     if not cats:
         return []
     top_cat = max(cats, key=cats.get)
-    return [_cand(b, CONF_IMAGE, "image") for b in brands if b.category == top_cat]
+    unique = {b.id: b for b in brands if b.category == top_cat}   # 근처 목록엔 같은 브랜드가 여러 지점일 수 있음
+    return [_cand(b, CONF_IMAGE, "image") for b in unique.values()]
 
 
 def _distance_m(lat1, lng1, lat2, lng2) -> float:
@@ -91,26 +102,38 @@ def _distance_m(lat1, lng1, lat2, lng2) -> float:
     return 2 * r * math.asin(math.sqrt(a))
 
 
-def apply_gps(cands: list, brands: List[Brand], coords: Optional[Tuple[float, float]]) -> list:
-    """반경 30m 안 매장: 이미 후보면 신뢰도 가산, 확신이 없을 땐 근처 매장을 후보로 추가"""
+def seeded_near(brands: List[Brand], coords: Optional[Tuple[float, float]]) -> list:
+    """seed.py에 좌표가 있는 브랜드 중 반경 안 → [(brand, 거리m)]"""
     if not coords:
-        return cands
-    near = {}
+        return []
+    near = []
     for b in brands:
         if b.lat is not None and b.lng is not None:
             d = _distance_m(coords[0], coords[1], b.lat, b.lng)
             if d <= GPS_RADIUS_M:
-                near[b.id] = (b, d)
+                near.append((b, d))
+    return near
+
+
+def apply_gps(cands: list, near: list) -> list:
+    """near=[(brand, 거리m)]: 이미 후보면 신뢰도 가산, 확신이 없을 땐 근처 매장을 후보로 추가"""
+    if not near:
+        return cands
+    closest = {}
+    for b, d in near:
+        if b.id not in closest or d < closest[b.id][1]:
+            closest[b.id] = (b, d)
 
     for c in cands:
-        if c["brand_id"] in near:
-            c["distance_m"] = round(near[c["brand_id"]][1])
+        if c["brand_id"] in closest:
+            c["distance_m"] = round(closest[c["brand_id"]][1])
             c["confidence"] = round(min(0.99, c["confidence"] + GPS_BOOST), 2)
-    cands.sort(key=lambda c: c["confidence"], reverse=True)
+    # 신뢰도가 같으면 가까운 매장 먼저
+    cands.sort(key=lambda c: (-c["confidence"], c.get("distance_m", GPS_RADIUS_M + 1)))
 
     if not cands or cands[0]["confidence"] < CONFIDENCE_AUTO:
         have = {c["brand_id"] for c in cands}
-        for b, d in sorted(near.values(), key=lambda x: x[1]):
+        for b, d in sorted(closest.values(), key=lambda x: x[1]):
             if b.id not in have:
                 cands.append({**_cand(b, CONF_GPS, "gps"), "distance_m": round(d)})
     return cands
@@ -135,28 +158,31 @@ def run_vision(image_bytes: bytes) -> Tuple[List[Tuple[str, float]], str, List[T
     return logos, text, labels
 
 
-def recognize(image_bytes: bytes, filename: str, brands: List[Brand],
-              coords: Optional[Tuple[float, float]] = None) -> dict:
+def detect(image_bytes: bytes, filename: str) -> dict:
+    """사진 분석 → {mode, logos, text, labels, raw}. Vision 키가 없으면 파일명으로 흉내"""
     has_key = os.getenv("GOOGLE_VISION_API_KEY") or os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
     mode = os.getenv("RECOG_MODE", "vision" if has_key else "mock")
     if mode == "mock":
         # 플랜 B: 파일명을 OCR 텍스트이자 사진 라벨로 취급 (starbucks.jpg → 로고 인식, burger.jpg → 사진 추론)
         words = re.findall(r"[a-z]+", filename.lower())
-        logos, text, labels = [], filename, [(w, 0.9) for w in words]
-        raw = {"mode": "mock", "filename": filename}
-    else:
-        logos, text, labels = run_vision(image_bytes)
-        raw = {"mode": "vision", "logos": logos, "text": text[:500], "labels": labels[:10]}
+        return {"mode": mode, "logos": [], "text": filename, "labels": [(w, 0.9) for w in words],
+                "raw": {"mode": "mock", "filename": filename}}
+    logos, text, labels = run_vision(image_bytes)
+    return {"mode": mode, "logos": logos, "text": text, "labels": labels,
+            "raw": {"mode": "vision", "logos": logos, "text": text[:500], "labels": labels[:10]}}
 
-    cands = match_brands(logos, text, brands)
-    if mode == "mock" and cands:
+
+def decide(det: dict, brands: List[Brand], near: list) -> list:
+    """사진 분석 결과 + 근처 매장 [(brand, 거리m)] → 후보 최대 3개"""
+    mock = det["mode"] == "mock"
+    cands = match_brands(det["logos"], det["text"], brands)
+    if mock and cands:
         cands[0]["confidence"], cands[0]["source"] = 0.95, "logo"   # 파일명 매칭 = 로고 인식 성공으로 간주
     if not cands:
-        cands = infer_from_labels(labels, brands)
-    cands = apply_gps(cands, brands, coords)
-    if mode == "mock" and not cands:
+        # 근처 매장을 알면 사진은 그 안에서 순위만 정한다 (근처에 없는 버거킹이 뜨지 않게)
+        cands = infer_from_labels(det["labels"], [b for b, _ in near] if near else brands)
+    cands = apply_gps(cands, near)
+    if mock and not cands:
         # 아무 근거도 없으면 '버거 사진' 시나리오로 (시연용)
         cands = infer_from_labels([("hamburger", 0.9)], brands)
-    if coords:
-        raw["gps"] = list(coords)
-    return {"candidates": cands[:3], "raw": raw}
+    return cands[:3]

@@ -1,5 +1,6 @@
-// 기본값: 화면을 연 주소와 같은 PC의 8000번 (PC=localhost, 폰=PC IP). IP가 바뀌어도 .env 수정 불필요
-export const API = import.meta.env.VITE_API_URL || `http://${location.hostname}:8000`;
+// 기본값: 같은 개발 서버의 /api → vite.config.js 프록시가 PC의 백엔드(8000)로 전달
+// (https 페이지에서 http 백엔드를 직접 부르면 막히기 때문. IP가 바뀌어도 .env 수정 불필요)
+export const API = import.meta.env.VITE_API_URL || "/api";
 
 /* 현재 위치. VITE_DEMO_GPS="위도,경도"가 있으면 그 값(시연용), 없으면 브라우저 GPS. 실패하면 null */
 export function getPosition() {

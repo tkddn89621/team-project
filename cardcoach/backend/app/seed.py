@@ -25,7 +25,7 @@ from sqlalchemy import inspect
 from .models import Base, engine, SessionLocal, Brand, Card, BenefitRule, BenefitTier, SeedMeta
 
 # 시드 데이터(카드·혜택·실적)를 고치면 이 값을 바꾼다 → 다음 시작 때 db를 자동으로 새로 만듦 (인식·선택 기록도 초기화)
-SEED_VERSION = "2026-10-27-persona-v4"
+SEED_VERSION = "2026-10-27-persona-v6-kakao"
 
 # 시연 기준 위치. 프론트 .env 의 VITE_DEMO_GPS 와 맞춰 쓰면 '근처 매장' 매칭을 시연할 수 있음
 DEMO_GPS = (37.56650, 126.97800)
@@ -54,10 +54,11 @@ BRANDS = [
 ]
 
 # 공식 사이트 도메인 → 로고 파일이 없으면 이 사이트의 아이콘을 화면에 표시 (카페 오로르는 가상 가게라 없음 → 이니셜)
+# 버거킹·맥도날드는 한국 사이트 아이콘이 작아서 글로벌 사이트 사용. GS25·CU·세븐일레븐은 아이콘이 16px뿐이라 화면에선 이니셜로 대체됨
 SITES = {
-    "버거킹": "burgerking.co.kr", "스타벅스": "starbucks.co.kr", "GS25": "gs25.gsretail.com",
+    "버거킹": "burgerking.com", "스타벅스": "starbucks.co.kr", "GS25": "gs25.gsretail.com",
     "올리브영": "oliveyoung.co.kr", "롯데마트": "lottemart.com", "CGV": "cgv.co.kr",
-    "CU": "cu.bgfretail.com", "교보문고": "kyobobook.co.kr", "맥도날드": "mcdonalds.co.kr",
+    "CU": "cu.bgfretail.com", "교보문고": "kyobobook.co.kr", "맥도날드": "mcdonalds.com",
     "투썸플레이스": "twosome.co.kr", "이디야커피": "ediya.com", "메가MGC커피": "mega-mgccoffee.com",
     "컴포즈커피": "composecoffee.com", "매머드커피": "mmthcoffee.com", "세븐일레븐": "7-eleven.co.kr",
 }
@@ -103,17 +104,20 @@ RULES = [
       for b in ["스타벅스", "투썸플레이스", "이디야커피", "메가MGC커피", "컴포즈커피", "매머드커피"]],
     *[R(TEN, b, "청구할인", rate=0.10, note=TEN_CVS) for b in ["CU", "GS25", "세븐일레븐"]],
     R(TEN, "업종:패스트푸드", "청구할인", rate=0.01, note="음식점·주점 1%"),
+    R(TEN, "업종:음식점", "청구할인", rate=0.01, note="음식점·주점 1%"),
 
     *[R(SH, b, "할인", rate=0.10, hours=(7, 15), max_per_txn=1000, note=SH_CAFE)
       for b in ["스타벅스", "투썸플레이스", "메가MGC커피", "이디야커피"]],
     *[R(SH, b, "할인", rate=0.10, hours=(18, 22), max_per_txn=1000, note=SH_CVS) for b in ["CU", "GS25", "세븐일레븐"]],
     R(SH, "업종:패스트푸드", "할인", rate=0.10, hours=(7, 15), max_per_txn=1000, note="Time Plan 음식점 DAY (패스트푸드 포함)"),
+    R(SH, "업종:음식점", "할인", rate=0.10, hours=(7, 15), max_per_txn=1000, note="Time Plan 음식점 DAY"),
     R(SH, "CGV", "할인", fixed=5000, min_amount=12000, note="Monthly Plan 영화 (월 1회, 예매만)"),
     R(SH, "롯데마트", "할인", rate=0.10, max_per_txn=5000, note="Daily Plan 마트 (1회 5만원까지, 일 1회·월 5회)"),
 
     *[R(KB, b, "할인", rate=0.10, max_per_txn=2500, note="공통: 편의점 10% (GS25·CU만, 건당 2,500원까지)")
       for b in ["GS25", "CU"]],
     R(KB, "업종:패스트푸드", "할인", rate=0.10, max_per_txn=2500, note="공통: 음식점 10% (건당 2,500원까지)"),
+    R(KB, "업종:음식점", "할인", rate=0.10, max_per_txn=2500, note="공통: 음식점 10% (건당 2,500원까지)"),
     R(KB, "업종:카페", "할인", rate=0.05, note="선택(노는데 진심): 커피 5%"),
     R(KB, "업종:영화", "할인", rate=0.30, note="선택(노는데 진심): 영화관 30% (연 4회·연 2만원까지)"),
 ]

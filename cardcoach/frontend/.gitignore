@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 개발용 https 자체 서명 인증서 (각자 PC에서 생성, README 참고)
+certs/

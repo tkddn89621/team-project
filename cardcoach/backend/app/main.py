@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 import os
 from datetime import datetime, timedelta, timezone
+from concurrent.futures import ThreadPoolExecutor
 
 KST = timezone(timedelta(hours=9))  # tzdata 없는 Windows에서도 동작하게 고정 오프셋
 
@@ -27,7 +28,8 @@ _load_dotenv()
 
 from .models import SessionLocal, Brand, Card, BenefitRule, BenefitTier, Recognition, Selection
 from .seed import seed
-from .recognize import recognize, CONFIDENCE_AUTO
+from .recognize import detect, decide, seeded_near, brand_in_text, CONFIDENCE_AUTO, GPS_RADIUS_M
+from . import places, ai_pick
 
 app = FastAPI(title="내 지갑 카드 코치 API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -76,6 +78,57 @@ DEFAULT_AMOUNT = 10000  # 예상 금액 미입력 시 혜택액 비교 기준
 
 
 # ---------- 1. 가맹점(브랜드) 인식 ----------
+def resolve_place(db: Session, p: dict, known: list):
+    """카카오 매장 → 브랜드. 프랜차이즈('스타벅스 상암DMC점')는 등록된 브랜드로,
+    처음 보는 동네 가게는 카카오 업종 그대로 새 브랜드로 등록 (업종 혜택으로 추천됨)"""
+    for b in known:
+        if brand_in_text(b, p["name"]):
+            return b
+    b = db.query(Brand).filter(Brand.kakao_place_id == p["id"]).first()
+    if not b:
+        b = Brand(name=p["name"], category=p["category"], aliases=p["name"].lower(),
+                  lat=p["lat"], lng=p["lng"], kakao_place_id=p["id"])
+        db.add(b)
+        db.flush()
+    return b
+
+
+def ask_ai(image_bytes: bytes, det: dict, cands: list, near: list, known: list):
+    """애매한 사진 → Claude가 후보 중 하나를 고름. 고르면 맨 앞에 source='ai'로.
+    '맞는 매장 없음'이면 근처라는 이유만으로 붙은 후보(gps)는 뺀다. 호출 실패면 원래 후보 그대로"""
+    dist = {}
+    for b, d in near:
+        dist[b.id] = min(d, dist.get(b.id, d))
+    by_id = {b.id: b for b, _ in near}
+    if not by_id:   # 위치를 모르면 등록 브랜드 전체에서
+        by_id = {b.id: b for b in known}
+    for c in cands:
+        by_id.setdefault(c["brand_id"], None)
+    options = []
+    for bid, b in list(by_id.items())[:20]:
+        c = next((x for x in cands if x["brand_id"] == bid), None)
+        options.append({"id": bid, "name": b.name if b else c["name"], "category": b.category if b else c["category"],
+                        "distance_m": round(dist[bid]) if bid in dist else None})
+
+    labels = ", ".join(l for l, _ in det["labels"][:6])
+    text = " ".join(det["text"].split())[:80]
+    logos = ", ".join(l for l, _ in det["logos"])
+    hints = f"사물: {labels or '없음'} / 글씨: {text or '없음'} / 로고: {logos or '없음'}"
+
+    choice = ai_pick.pick(image_bytes, options, hints)
+    if not choice:
+        return cands, None
+    if choice["brand_id"] is None:   # 예: 집에서 찍은 담배 + 근처엔 곱창집뿐 → '근처 곱창집이 맞나요?'라고 묻지 않음
+        return [c for c in cands if c["source"] != "gps"], choice
+    opt = next(o for o in options if o["id"] == choice["brand_id"])
+    top = {"brand_id": opt["id"], "name": opt["name"], "category": opt["category"],
+           "confidence": round(choice["confidence"], 2), "source": "ai", "ai_reason": choice["reason"]}
+    if opt["distance_m"] is not None:
+        top["distance_m"] = opt["distance_m"]
+    rest = [c for c in cands if c["brand_id"] != opt["id"]]
+    return [top] + rest[:2], choice
+
+
 @app.post("/recognitions")
 async def create_recognition(image: UploadFile = File(...),
                              lat: Optional[float] = Form(None), lng: Optional[float] = Form(None),
@@ -83,19 +136,40 @@ async def create_recognition(image: UploadFile = File(...),
     data = await image.read()
     if len(data) > 10 * 1024 * 1024:
         raise HTTPException(413, "이미지는 10MB 이하여야 합니다")
-    brands = db.query(Brand).all()
     coords = (lat, lng) if lat is not None and lng is not None else None
-    result = recognize(data, image.filename or "", brands, coords)
-    cands = result["candidates"]
+    # Vision(사진 분석)과 카카오 로컬(근처 매장) 검색을 동시에
+    with ThreadPoolExecutor(1) as ex:
+        kakao = ex.submit(places.nearby, lat, lng, GPS_RADIUS_M) if coords else None
+        det = detect(data, image.filename or "")
+        kakao_places = kakao.result() if kakao else []
+
+    known = db.query(Brand).filter(Brand.kakao_place_id.is_(None)).all()
+    # 카카오 키가 있으면 실제 매장만. seed.py 가짜 좌표(오로르·버거킹·스타벅스)와 섞이면 없는 매장이 '근처'로 뜬다
+    if places.enabled():
+        near = [(resolve_place(db, p, known), p["distance_m"]) for p in kakao_places]
+    else:
+        near = seeded_near(known, coords)
+    # 매칭 대상: 등록된 브랜드 + 지금 근처에 있는 동네 가게 (다른 곳에서 등록된 동네 가게는 제외)
+    pool = known + list({b.id: b for b, _ in near if b.kakao_place_id}.values())
+    cands = decide(det, pool, near)
+
+    raw = det["raw"]
+    if coords:
+        raw["gps"] = list(coords)
+        raw["kakao_places"] = [f'{p["name"]} {p["distance_m"]}m' for p in kakao_places[:10]]
+
+    # 규칙으로 확실하지 않을 때만 Claude에게 (실제 사진일 때만, 키가 있을 때만)
+    if (not cands or cands[0]["confidence"] < CONFIDENCE_AUTO) and det["mode"] == "vision" and ai_pick.enabled():
+        cands, raw["ai"] = ask_ai(data, det, cands, near, known)
     status = "done" if cands else "not_found"
-    rec = Recognition(status=status, candidates=cands, raw=result["raw"])
+    rec = Recognition(status=status, candidates=cands, raw=raw)
     db.add(rec); db.commit(); db.refresh(rec)
     auto_confirm = len(cands) == 1 and cands[0]["confidence"] >= CONFIDENCE_AUTO
     return {
         "recognition_id": rec.id,
         "status": status,
         "auto_confirm": auto_confirm,          # true면 FIND에서 바로 REC로
-        "candidates": [{**c, "logo_url": logo_url(c["name"])} for c in cands],  # source: logo | text | image | gps, 근처면 distance_m
+        "candidates": [{**c, "logo_url": logo_url(c["name"])} for c in cands],  # source: logo | text | image | gps | ai(+ai_reason), 근처면 distance_m
     }
 
 
@@ -103,7 +177,7 @@ async def create_recognition(image: UploadFile = File(...),
 @app.get("/brands")
 def list_brands(db: Session = Depends(get_db)):
     return [{"brand_id": b.id, "name": b.name, "category": b.category, "logo_url": logo_url(b.name)}
-            for b in db.query(Brand).order_by(Brand.id).all()]
+            for b in db.query(Brand).filter(Brand.kakao_place_id.is_(None)).order_by(Brand.id).all()]
 
 
 # ---------- 내 카드 상태 (실적·한도) ----------

@@ -20,6 +20,8 @@ class Brand(Base):
     # GPS 매칭용 좌표 (시연용 가상 좌표, 없으면 GPS 매칭 제외)
     lat = Column(Float, nullable=True)
     lng = Column(Float, nullable=True)
+    # 카카오 로컬에서 찾아 자동 등록한 동네 가게면 그 장소 id (seed 브랜드는 None)
+    kakao_place_id = Column(String, nullable=True, index=True)
 
 
 class Card(Base):

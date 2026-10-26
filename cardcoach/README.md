@@ -20,18 +20,27 @@ uvicorn app.main:app --reload --port 8000
 ```bash
 cd frontend
 npm install
-npm run dev          # http://localhost:5173
+npm run dev          # https://localhost:5173 (certs/ 가 없으면 http)
 ```
-폰에서 테스트하려면 프론트는 `npm run dev -- --host`, 백엔드는 `--host 0.0.0.0` 을 붙여 띄우고 같은 와이파이에서 `http://<PC IP>:5173` 접속.
-백엔드 주소는 접속한 주소를 따라가므로 `.env` 수정 불필요.
+- 폰 시연: PC와 같은 와이파이에서 `https://<PC IP>:5173` 접속(터미널의 Network 주소). 백엔드는 위 명령 그대로(`--host` 불필요).
+- 프론트는 백엔드를 `/api/...`로 부르고 `vite.config.js` 프록시가 PC의 8000번으로 전달한다. 그래서 https 페이지에서도 백엔드 호출이 막히지 않고, IP가 바뀌어도 `.env` 수정 불필요.
+- **https가 필요한 이유**: 앱 안 카메라와 폰의 실제 GPS는 브라우저가 https(또는 localhost)에서만 허용한다.
+- 인증서는 자체 서명이라 기기마다 처음 접속할 때 "비공개 연결이 아님" 경고가 뜬다 → '고급 → 계속 진행'. 발표 전에 시연 폰에서 미리 한 번 해 둘 것.
+- 인증서 만들기(처음 받은 팀원만, Git Bash에서):
+  ```bash
+  cd frontend && mkdir -p certs && openssl req -x509 -newkey rsa:2048 -nodes -days 365 \
+    -keyout certs/dev-key.pem -out certs/dev-cert.pem -subj "/CN=cardcoach-dev" \
+    -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
+  ```
+  `certs/`는 `.gitignore`에 있어 GitHub에 올라가지 않는다.
 
 ## 인식 모드
 | 모드 | 조건 | 동작 |
 |---|---|---|
-| mock (기본) | `GOOGLE_APPLICATION_CREDENTIALS` 없음 | 업로드 파일명을 OCR 텍스트·사진 라벨로 취급. `starbucks.jpg` → 로고 인식 성공, `burger.jpg`/`coffee.jpg` → 사진으로 업종 추정, 아무것도 없으면 버거 사진 시나리오. 시연 플랜 B |
-| vision | `GOOGLE_APPLICATION_CREDENTIALS=서비스계정.json` | Google Vision 로고 감지 + OCR + 라벨(사물) 감지 → `seed.py`의 alias/업종과 매칭 |
+| mock (기본) | Vision 키 없음 | 업로드 파일명을 OCR 텍스트·사진 라벨로 취급. `starbucks.jpg` → 로고 인식 성공, `burger.jpg`/`coffee.jpg` → 사진으로 업종 추정, 아무것도 없으면 버거 사진 시나리오. 시연 플랜 B |
+| vision | `backend/.env`의 `GOOGLE_VISION_API_KEY` (또는 `GOOGLE_APPLICATION_CREDENTIALS`) | Google Vision 로고 감지 + OCR + 라벨(사물) 감지 → `seed.py`의 alias/업종과 매칭 |
 
-Vision 키 발급: GCP 콘솔 → Cloud Vision API 사용 설정 → 서비스 계정 키(JSON) 다운로드 → 백엔드 실행 전 `export GOOGLE_APPLICATION_CREDENTIALS=/path/key.json`.
+Vision 키 발급: GCP 콘솔 → Cloud Vision API 사용 설정 → 사용자 인증 정보 → API 키 (Cloud Vision API만 허용) → `backend/.env`. 조직 정책으로 서비스 계정 키(JSON)가 막혀 있으면 API 키 방식을 쓴다.
 강제로 mock 쓰려면 `RECOG_MODE=mock`.
 
 인식 근거(`source`)와 신뢰도
@@ -39,13 +48,32 @@ Vision 키 발급: GCP 콘솔 → Cloud Vision API 사용 설정 → 서비스 �
 |---|---|---|
 | `logo` | Vision score | 로고 감지 |
 | `text` | 0.75 | 간판 글씨(OCR)에 alias 포함. 영문 alias는 단어 단위로만 매칭(`cu`가 `security`에 안 걸림) |
-| `image` | 0.55 | 로고·글씨가 없을 때 사진 속 사물(버거, 커피…)로 업종 추정 → 그 업종 브랜드들 |
-| `gps` | 0.50 | 위 근거가 약할 때 반경 30m 안 매장을 후보로 추가 ("근처 '카페 오로르'가 맞나요?") |
-다른 근거로 찾은 후보가 30m 안에 있으면 +0.15. 0.80 이상 + 후보 1개면 자동 확정.
+| `image` | 0.55 | 로고·글씨가 없을 때 사진 속 사물(버거, 커피…)로 업종 추정 → 근처 매장을 알면 **그 안의** 같은 업종 매장만, 모르면 등록 브랜드 중 같은 업종. 'fast food'처럼 넓은 라벨은 과자에도 붙어서 쓰지 않음 |
+| `gps` | 0.50 | 위 근거가 약할 때 반경 50m 안 매장을 후보로 추가 ("근처 '카페 오로르'가 맞나요?") |
+| `ai` | Claude 판단 | 0.80 미만으로 애매할 때만 Claude에게 사진 + 후보 매장 목록을 보내 하나를 고르게 함 (`ai_reason`에 이유). '맞는 매장 없음'이면 gps 후보를 빼고 "찾지 못했어요" |
+다른 근거로 찾은 후보가 50m 안에 있으면 +0.15. 0.80 이상 + 후보 1개면 자동 확정. (기획서는 30m지만 실내 GPS 오차 때문에 50m)
 
 브랜드 로고: 기본은 각 브랜드 공식 사이트 아이콘을 화면에서 바로 불러온다(`seed.py`의 `SITES`, 폰·PC가 인터넷에 연결돼 있어야 함). 더 선명한 로고를 쓰고 싶으면 `backend/logos/`에 브랜드 이름 그대로 파일을 넣으면 그 파일이 우선(예: `CGV.png`, `스타벅스.png`; png·jpg·jpeg·webp·svg). 둘 다 없으면 이니셜 배지.
 
-GPS 시연: 실제 위치는 시드 좌표 근처가 아니므로 `frontend/.env`에 `VITE_DEMO_GPS=37.56650,126.97800` 을 넣으면 그 위치로 보낸다(카페 오로르 4m · 버거킹 20m · 스타벅스 120m). 폰에서 실제 GPS는 https 또는 localhost에서만 동작.
+근처 매장은 두 곳에서 찾는다 (사진 분석과 동시에 검색)
+- **카카오 로컬 API** (`backend/.env`의 `KAKAO_REST_API_KEY`): 반경 50m 안 카페·음식점·편의점·대형마트·영화관. 프랜차이즈(`스타벅스 상암DMC점`)는 등록 브랜드로 연결, 처음 보는 동네 가게는 카카오 업종 그대로 자동 등록 → 업종 혜택으로 추천 (직접 검색 목록에는 안 나옴). 키가 없거나 호출이 실패하면 건너뜀
+- **seed.py 시연용 좌표** (카카오 키가 없을 때만): 카페 오로르 4m · 버거킹 20m · 스타벅스 120m (`VITE_DEMO_GPS=37.56650,126.97800` 기준). 키가 있으면 가짜 매장이 실제 결과와 섞이지 않게 쓰지 않음
+
+카카오 키: https://developers.kakao.com → 내 애플리케이션 → 앱 추가 → 앱 키의 **REST API 키** (카카오맵 사용 설정 안내가 나오면 켜기).
+GPS 시연: `frontend/.env`의 `VITE_DEMO_GPS`가 있으면 그 좌표, 지우면 폰의 실제 GPS(https에서만 동작).
+
+애매한 사진은 Claude가 판단 (`backend/app/ai_pick.py`, 모델 `claude-opus-5-5`)
+- `backend/.env`의 `ANTHROPIC_API_KEY`. 없거나 호출이 실패하면 건너뛰고 규칙 결과 그대로
+- 로고·간판으로 확실하면(0.80 이상) 부르지 않음 → 비용 0. 애매한 사진 1장당 약 15~20원, 2~5초
+- 키는 console.anthropic.com (Claude Max·Team 구독이면 claude.ai 결제 설정 → API credits로 월 크레딧 연결 가능)
+
+촬영: 앱 카메라로 찍으면 화면의 **네모 틀 영역(+사방 15%)만 잘라서** 보낸다. 틀 밖 배경(노트북 화면 등)에 인식이 끌려가지 않게. 앨범·기본 카메라 앱 사진은 전체.
+
+폰 데이터(LTE/5G)로 테스트: 개발 PC를 임시 공개 주소로 연다 (테스트 끝나면 꼭 끌 것 — 주소를 아는 누구나 접속해 API 한도를 쓸 수 있음)
+```
+"C:\Program Files (x86)\cloudflared\cloudflared.exe" tunnel --url https://localhost:5173 --no-tls-verify
+```
+출력의 `https://○○.trycloudflare.com` 으로 접속 (`vite.config.js`의 `allowedHosts`에 허용돼 있음).
 
 ## API
 | 메서드 | 경로 | 설명 |
