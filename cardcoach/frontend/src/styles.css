@@ -23,6 +23,7 @@ input { font: inherit; }
 .headline { font-size: 18px; font-weight: 800; line-height: 1.35; word-break: keep-all; }
 
 .brandmark { border-radius: 50%; color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.brandmark.logo { background: #fff; object-fit: contain; border: 1px solid #E3E7EF; padding: 3px; display: block; }
 .cardthumb { width: 56px; height: 36px; border-radius: 6px; flex-shrink: 0; }
 
 /* ---- buttons ---- */

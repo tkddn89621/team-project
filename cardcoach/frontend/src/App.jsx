@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { recognize, getBrands, getCards, getRecommendations, postSelection, getPosition } from "./api.js";
+import { API, recognize, getBrands, getCards, getRecommendations, postSelection, getPosition } from "./api.js";
 
 const won = (n) => (n ?? 0).toLocaleString("ko-KR") + "원";
 
-/* 브랜드 로고 이미지가 없을 때 쓰는 이니셜 배지 */
-function BrandMark({ name, size = 44 }) {
+/* 브랜드 로고. backend/logos/ 에 파일이 있으면 로고, 없거나 못 불러오면 이니셜 배지 */
+function BrandMark({ name, logo, size = 44 }) {
+  const [broken, setBroken] = useState(false);
+  if (logo && !broken) {
+    return (
+      <img className="brandmark logo" src={logo.startsWith("http") ? logo : API + encodeURI(logo)} alt={name}
+           style={{ width: size, height: size }} onError={() => setBroken(true)} />
+    );
+  }
   const palette = ["#2F6BFF", "#FF7A1A", "#00A862", "#8E44AD", "#E53935", "#0097A7"];
   const c = palette[[...name].reduce((a, ch) => a + ch.charCodeAt(0), 0) % palette.length];
   return (
@@ -19,25 +26,57 @@ function CardThumb({ color }) {
 }
 
 /* 이번 달 실적 진행 바. 타사 카드는 마이데이터 미연동이면 알 수 없음 */
+const man = (n) => `${(n / 10000).toLocaleString("ko-KR")}만`;
+
+/* 실적 구간·한도 + 다음 달 코칭. 이번 달 구간은 지난달 실적, 다음 달 구간은 이번 달 실적으로 정해짐 */
 function SpendBar({ card }) {
-  if (!card.spend_known) return <div className="spend unknown">실적 확인 불가 · 마이데이터 연동 필요</div>;
-  const pct = card.target_spend ? Math.min(100, (card.current_spend / card.target_spend) * 100) : 100;
+  if (!card.target_spend) return <div className="spend unknown">실적 조건 없음</div>;
+  if (!card.spend_known) return <div className="spend unknown">지난달·이번 달 실적 확인 불가 · 마이데이터 연동 필요</div>;
+  const tiers = card.tiers || [];
+  const met = card.eligibility === "met";
+  const t = card.tier_index;
+  const nx = card.next_tier_index;
+  const up = card.upgrade_gap != null ? (nx == null ? 0 : nx + 1) : null; // 다음 목표 구간 index
+  const goal = up != null ? tiers[up].min_spend : (tiers.length ? tiers[tiers.length - 1].min_spend : card.target_spend);
+  const pct = Math.min(100, (card.current_spend / goal) * 100);
+  const name = (i) => (tiers.length > 1 ? `${i + 1}구간` : "혜택");
+
+  let coach;
+  if (up == null) coach = <> · 다음 달 {tiers.length > 1 ? "최고 구간" : "혜택"} 확보</>;
+  else if (t != null && up === t) coach = <b> · {won(card.upgrade_gap)} 더 쓰면 다음 달도 {name(t)} 유지 (한도 {won(card.upgrade_limit)})</b>;
+  else if (nx == null) coach = <b> · {won(card.upgrade_gap)} 더 쓰면 다음 달 {name(up)} (한도 {won(card.upgrade_limit)})</b>;
+  else coach = <> · {won(card.upgrade_gap)} 더 쓰면 다음 달 {name(up)} (한도 {won(card.upgrade_limit)}로 ↑)</>;
+
   return (
     <div className="spend">
+      <div className="sub" style={{ color: met ? undefined : "#E53935" }}>
+        지난달 {won(card.prev_spend)} →{" "}
+        {met
+          ? <>{tiers.length > 1 ? `${name(t)}(${man(tiers[t].min_spend)}↑)` : "혜택 받는 중"} · 이번 달 한도 {won(card.monthly_discount_limit)}</>
+          : <b>실적 미달({man(card.target_spend)}원 필요), 이번 달 혜택 없음</b>}
+      </div>
+      {tiers.length > 1 && (
+        <div className="sub">구간: {tiers.map((x) => `${man(x.min_spend)}↑ 한도 ${man(x.monthly_limit)}`).join(" · ")}</div>
+      )}
       <div className="bar"><div style={{ width: `${pct}%` }} /></div>
       <div className="sub">
-        실적 {won(card.current_spend)} / {won(card.target_spend)}
-        {card.spend_gap > 0 ? <b> · {won(card.spend_gap)} 남음</b> : " · 달성"}
+        이번 달 {won(card.current_spend)}{coach}
       </div>
+      {met && nx != null && nx < t && (
+        <div className="sub" style={{ color: "#E07B00" }}>지금대로면 다음 달 {name(nx)}(한도 {won(tiers[nx].monthly_limit)})로 내려가요</div>
+      )}
+      {met && nx == null && (
+        <div className="sub" style={{ color: "#E07B00" }}>지금대로면 다음 달 혜택이 없어져요</div>
+      )}
     </div>
   );
 }
 
 function MydataBanner({ linked, onLink }) {
-  if (linked) return <div className="mydata on">✓ 마이데이터 연동됨 · 타사 카드 실적·한도까지 반영 중</div>;
+  if (linked) return <div className="mydata on">✓ 마이데이터 연동됨 · 다른 카드사 카드와 실적·한도까지 함께 비교 중</div>;
   return (
     <div className="mydata">
-      <span>마이데이터 연동 시 실적 부족액까지 고려한 정밀 코칭이 가능합니다</span>
+      <span>다른 카드사 카드도 있으세요? 마이데이터를 연동하면 <b>가진 카드를 모두 불러와</b> 함께 비교해요</span>
       <button onClick={onLink}>연동하기</button>
     </div>
   );
@@ -47,10 +86,10 @@ function MydataModal({ onLink, onClose }) {
   return (
     <div className="modal" onClick={onClose}>
       <div className="modal-body" onClick={(e) => e.stopPropagation()}>
-        <div className="title">타사 카드 실적, 아직 모르고 있어요</div>
+        <div className="title">다른 카드도 함께 비교할까요?</div>
         <p className="body">
-          마이데이터를 연동하면 신한·삼성 등 다른 카드의 이번 달 실적과 남은 할인 한도까지 반영해서
-          <b> 실적 부족액까지 고려한 정밀 코칭</b>이 가능합니다.
+          지금은 <b>우리카드만</b> 보고 추천했어요. 마이데이터를 연동하면 다른 카드사 카드를
+          지난달 실적·남은 한도와 함께 불러와서, <b>이 결제에 가장 이득인 카드</b>를 찾아드려요.
         </p>
         <div className="btnrow">
           <button className="btn ghost" onClick={onClose}>나중에</button>
@@ -132,7 +171,7 @@ function FindScreen({ onConfirm, onWallet }) {
       {phase === "result" && top && (
         <div className="sheet">
           <div className="row">
-            <BrandMark name={top.name} />
+            <BrandMark name={top.name} logo={top.logo_url} />
             <div className="grow">
               {top.source === "gps" ? (
                 <>
@@ -201,7 +240,7 @@ function FindScreen({ onConfirm, onWallet }) {
             <div className="grid">
               {shown.map((b) => (
                 <button key={b.brand_id} className="gridcell" onClick={() => { setPicker(false); onConfirm(b, rec?.recognition_id ?? null); }}>
-                  <BrandMark name={b.name} size={40} />
+                  <BrandMark name={b.name} logo={b.logo_url} size={40} />
                   <span>{b.name}</span>
                 </button>
               ))}
@@ -246,10 +285,10 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
       <header className="topbar"><button className="iconbtn" onClick={onBack}>‹</button></header>
 
       <div className="hero row">
-        <BrandMark name={data.brand.name} size={52} />
+        <BrandMark name={data.brand.name} logo={data.brand.logo_url} size={52} />
         <div className="grow">
           <div className="headline">{data.message}</div>
-          <div className="sub">{data.brand.category}</div>
+          <div className="sub">{data.brand.category} · {data.hour}시 결제 기준</div>
         </div>
       </div>
 
@@ -287,16 +326,18 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
                     {c.name} {c.is_woori && <span className="pill">우리</span>}
                   </div>
                   <div className={`rate ${best ? "accent" : ""}`}>{c.rate_label}</div>
+                  {c.blocked_reason && c.benefit_label && <div className="sub">원래 혜택: {c.benefit_label}</div>}
+                  {c.benefit_note && <div className="sub">{c.benefit_note}</div>}
                   {usable && (
                     <div className="sub">
                       결제 예상 <b>{won(c.final_payment)}</b> (할인 {won(c.expected_benefit)})
                       {c.limited_by_monthly && " · 월 한도 남은 만큼만"}
                     </div>
                   )}
-                  {c.has_benefit && (
+                  {c.has_benefit && !c.blocked_reason && (
                     <div className="sub">
                       {c.max_per_txn ? `건당 최대 ${won(c.max_per_txn)} · ` : ""}
-                      이번 달 남은 한도 {won(c.monthly_remaining)}{!c.spend_known && "(추정)"}
+                      {c.limit_unlimited ? "할인 한도 없음" : <>이번 달 남은 한도 {won(c.monthly_remaining)}{!c.spend_known && "(추정)"}</>}
                     </div>
                   )}
                   <SpendBar card={c} />
@@ -335,10 +376,6 @@ function WalletScreen({ mydata, onLinkMydata, onBack }) {
       </header>
 
       <div className="pad">
-        <div className="secure">
-          🔒 카드번호·CVV는 <b>스캔하거나 저장하지 않아요</b>. 카드번호는 끝 4자리만 보관하고,
-          화면에는 자동으로 마스킹(****)해서 보여드려요.
-        </div>
         <MydataBanner linked={mydata} onLink={onLinkMydata} />
         {urgent && (
           <div className="urgent">이번 달 실적이 가장 급한 카드는 <b>{urgent.name}</b> — {won(urgent.spend_gap)} 더 쓰면 다음 달 혜택 유지</div>
@@ -357,9 +394,9 @@ function WalletScreen({ mydata, onLinkMydata, onBack }) {
                   <div className="cardname">{c.name} {c.is_woori && <span className="pill">우리</span>}</div>
                   <div className="sub mono">{c.masked_number}</div>
                   <SpendBar card={c} />
-                  <div className="sub">
-                    월 할인 한도 {won(c.monthly_discount_limit)} 중 {won(c.monthly_remaining)} 남음{!c.spend_known && "(추정)"}
-                  </div>
+                  {c.eligibility !== "unmet" && <div className="sub">
+                    {c.limit_unlimited ? "월 할인 한도 없음" : <>월 할인 한도 {won(c.monthly_discount_limit)} 중 {won(c.monthly_remaining)} 남음{!c.spend_known && "(추정)"}</>}
+                  </div>}
                 </div>
               </div>
             </div>

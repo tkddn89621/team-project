@@ -49,6 +49,9 @@ export async function getCards(mydata) {
 export async function getRecommendations(brandId, amount, mydata) {
   const q = new URLSearchParams({ brand_id: brandId, mydata: !!mydata });
   if (amount) q.set("amount", amount);
+  // 시연용 결제 시각. 비우면 서버가 지금(한국 시간) 기준 → 신한 카페 할인은 07~15시에만 보임
+  const demoHour = import.meta.env.VITE_DEMO_HOUR;
+  if (demoHour) q.set("hour", demoHour);
   const r = await fetch(`${API}/recommendations?${q}`);
   return r.json();
 }
