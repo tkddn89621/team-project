@@ -1,0 +1,193 @@
+{
+  "card_id": "bc-2927",
+  "issuer": "BC카드",
+  "name": "BC 바로 Air Max 카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 43000,
+    "overseas": 43000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2927",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "bc-2927-b01",
+      "target_raw": "카드사용액 1,500원당 1 스카이패스 마일",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": 0
+    },
+    {
+      "benefit_id": "bc-2927-b02",
+      "target_raw": "[Max #1] 쿠팡, 컬리 1,500원당 1마일 추가",
+      "target_kind": "brands",
+      "brands": [
+        "쿠팡",
+        "컬리"
+      ],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "Max 적립(월 2천 마일)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2927-b03",
+      "target_raw": "[Max #1] 다이소, 올리브영 1마일 추가",
+      "target_kind": "brands",
+      "brands": [
+        "다이소",
+        "올리브영"
+      ],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "Max 적립(월 2천 마일)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2927-b04",
+      "target_raw": "[Max #1] 스타벅스, 투썸플레이스 1마일 추가",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "투썸플레이스"
+      ],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "Max 적립(월 2천 마일)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2927-b05",
+      "target_raw": "[Max #1] 해외 가맹점 1마일 추가",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": "Max 적립(월 2천 마일)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2927-b06",
+      "target_raw": "[Max #2] 아파트관리비 자동납부 1,500원당 1마일",
+      "target_kind": "non_store",
+      "brands": [
+        "아파트관리비"
+      ],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "월 500마일",
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2927-b07",
+      "target_raw": "[보너스] 월 이용 100만원당 200마일",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "월 2천 마일",
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "2~3개월 무이자"
+  ]
+}

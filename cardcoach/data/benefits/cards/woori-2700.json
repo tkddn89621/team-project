@@ -1,0 +1,207 @@
+{
+  "card_id": "woori-2700",
+  "issuer": "우리카드",
+  "name": "위비트래블 체크카드",
+  "type": "check",
+  "annual_fee": {
+    "domestic": 0,
+    "overseas": 0
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2700",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 200000,
+      "monthly_limit": 10000
+    },
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": 20000
+    },
+    {
+      "min_prev_spend": 700000,
+      "monthly_limit": 30000
+    }
+  ],
+  "spend_exclusions_raw": "국세·지방세·공공요금, 대학등록금, 상품권·선불카드, 교통카드 충전, 고속버스, 정부지원금, 아파트관리비 등",
+  "benefits": [
+    {
+      "benefit_id": "woori-2700-b01",
+      "target_raw": "[해외] 해외 온/오프라인 가맹점",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": "해외(2천/4천/6천원)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2700-b02",
+      "target_raw": "[쇼핑] 우리페이, 네이버페이 온라인 결제",
+      "target_kind": "channel",
+      "brands": [
+        "우리WON페이",
+        "네이버페이"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "쇼핑(2천/4천/6천원)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2700-b03",
+      "target_raw": "[쇼핑] 쿠팡, 무신사, 29CM, 올리브영",
+      "target_kind": "brands",
+      "brands": [
+        "쿠팡",
+        "무신사",
+        "29CM",
+        "올리브영"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "쇼핑(2천/4천/6천원)",
+      "excludes_raw": null,
+      "notes": "올리브영은 오프라인만(입점·임대매장 제외)",
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2700-b04",
+      "target_raw": "[푸드] 스타벅스 사이렌오더",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "푸드(3천/6천/9천원)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2700-b05",
+      "target_raw": "[푸드] 배달의민족, 쿠팡이츠, 컬리",
+      "target_kind": "brands",
+      "brands": [
+        "배달의민족",
+        "쿠팡이츠",
+        "컬리"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "푸드(3천/6천/9천원)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2700-b06",
+      "target_raw": "[일상] 시내버스, 지하철",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "일상(3천/6천/9천원)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2700-b07",
+      "target_raw": "[일상] SKT, KT, LG U+ 휴대전화 자동납부",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "일상(3천/6천/9천원)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "해외 수수료 면제"
+  ]
+}

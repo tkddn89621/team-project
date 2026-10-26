@@ -1,0 +1,239 @@
+{
+  "card_id": "bc-2400",
+  "issuer": "BC카드",
+  "name": "밥바라밥 페이북머니 체크카드",
+  "type": "check",
+  "annual_fee": {
+    "domestic": 0,
+    "overseas": null
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2400",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 200000,
+      "monthly_limit": 10000
+    },
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": 15000
+    },
+    {
+      "min_prev_spend": 600000,
+      "monthly_limit": 20000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "bc-2400-b01",
+      "target_raw": "[종일커피] 스타벅스, 커피빈, 투썸플레이스, 이디야, 폴바셋 8%",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "커피빈",
+        "투썸플레이스",
+        "이디야커피",
+        "폴바셋"
+      ],
+      "rate": 8,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "종일커피",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2400-b02",
+      "target_raw": "[점심식사 11~14시] 전국 음식점 업종 8%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 8,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": "11:00-14:00",
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "점심식사",
+      "excludes_raw": "제과점, 주점, 칵테일바 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2400-b03",
+      "target_raw": "[저녁간식 17~21시] 편의점 CU, GS25, 이마트24, 세븐일레븐 8%",
+      "target_kind": "brands",
+      "brands": [
+        "CU",
+        "GS25",
+        "이마트24",
+        "세븐일레븐"
+      ],
+      "rate": 8,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": "17:00-21:00",
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "저녁간식",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2400-b04",
+      "target_raw": "[저녁간식 17~21시] 배달 배민, 요기요, 쿠팡이츠 8%",
+      "target_kind": "brands",
+      "brands": [
+        "배달의민족",
+        "요기요",
+        "쿠팡이츠"
+      ],
+      "rate": 8,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": "17:00-21:00",
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "저녁간식",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2400-b05",
+      "target_raw": "[저녁간식 17~21시] 파리바게트, 파리크라상, 뚜레쥬르, 배스킨라빈스 8%",
+      "target_kind": "brands",
+      "brands": [
+        "파리바게뜨",
+        "파리크라상",
+        "뚜레쥬르",
+        "배스킨라빈스"
+      ],
+      "rate": 8,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": "17:00-21:00",
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "저녁간식",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2400-b06",
+      "target_raw": "[저녁간식 17~21시] 맥도날드, 버거킹, 롯데리아, 서브웨이 8%",
+      "target_kind": "brands",
+      "brands": [
+        "맥도날드",
+        "버거킹",
+        "롯데리아",
+        "써브웨이"
+      ],
+      "rate": 8,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": "17:00-21:00",
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "저녁간식",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2400-b07",
+      "target_raw": "[저녁간식 17~21시] 온라인 간편결제 네이버페이, 카카오페이 8%",
+      "target_kind": "channel",
+      "brands": [
+        "네이버페이",
+        "카카오페이"
+      ],
+      "rate": 8,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": "17:00-21:00",
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "저녁간식",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [],
+  "limit_groups": [
+    {
+      "group": "종일커피",
+      "limits": [
+        2000,
+        3000,
+        4000
+      ]
+    },
+    {
+      "group": "점심식사",
+      "limits": [
+        4000,
+        6000,
+        8000
+      ]
+    },
+    {
+      "group": "저녁간식",
+      "limits": [
+        4000,
+        6000,
+        8000
+      ]
+    }
+  ],
+  "notes": "월 통합 적립한도 1만/1.5만/2만원. 국내 이용 0.1% 기부 적립"
+}

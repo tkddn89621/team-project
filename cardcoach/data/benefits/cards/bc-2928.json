@@ -1,0 +1,273 @@
+{
+  "card_id": "bc-2928",
+  "issuer": "BC카드",
+  "name": "BC 바로 ZONE 카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 19000,
+    "overseas": 19000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2928",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 20000
+    },
+    {
+      "min_prev_spend": 600000,
+      "monthly_limit": 40000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "bc-2928-b01",
+      "target_raw": "[EAT] 커피 스타벅스, 투썸플레이스, 이디야커피, 메가MGC커피, 컴포즈커피 7%",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "투썸플레이스",
+        "이디야커피",
+        "메가MGC커피",
+        "컴포즈커피"
+      ],
+      "rate": 7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "EAT-ZONE",
+      "excludes_raw": "백화점, 면세점, 할인점, 공항, 기차역 임대 매장 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2928-b02",
+      "target_raw": "[EAT] 간식 맥도날드, 버거킹, 롯데리아, 맘스터치, 써브웨이 7%",
+      "target_kind": "brands",
+      "brands": [
+        "맥도날드",
+        "버거킹",
+        "롯데리아",
+        "맘스터치",
+        "써브웨이"
+      ],
+      "rate": 7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "EAT-ZONE",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2928-b03",
+      "target_raw": "[EAT] 배달 배달의민족, 쿠팡이츠 7%",
+      "target_kind": "brands",
+      "brands": [
+        "배달의민족",
+        "쿠팡이츠"
+      ],
+      "rate": 7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "EAT-ZONE",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2928-b04",
+      "target_raw": "[LIFE] 온라인몰 쿠팡, 무신사, 지그재그, 오늘의집, 크림 7%",
+      "target_kind": "brands",
+      "brands": [
+        "쿠팡",
+        "무신사",
+        "지그재그",
+        "오늘의집",
+        "크림"
+      ],
+      "rate": 7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "LIFE-ZONE",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2928-b05",
+      "target_raw": "[LIFE] 오프라인샵 다이소, 올리브영 7%",
+      "target_kind": "brands",
+      "brands": [
+        "다이소",
+        "올리브영"
+      ],
+      "rate": 7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "LIFE-ZONE",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2928-b06",
+      "target_raw": "[PLAY] 넷플릭스, 유튜브 프리미엄, 네이버플러스, 쿠팡 와우, 카카오톡 선물하기 7%",
+      "target_kind": "non_store",
+      "brands": [
+        "넷플릭스",
+        "유튜브 프리미엄",
+        "네이버플러스 멤버십",
+        "쿠팡 와우 멤버십",
+        "카카오톡 선물하기"
+      ],
+      "rate": 7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "PLAY-ZONE",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2928-b07",
+      "target_raw": "[&] 전통시장(온누리상품권 가맹점, 소상공인시장진흥공단 등록) 7%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "&-ZONE",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2928-b08",
+      "target_raw": "[해외] 해외가맹점 1%",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 1,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 0
+    }
+  ],
+  "other_services_raw": [
+    "2~3개월 무이자",
+    "Mastercard Platinum"
+  ],
+  "limit_groups": [
+    {
+      "group": "EAT-ZONE",
+      "limits": [
+        null,
+        5000,
+        10000
+      ]
+    },
+    {
+      "group": "LIFE-ZONE",
+      "limits": [
+        null,
+        5000,
+        10000
+      ]
+    },
+    {
+      "group": "PLAY-ZONE",
+      "limits": [
+        null,
+        5000,
+        10000
+      ]
+    },
+    {
+      "group": "&-ZONE",
+      "limits": [
+        null,
+        5000,
+        10000
+      ]
+    }
+  ]
+}

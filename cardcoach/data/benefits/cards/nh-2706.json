@@ -1,0 +1,260 @@
+{
+  "card_id": "nh-2706",
+  "issuer": "NH농협카드",
+  "name": "zgm 할인카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 27000,
+    "overseas": 30000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2706",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": 60000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "nh-2706-b01",
+      "target_raw": "국내 가맹점 1%",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 1,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "기본할인(월 4만)",
+      "excludes_raw": null,
+      "notes": "일 1만원",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2706-b02",
+      "target_raw": "NH페이 온라인 결제 2%",
+      "target_kind": "channel",
+      "brands": [
+        "NH pay"
+      ],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "기본할인(월 4만)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2706-b03",
+      "target_raw": "해외 가맹점 2%",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": "기본할인(월 4만)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2706-b04",
+      "target_raw": "[생활] 공과금 아파트관리비, 전기요금, 도시가스 자동납부 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "아파트관리비",
+        "전기요금",
+        "도시가스"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "생활할인(월 2만)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2706-b05",
+      "target_raw": "[생활] 이동통신 SKT, KT, LGU+ 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "생활할인(월 2만)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2706-b06",
+      "target_raw": "[생활] 새벽배송 쿠팡, 컬리, 오아시스마켓 10%",
+      "target_kind": "brands",
+      "brands": [
+        "쿠팡",
+        "컬리",
+        "오아시스마켓"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "생활할인(월 2만)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2706-b07",
+      "target_raw": "[생활] 대형마트 하나로클럽·마트, 이마트, 홈플러스, 롯데마트 10%",
+      "target_kind": "brands",
+      "brands": [
+        "농협하나로마트",
+        "이마트",
+        "홈플러스",
+        "롯데마트"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "생활할인(월 2만)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2706-b08",
+      "target_raw": "[생활] 반려동물 동물병원, 애완동물 업종 10%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "생활할인(월 2만)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2706-b09",
+      "target_raw": "[생활] 디지털구독 유튜브프리미엄, 넷플릭스, 티빙, 웨이브 30%",
+      "target_kind": "non_store",
+      "brands": [
+        "유튜브 프리미엄",
+        "넷플릭스",
+        "티빙",
+        "웨이브"
+      ],
+      "rate": 30,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "생활할인(월 2만)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "국내·외 공항 라운지"
+  ],
+  "limit_groups": [
+    {
+      "group": "기본할인(월 4만)",
+      "limits": [
+        40000
+      ]
+    },
+    {
+      "group": "생활할인(월 2만)",
+      "limits": [
+        20000
+      ]
+    }
+  ]
+}

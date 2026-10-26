@@ -1,0 +1,48 @@
+{
+  "card_id": "woori-2980",
+  "issuer": "우리카드",
+  "name": "카드의정석2 SUPER",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 30000,
+    "overseas": 30000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2980",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": 100000
+    }
+  ],
+  "spend_exclusions_raw": "무이자할부, 정부지원금, 아파트관리비, 공공임대료, 대학등록금, 국세·지방세·관세·공공요금, 상품권·기프트카드·선불카드 구매·충전, 교통카드 충전, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소",
+  "benefits": [
+    {
+      "benefit_id": "woori-2980-b01",
+      "target_raw": "국내/해외 가맹점 2.0% 청구할인",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 100000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "전월 실적 조건 없음",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "2~3개월 무이자할부",
+    "해외수수료 면제",
+    "Mastercard Platinum 서비스"
+  ]
+}

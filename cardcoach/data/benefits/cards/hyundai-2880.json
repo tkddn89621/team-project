@@ -1,0 +1,100 @@
+{
+  "card_id": "hyundai-2880",
+  "issuer": "현대카드",
+  "name": "알파벳카드O",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 15000,
+    "overseas": 15000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2880",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": 15000
+    },
+    {
+      "min_prev_spend": 800000,
+      "monthly_limit": 30000
+    },
+    {
+      "min_prev_spend": 1200000,
+      "monthly_limit": 50000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 세금·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "hyundai-2880-b01",
+      "target_raw": "[기본] 주유소, LPG·전기차·수소차 충전소, 차량 정비소, 세차장 10%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "기본 혜택",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2880-b02",
+      "target_raw": "[추가] 이동통신 요금(SKT, KT, LG U+), 아파트 관리비, 도시가스 요금 정기결제 5%",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+",
+        "아파트관리비",
+        "도시가스"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "추가 혜택",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "메탈 플레이트"
+  ],
+  "limit_groups": [
+    {
+      "group": "기본 혜택",
+      "limits": [
+        10000,
+        20000,
+        35000
+      ]
+    },
+    {
+      "group": "추가 혜택",
+      "limits": [
+        5000,
+        10000,
+        15000
+      ]
+    }
+  ]
+}

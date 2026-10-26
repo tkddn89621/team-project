@@ -1,0 +1,249 @@
+{
+  "card_id": "kb-106",
+  "issuer": "KB국민카드",
+  "name": "굿데이카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 5000,
+    "overseas": 10000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/106",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 8000
+    },
+    {
+      "min_prev_spend": 600000,
+      "monthly_limit": 13000
+    },
+    {
+      "min_prev_spend": 1200000,
+      "monthly_limit": 43000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드 구매·충전, 국세·지방세, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "kb-106-b01",
+      "target_raw": "주유소, 충전소 업종 리터당 60원",
+      "target_kind": "category",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": 60,
+      "unit": "원/L",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "주유",
+      "excludes_raw": "PG 결제, 호텔·백화점·대형마트·철도역사·아울렛 입점 가맹점 제외",
+      "notes": "월 할인 대상 이용금액 20만/40만원(1·2구간/3구간), 일 10만원",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-106-b02",
+      "target_raw": "전화요금, 인터넷이용료, 케이블TV 업종 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "통신",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-106-b03",
+      "target_raw": "RF교통(버스, 지하철), 택시 업종 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철",
+        "택시"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "교통",
+      "excludes_raw": "시외·고속버스 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-106-b04",
+      "target_raw": "[추가] 음식점(일반음식점, 휴게음식점, 패밀리레스토랑, 일반주점) 10%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "음식/커피/편의점/약국",
+      "excludes_raw": "제과, 아이스크림, 패스트푸드점, 유흥주점 제외; PG 결제, 호텔·백화점·대형마트·철도역사·아울렛 입점 가맹점 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 600000
+    },
+    {
+      "benefit_id": "kb-106-b05",
+      "target_raw": "[추가] 커피전문점 업종 10%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "음식/커피/편의점/약국",
+      "excludes_raw": "PG 결제, 호텔·백화점·대형마트·철도역사·아울렛 입점 가맹점 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 600000
+    },
+    {
+      "benefit_id": "kb-106-b06",
+      "target_raw": "[추가] 편의점 업종 10%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "음식/커피/편의점/약국",
+      "excludes_raw": "PG 결제, 호텔·백화점·대형마트·철도역사·아울렛 입점 가맹점 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 600000
+    },
+    {
+      "benefit_id": "kb-106-b07",
+      "target_raw": "[추가] 약국 업종 10%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "음식/커피/편의점/약국",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 600000
+    },
+    {
+      "benefit_id": "kb-106-b08",
+      "target_raw": "[추가] 학원, 종합스포츠센터 업종 10%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "학원/휘트니스",
+      "excludes_raw": "PG, 유아교육기관, 수영장·골프연습장·요가 등 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 1200000
+    }
+  ],
+  "other_services_raw": [],
+  "limit_groups": [
+    {
+      "group": "통신",
+      "limits": [
+        3000,
+        3000,
+        3000
+      ]
+    },
+    {
+      "group": "교통",
+      "limits": [
+        5000,
+        5000,
+        5000
+      ]
+    },
+    {
+      "group": "음식/커피/편의점/약국",
+      "limits": [
+        null,
+        5000,
+        5000
+      ]
+    },
+    {
+      "group": "학원/휘트니스",
+      "limits": [
+        null,
+        null,
+        30000
+      ]
+    }
+  ],
+  "notes": "통신·교통 한도는 할인 대상 이용금액(3만/5만원) 기준, 괄호 안 할인액 기입. 주유는 이용금액 한도만 있음"
+}

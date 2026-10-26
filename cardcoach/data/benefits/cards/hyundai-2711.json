@@ -1,0 +1,118 @@
+{
+  "card_id": "hyundai-2711",
+  "issuer": "현대카드",
+  "name": "대한항공카드 300",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 300000,
+    "overseas": 300000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2711",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 세금·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "hyundai-2711-b01",
+      "target_raw": "국내 가맹점 1천원당 1마일",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2711-b02",
+      "target_raw": "대한항공 직판 항공권 1천원당 3마일",
+      "target_kind": "brands",
+      "brands": [
+        "대한항공"
+      ],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "연 3만 마일 한도",
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2711-b03",
+      "target_raw": "해외 가맹점(외화 결제) 1천원당 3마일",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "월 6천 마일",
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2711-b04",
+      "target_raw": "국내 특급호텔/백화점/골프장 업종 1천원당 3마일",
+      "target_kind": "category",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "월 6천 마일, 백화점은 오프라인",
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "연간 보너스 1만 마일",
+    "대한항공 국제선 5만원 쿠폰(연 2장)",
+    "메탈 플레이트",
+    "공항 라운지 연 10회",
+    "Visa Signature"
+  ]
+}

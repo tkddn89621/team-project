@@ -1,0 +1,342 @@
+{
+  "card_id": "nh-2305",
+  "issuer": "NH농협카드",
+  "name": "별다줄카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 12000,
+    "overseas": 14000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2305",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 13000
+    },
+    {
+      "min_prev_spend": 700000,
+      "monthly_limit": 26000
+    },
+    {
+      "min_prev_spend": 1500000,
+      "monthly_limit": 32000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "nh-2305-b01",
+      "target_raw": "국내 모든 온라인 전자상거래 업종 7%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "기본+더블",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2305-b02",
+      "target_raw": "[더블] FLEX 무신사, 지그재그, 에이블리, 머스트잇, 트렌비, 발란 14%",
+      "target_kind": "brands",
+      "brands": [
+        "무신사",
+        "지그재그",
+        "에이블리",
+        "머스트잇",
+        "트렌비",
+        "발란"
+      ],
+      "rate": 14,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "기본+더블",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2305-b03",
+      "target_raw": "[더블] RE-SELL 솔드아웃, 크림, 번개장터, 중고나라 14%",
+      "target_kind": "brands",
+      "brands": [
+        "솔드아웃",
+        "크림",
+        "번개장터",
+        "중고나라"
+      ],
+      "rate": 14,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "기본+더블",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2305-b04",
+      "target_raw": "[더블] FUN 야놀자, 여기어때, 오늘의 집 14%",
+      "target_kind": "brands",
+      "brands": [
+        "야놀자",
+        "여기어때",
+        "오늘의집"
+      ],
+      "rate": 14,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "기본+더블",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2305-b05",
+      "target_raw": "[생활] 교통 버스, 지하철 5%",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "생활(영역별)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2305-b06",
+      "target_raw": "[생활] 커피 스타벅스(사이렌오더 포함), 이디야(현장결제) 5%",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "이디야커피"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "생활(영역별)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2305-b07",
+      "target_raw": "[생활] 편의점 GS25, CU, 세븐일레븐 5% (현장결제)",
+      "target_kind": "brands",
+      "brands": [
+        "GS25",
+        "CU",
+        "세븐일레븐"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "생활(영역별)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2305-b08",
+      "target_raw": "[생활] 통신 SKT, KT, LGU+ 자동납부 5%",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "생활(영역별)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2305-b09",
+      "target_raw": "[생활] 배달 배달의 민족, 요기요, 쿠팡이츠 5%",
+      "target_kind": "brands",
+      "brands": [
+        "배달의민족",
+        "요기요",
+        "쿠팡이츠"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "생활(영역별)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2305-b10",
+      "target_raw": "[생활] 구독 쿠팡 와우, 네이버 멤버십, 유튜브프리미엄, 넷플릭스, 티빙, 디즈니플러스 5%",
+      "target_kind": "non_store",
+      "brands": [
+        "쿠팡 와우 멤버십",
+        "네이버플러스 멤버십",
+        "유튜브 프리미엄",
+        "넷플릭스",
+        "티빙",
+        "디즈니플러스"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "생활(영역별)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2305-b11",
+      "target_raw": "놀이공원 자유이용권 50% 현장할인(에버랜드, 롯데월드, 서울랜드 등)",
+      "target_kind": "brands",
+      "brands": [
+        "에버랜드",
+        "롯데월드",
+        "서울랜드",
+        "통도환타지아",
+        "경주월드",
+        "이월드",
+        "한국민속촌"
+      ],
+      "rate": 50,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "연 6회",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "국제공항 라운지 연 2회"
+  ],
+  "limit_groups": [
+    {
+      "group": "기본+더블",
+      "limits": [
+        7000,
+        14000,
+        20000
+      ]
+    },
+    {
+      "group": "생활(영역별)",
+      "limits": [
+        6000,
+        12000,
+        12000
+      ]
+    }
+  ],
+  "notes": "생활할인 영역별 1천/2천원(6개 영역)"
+}

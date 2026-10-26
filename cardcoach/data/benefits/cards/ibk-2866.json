@@ -1,0 +1,69 @@
+{
+  "card_id": "ibk-2866",
+  "issuer": "IBK기업은행",
+  "name": "I-Travel(체크)",
+  "type": "check",
+  "annual_fee": {
+    "domestic": 0,
+    "overseas": 0
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2866",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "ibk-2866-b01",
+      "target_raw": "국내·외 건당 3만원 이상 결제 시 3천원당 대한항공 1마일",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 30000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "ibk-2866-b02",
+      "target_raw": "해외 결제 우대 환율(매매기준율)",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "환율 우대",
+      "confidence": "medium",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "해외가맹점 수수료 면제",
+    "해외ATM 수수료 월 3회 면제"
+  ]
+}

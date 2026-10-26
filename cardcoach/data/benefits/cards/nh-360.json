@@ -1,0 +1,173 @@
+{
+  "card_id": "nh-360",
+  "issuer": "NH농협카드",
+  "name": "올바른POINT체크카드",
+  "type": "check",
+  "annual_fee": {
+    "domestic": null,
+    "overseas": 0
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/360",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "nh-360-b01",
+      "target_raw": "전 가맹점 0.2% NH포인트 (하나로고객 0.3~0.4%)",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 0.2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 0
+    },
+    {
+      "benefit_id": "nh-360-b02",
+      "target_raw": "[추가] 하나로마트·클럽, 농협몰 0.3%",
+      "target_kind": "brands",
+      "brands": [
+        "농협하나로마트",
+        "농협몰"
+      ],
+      "rate": 0.3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-360-b03",
+      "target_raw": "[추가] GS25, CU, 올리브영 0.3%",
+      "target_kind": "brands",
+      "brands": [
+        "GS25",
+        "CU",
+        "올리브영"
+      ],
+      "rate": 0.3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": "역사, 백화점, 아울렛 입점 매장 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-360-b04",
+      "target_raw": "[추가] CGV 0.3%",
+      "target_kind": "brands",
+      "brands": [
+        "CGV"
+      ],
+      "rate": 0.3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-360-b05",
+      "target_raw": "[추가] 스타벅스, 파리바게뜨 0.3%",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "파리바게뜨"
+      ],
+      "rate": 0.3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-360-b06",
+      "target_raw": "[추가] 해외일시불, 면세점 0.3%",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 0.3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "국제공항 라운지",
+    "전자금융 수수료 면제"
+  ]
+}

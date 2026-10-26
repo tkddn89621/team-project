@@ -1,0 +1,104 @@
+{
+  "card_id": "samsung-3015",
+  "issuer": "삼성카드",
+  "name": "모니모페이카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 15000,
+    "overseas": 15000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/3015",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 15000
+    },
+    {
+      "min_prev_spend": 600000,
+      "monthly_limit": 27000
+    },
+    {
+      "min_prev_spend": 1000000,
+      "monthly_limit": 40000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 세금·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "samsung-3015-b01",
+      "target_raw": "모니모페이 간편결제 국내 온오프라인 가맹점 15%/10%",
+      "target_kind": "channel",
+      "brands": [
+        "모니모페이"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "모니모페이",
+      "excludes_raw": null,
+      "notes": "전월 모니모 앱 매일 로그인 달성 시 15%, 미달성 10%",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "samsung-3015-b02",
+      "target_raw": "디지털콘텐츠(넷플릭스, 디즈니+, 유튜브 프리미엄, 티빙, FLO)/멤버십(쿠팡 와우, 네이버플러스) 정기결제 50%",
+      "target_kind": "non_store",
+      "brands": [
+        "넷플릭스",
+        "디즈니플러스",
+        "유튜브 프리미엄",
+        "티빙",
+        "FLO",
+        "쿠팡 와우 멤버십",
+        "네이버플러스 멤버십"
+      ],
+      "rate": 50,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "디지털콘텐츠",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "온라인 5만원 이상 2~3개월 무이자"
+  ],
+  "limit_groups": [
+    {
+      "group": "모니모페이",
+      "limits": [
+        10000,
+        20000,
+        30000
+      ]
+    },
+    {
+      "group": "디지털콘텐츠",
+      "limits": [
+        5000,
+        7000,
+        10000
+      ]
+    }
+  ]
+}

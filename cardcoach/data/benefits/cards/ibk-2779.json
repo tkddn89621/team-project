@@ -1,0 +1,66 @@
+{
+  "card_id": "ibk-2779",
+  "issuer": "IBK기업은행",
+  "name": "IBK포인트(신용)",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 21000,
+    "overseas": 22000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2779",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": 50000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "ibk-2779-b01",
+      "target_raw": "국내외 가맹점 건당 금액별 0.6~3.3% 적립",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 0.6,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 50000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "10만 미만 0.6%, 10~30만 0.8%, 30~70만 1.1%, 70~100만 2.2%, 100만 이상 3.3%",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null,
+      "rate_by_amount": [
+        {
+          "min_amount": 0,
+          "rate": 0.6
+        },
+        {
+          "min_amount": 100000,
+          "rate": 0.8
+        },
+        {
+          "min_amount": 300000,
+          "rate": 1.1
+        },
+        {
+          "min_amount": 700000,
+          "rate": 2.2
+        },
+        {
+          "min_amount": 1000000,
+          "rate": 3.3
+        }
+      ]
+    }
+  ],
+  "other_services_raw": []
+}

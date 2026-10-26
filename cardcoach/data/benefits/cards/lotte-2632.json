@@ -1,0 +1,68 @@
+{
+  "card_id": "lotte-2632",
+  "issuer": "롯데카드",
+  "name": "디지로카 London",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 20000,
+    "overseas": 20000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2632",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "lotte-2632-b01",
+      "target_raw": "국내외 가맹점 0.7% 캐시백",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 0.7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "실적·한도 없음",
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "lotte-2632-b02",
+      "target_raw": "즉시결제(5일 이내) 또는 Weekly 자동결제 1% 추가 캐시백",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 1,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "결제 방식 조건, 가맹점 무관",
+      "confidence": "medium",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "LOCA 나누기(무이자 분할)"
+  ]
+}

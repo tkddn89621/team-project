@@ -8,24 +8,15 @@ import os
 import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
+from . import catalog
 
 URL = "https://dapi.kakao.com/v2/local/search/category.json"
-# 카카오 카테고리 그룹: 카페, 음식점, 편의점, 대형마트, 문화시설(영화관)
-CATEGORY_CODES = ["CE7", "FD6", "CS2", "MT1", "CT1"]
+# 카카오 카테고리 그룹: 카페, 음식점, 편의점, 대형마트, 문화시설(영화관), 주유소·충전소, 병원, 약국
+CATEGORY_CODES = ["CE7", "FD6", "CS2", "MT1", "CT1", "OL7", "HP8", "PM9"]
 
 
 def enabled() -> bool:
     return bool(os.getenv("KAKAO_REST_API_KEY"))
-
-
-def to_category(category_name: str):
-    """카카오 업종명('음식점 > 카페 > 커피전문점 > 스타벅스') → 우리 업종. 혜택과 관계없는 업종이면 None"""
-    parts = [p.strip() for p in category_name.split(">")]
-    for kakao, ours in [("카페", "카페"), ("패스트푸드", "패스트푸드"), ("편의점", "편의점"),
-                        ("대형마트", "마트"), ("영화관", "영화")]:
-        if kakao in parts:
-            return ours
-    return "음식점" if parts and parts[0] == "음식점" else None
 
 
 def _search(code: str, lat: float, lng: float, radius: int, key: str) -> list:
@@ -41,7 +32,7 @@ def _search(code: str, lat: float, lng: float, radius: int, key: str) -> list:
 
 
 def nearby(lat: float, lng: float, radius: int) -> list:
-    """반경 안 매장 [{id, name, category, distance_m, lat, lng}] 거리순. 키가 없거나 실패하면 []"""
+    """반경 안 매장 [{id, name, code(업종코드), category(업종 이름), distance_m, lat, lng}] 거리순. 키가 없거나 실패하면 []"""
     key = os.getenv("KAKAO_REST_API_KEY")
     if not key:
         return []
@@ -50,9 +41,9 @@ def nearby(lat: float, lng: float, radius: int) -> list:
 
     places = {}
     for d in docs:
-        cat = to_category(d.get("category_name", ""))
-        if cat and d["id"] not in places:
-            places[d["id"]] = {"id": d["id"], "name": d["place_name"], "category": cat,
+        code = catalog.kakao_code(d.get("category_name", ""), d.get("place_name", ""), d.get("category_group_code", ""))
+        if code and d["id"] not in places:   # 카드 혜택 업종으로 연결 안 되는 곳(관광지 등)은 뺌
+            places[d["id"]] = {"id": d["id"], "name": d["place_name"], "code": code, "category": catalog.code_name(code),
                                "distance_m": int(d.get("distance") or 0),
                                "lat": float(d["y"]), "lng": float(d["x"])}
     return sorted(places.values(), key=lambda p: p["distance_m"])

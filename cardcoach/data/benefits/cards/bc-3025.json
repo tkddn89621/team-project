@@ -1,0 +1,85 @@
+{
+  "card_id": "bc-3025",
+  "issuer": "BC카드",
+  "name": "BC 바로 케이뱅크 히든카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 25000,
+    "overseas": 25000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/3025",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": 10000
+    },
+    {
+      "min_prev_spend": 1000000,
+      "monthly_limit": 30000
+    },
+    {
+      "min_prev_spend": 1500000,
+      "monthly_limit": 40000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "bc-3025-b01",
+      "target_raw": "온라인 업종 간편결제(네이버페이, 카카오페이, 쿠페이) 6% (1만원 이상, 건당 3천원)",
+      "target_kind": "channel",
+      "brands": [
+        "네이버페이",
+        "카카오페이",
+        "쿠페이"
+      ],
+      "rate": 6,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 3000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 400000
+    },
+    {
+      "benefit_id": "bc-3025-b02",
+      "target_raw": "해외 가맹점 및 해외 직접 구매 2%",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "한도 없음, 월 한도에 미포함",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 0
+    }
+  ],
+  "other_services_raw": [
+    "무이자할부",
+    "Mastercard Platinum"
+  ]
+}

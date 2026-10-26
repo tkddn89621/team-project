@@ -57,11 +57,20 @@ export async function getRecommendations(brandId, amount, mydata) {
   return r.json();
 }
 
+/* 고른 카드로 결제했다고 반영 → 실적·사용 한도가 바뀐 카드 상태를 돌려줌 (추천과 같은 시각 기준) */
 export async function postSelection(body) {
+  const demoHour = import.meta.env.VITE_DEMO_HOUR;
   const r = await fetch(`${API}/selections`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ ...body, hour: demoHour ? Number(demoHour) : null }),
   });
+  if (!r.ok) throw new Error("결제 반영 실패");
+  return r.json();
+}
+
+/* 시연 데이터 처음으로 (실적·한도·결제 기록 초기화) */
+export async function resetDemo() {
+  const r = await fetch(`${API}/demo/reset`, { method: "POST" });
   return r.json();
 }

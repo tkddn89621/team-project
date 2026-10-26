@@ -1,0 +1,66 @@
+{
+  "card_id": "woori-2848",
+  "issuer": "우리카드",
+  "name": "카드의정석2",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 22000,
+    "overseas": 22000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2848",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": 36000
+    }
+  ],
+  "spend_exclusions_raw": "무이자할부, 정부지원금, 아파트관리비, 공공임대료, 대학등록금, 국세·지방세·관세·공공요금, 상품권·기프트카드·선불카드 구매·충전, 교통카드 충전, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소",
+  "benefits": [
+    {
+      "benefit_id": "woori-2848-b01",
+      "target_raw": "국내외 가맹점 1.2% 청구할인",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 1.2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 36000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "월 이용금액 300만원까지",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2848-b02",
+      "target_raw": "분기 이용실적 300/600/900만원 이상 시 5천/1만/1.5만원 청구할인",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": 5000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "분기 내 매월 10만원 이상 이용 조건, 결제 시점 혜택 아님",
+      "confidence": "medium",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": []
+}

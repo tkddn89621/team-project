@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { API, recognize, getBrands, getCards, getRecommendations, postSelection, getPosition } from "./api.js";
+import { API, recognize, getBrands, getCards, getRecommendations, postSelection, getPosition, resetDemo } from "./api.js";
 
 const won = (n) => (n ?? 0).toLocaleString("ko-KR") + "원";
 
@@ -38,8 +38,21 @@ const CardIcon = () => (
   </svg>
 );
 
-/* 브랜드 로고. backend/logos/ 에 파일이 있으면 로고, 없거나 못 불러오면 이니셜 배지 */
-function BrandMark({ name, logo, size = 44 }) {
+/* 업종코드(data/benefits/taxonomy.json) → 이모지. 로고가 없는 가게는 업종 이모지로 보여줌 */
+const INDUSTRY_EMOJI = {
+  "FD-REST": "🍚", "FD-FAST": "🍔", "FD-FAMILY": "🍽️", "FD-BAKERY": "🥐", "FD-SNACK": "🍢", "FD-CAFE": "☕", "FD-BAR": "🍺",
+  "RT-CVS": "🏪", "RT-MART": "🛒", "RT-WAREHOUSE": "📦", "RT-SSM": "🧺", "RT-DEPT": "🏬", "RT-OUTLET": "🛍️",
+  "RT-DUTYFREE": "🛂", "RT-HB": "💄", "RT-LIVING": "🧴", "RT-BOOK": "📚", "RT-FASHION": "👕", "RT-OPTICAL": "👓",
+  "RT-LIQUOR": "🍷", "RT-PET": "🐾", "RT-MARKET": "🥬", "RT-PX": "🎖️",
+  "HL-HOSP": "🏥", "HL-PHARM": "💊", "HL-VET": "🐶",
+  "LS-CINEMA": "🎬", "LS-THEME": "🎢", "LS-SPORTS": "🏋️", "LS-GOLF": "⛳", "LS-PCROOM": "🖥️", "LS-KARAOKE": "🎤", "LS-TICKET": "🎟️",
+  "SV-HAIR": "💇", "SV-LAUNDRY": "👔", "SV-EDU": "📝", "SV-STUDY": "📖", "SV-EXAM": "✏️",
+  "TR-FUEL": "⛽", "TR-LPG": "🔥", "TR-EV": "🔌", "TR-PARK": "🅿️", "TR-CARCARE": "🧽", "TR-CARSHARE": "🚗", "TR-TAXI": "🚕",
+  "TV-HOTEL": "🏨", "TV-AGENCY": "🧳", "TV-AIR": "✈️",
+};
+
+/* 브랜드 로고. backend/logos/ 파일이나 공식 사이트 아이콘이 있으면 로고, 없거나 못 불러오면 업종 이모지 */
+function BrandMark({ name, logo, code, size = 44 }) {
   const [broken, setBroken] = useState(false);
   const [wide, setWide] = useState(false); // 가로로 긴 글자 로고(CU·GS25·세븐일레븐)는 가로형 배지로
   if (logo && !broken) {
@@ -56,11 +69,10 @@ function BrandMark({ name, logo, size = 44 }) {
            }} />
     );
   }
-  const palette = ["#2F6BFF", "#FF7A1A", "#00A862", "#8E44AD", "#E53935", "#0097A7"];
-  const c = palette[[...name].reduce((a, ch) => a + ch.charCodeAt(0), 0) % palette.length];
   return (
-    <div className="brandmark" style={{ width: size, height: size, background: c, fontSize: size * 0.4 }}>
-      {name.slice(0, 2)}
+    <div className="brandmark emoji" style={{ width: size, height: size, fontSize: Math.round(size * 0.5) }}
+         role="img" aria-label={name}>
+      {INDUSTRY_EMOJI[code] || "🏷️"}
     </div>
   );
 }
@@ -70,10 +82,10 @@ function CardThumb({ color }) {
 }
 
 /* 이번 달 실적 진행 바. 타사 카드는 마이데이터 미연동이면 알 수 없음 */
-const man = (n) => `${(n / 10000).toLocaleString("ko-KR")}만`;
+const man = (n) => (n == null ? "?" : `${(n / 10000).toLocaleString("ko-KR")}만`); // 한도 정보가 없는 카드 상품은 ?
 
 /* 실적 구간·한도 + 다음 달 코칭. 이번 달 구간은 지난달 실적, 다음 달 구간은 이번 달 실적으로 정해짐 */
-function SpendBar({ card }) {
+function SpendBar({ card, compact = false }) {
   if (!card.target_spend) return <div className="spend unknown">실적 조건 없음</div>;
   if (!card.spend_known) return <div className="spend unknown">지난달·이번 달 실적 확인 불가 · 마이데이터 연동 필요</div>;
   const tiers = card.tiers || [];
@@ -90,6 +102,18 @@ function SpendBar({ card }) {
   else if (t != null && up === t) coach = <b> · {won(card.upgrade_gap)} 더 쓰면 다음 달도 {name(t)} 유지 (한도 {won(card.upgrade_limit)})</b>;
   else if (nx == null) coach = <b> · {won(card.upgrade_gap)} 더 쓰면 다음 달 {name(up)} (한도 {won(card.upgrade_limit)})</b>;
   else coach = <> · {won(card.upgrade_gap)} 더 쓰면 다음 달 {name(up)} (한도 {won(card.upgrade_limit)}로 ↑)</>;
+
+  if (compact) {
+    return (
+      <div className="spend">
+        <div className="bar"><div style={{ width: `${pct}%` }} /></div>
+        <div className="sub">
+          이번 달 실적 {man(card.current_spend)}
+          {card.upgrade_gap ? ` · 다음 달 혜택까지 ${man(card.upgrade_gap)} 남음` : " · 다음 달 혜택 확보"}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="spend">
@@ -116,13 +140,30 @@ function SpendBar({ card }) {
   );
 }
 
-function MydataBanner({ linked, onLink }) {
-  if (linked) return <div className="mydata on">✓ 마이데이터 연동됨 · 다른 카드사 카드와 실적·한도까지 함께 비교 중</div>;
+/* 마이데이터 연동 행 — 홈·추천·내 카드 공통 */
+function MydataRow({ onLink }) {
   return (
-    <div className="mydata">
-      <span>다른 카드사 카드도 있으세요? 마이데이터를 연동하면 <b>가진 카드를 모두 불러와</b> 함께 비교해요</span>
-      <button onClick={onLink}>연동하기</button>
-    </div>
+    <section className="hcard hrow">
+      <div className="grow">
+        <div className="rowtitle">다른 카드사 카드도 비교할까요?</div>
+        <div className="sub">마이데이터로 가진 카드를 모두 불러와요</div>
+      </div>
+      <button className="hbtn accent" onClick={onLink}>연동</button>
+    </section>
+  );
+}
+
+/* 하단 탭바 — 홈·내 카드 공통 */
+function TabBar({ active, onHome, onWallet }) {
+  return (
+    <nav className="tabbar" aria-label="하단 메뉴">
+      <button className={active === "home" ? "on" : ""} aria-current={active === "home" ? "page" : undefined} onClick={onHome}>
+        <HomeIcon />홈
+      </button>
+      <button className={active === "wallet" ? "on" : ""} aria-current={active === "wallet" ? "page" : undefined} onClick={onWallet}>
+        <CardIcon />내 카드
+      </button>
+    </nav>
   );
 }
 
@@ -161,10 +202,33 @@ function addHistory(item) {
   const list = [item, ...loadHistory()].slice(0, 200);
   try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch { /* 저장 못 해도 결제 흐름은 계속 */ }
 }
+function clearHistory() {
+  try { localStorage.removeItem(HISTORY_KEY); } catch { /* 없으면 그만 */ }
+}
+
+/* 다음 달 혜택이 가장 많이 걸린 카드 (실적을 아는 카드 중) — 홈·내 카드의 월말 경고 */
+function mostAtRisk(cards) {
+  return (cards || [])
+    .filter((c) => c.spend_known && c.upgrade_gap > 0 && c.at_stake > 0)
+    .sort((a, b) => b.at_stake - a.at_stake || a.upgrade_gap - b.upgrade_gap)[0];
+}
+
+/* 월말 경고: 제목은 걸린 금액, 보조 글은 카드·남은 실적·남은 일수만 (한눈에 읽히게) */
+function RiskNote({ card }) {
+  return (
+    <>
+      <div className="rowtitle">다음 달 혜택 {won(card.at_stake)}이 걸려 있어요</div>
+      <div className="sub">{card.name} · {won(card.upgrade_gap)} 더 써야 해요 · {card.days_left}일 남음</div>
+    </>
+  );
+}
 
 /* ---------------- ⓪ 홈 (HOME) ---------------- */
 function HomeScreen({ mydata, onLinkMydata, onScan, onWallet, onOpenBrand }) {
   const [history] = useState(loadHistory);
+  const [cards, setCards] = useState(null);
+  useEffect(() => { getCards(mydata).then(setCards).catch(() => setCards([])); }, [mydata]);
+  const risk = mostAtRisk(cards);
   const now = new Date();
   const saved = history
     .filter((h) => { const d = new Date(h.at); return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth(); })
@@ -181,6 +245,7 @@ function HomeScreen({ mydata, onLinkMydata, onScan, onWallet, onOpenBrand }) {
 
   return (
     <div className="screen home">
+      <header className="navbar"><div className="navtitle">카드 코치</div></header>
       <div className="home-body">
         <section className="hcard hero-card">
           <div className="hero-title">계산하기 전에<br />간판부터 찍어보세요</div>
@@ -195,22 +260,23 @@ function HomeScreen({ mydata, onLinkMydata, onScan, onWallet, onOpenBrand }) {
           </div>
         </section>
 
-        {!mydata && (
-          <section className="hcard hrow">
+        {risk && (
+          <button className="hcard hrow riskcard" onClick={onWallet}>
             <div className="grow">
-              <div className="rowtitle">다른 카드사 카드도 비교할까요?</div>
-              <div className="sub">마이데이터로 가진 카드를 모두 불러와요</div>
+              <RiskNote card={risk} />
             </div>
-            <button className="hbtn accent" onClick={onLinkMydata}>연동</button>
-          </section>
+            <ChevronIcon />
+          </button>
         )}
+
+        {!mydata && <MydataRow onLink={onLinkMydata} />}
 
         {recent.length > 0 && (
           <section className="hcard list">
             <div className="rowtitle">최근 확인한 가맹점</div>
             {recent.map((h) => (
               <button key={h.brand_id} className="listrow" onClick={() => onOpenBrand(h)}>
-                <BrandMark name={h.name} logo={h.logo_url} size={40} />
+                <BrandMark name={h.name} logo={h.logo_url} code={h.industry_code} size={40} />
                 <div className="grow">
                   <div className="listname">{h.name}</div>
                   <div className="sub">{[h.card_name, h.benefit ? `${won(h.benefit)} 할인` : null].filter(Boolean).join(" · ")}</div>
@@ -222,10 +288,7 @@ function HomeScreen({ mydata, onLinkMydata, onScan, onWallet, onOpenBrand }) {
         )}
       </div>
 
-      <nav className="tabbar" aria-label="하단 메뉴">
-        <button className="on" aria-current="page"><HomeIcon />홈</button>
-        <button onClick={onWallet}><CardIcon />내 카드</button>
-      </nav>
+      <TabBar active="home" onWallet={onWallet} />
     </div>
   );
 }
@@ -374,10 +437,42 @@ function FindScreen({ onConfirm, onBack }) {
         )}
       </div>
 
-      {phase === "result" && top && (
+      {phase === "result" && top && top.source === "ai_category" && (
+        /* 업종만 알 때 (예: 껌 → 편의점): 하나를 짐작하지 않고 그 업종 매장 중에서 고르게 함 */
         <div className="sheet">
           <div className="row">
-            <BrandMark name={top.name} logo={top.logo_url} />
+            <BrandMark name={top.category} code={top.industry_code} />
+            <div className="grow">
+              <div className="title">{top.category}에서 찍으셨나요?</div>
+              <div className="sub">
+                AI 판단: {top.ai_reason}
+                {top.none_nearby ? ` · 근처 50m에는 ${top.category} 매장이 없어요. 어느 매장인지 골라 주세요` : " · 어느 매장인지 골라 주세요"}
+              </div>
+            </div>
+          </div>
+          {/* 대부분은 여기서 매장을 고름 → 크게. 다시 찍기·검색은 가끔 → 작게 */}
+          <div className="tiles choices">
+            {rec.candidates.map((c) => (
+              <button key={c.brand_id} className="tile big" onClick={() => onConfirm(c, rec.recognition_id)}>
+                <BrandMark name={c.name} logo={c.logo_url} code={c.industry_code} size={32} />
+                <span className="grow">
+                  <span className="tilename">{c.name}</span>
+                  {c.distance_m != null && <span className="tilesub">근처 {c.distance_m}m</span>}
+                </span>
+              </button>
+            ))}
+          </div>
+          <div className="textlinks">
+            <button onClick={retake}>다시 찍기</button>
+            <button onClick={openPicker}>다른 가게 검색</button>
+          </div>
+        </div>
+      )}
+
+      {phase === "result" && top && top.source !== "ai_category" && (
+        <div className="sheet">
+          <div className="row">
+            <BrandMark name={top.name} logo={top.logo_url} code={top.industry_code} />
             <div className="grow">
               {top.source === "ai" ? (
                 <>
@@ -455,11 +550,11 @@ function FindScreen({ onConfirm, onBack }) {
             <div className="title">가맹점 검색</div>
             <input className="search" autoFocus placeholder="매장 이름 또는 업종 (예: 오로르, 카페)"
                    value={query} onChange={(e) => setQuery(e.target.value)} />
-            <div className="grid">
+            <div className="tiles">
               {shown.map((b) => (
-                <button key={b.brand_id} className="gridcell" onClick={() => { setPicker(false); onConfirm(b, rec?.recognition_id ?? null); }}>
-                  <BrandMark name={b.name} logo={b.logo_url} size={40} />
-                  <span>{b.name}</span>
+                <button key={b.brand_id} className="tile" onClick={() => { setPicker(false); onConfirm(b, rec?.recognition_id ?? null); }}>
+                  <BrandMark name={b.name} logo={b.logo_url} code={b.industry_code} size={32} />
+                  <span className="tilename">{b.name}</span>
                 </button>
               ))}
             </div>
@@ -478,6 +573,7 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
   const [selected, setSelected] = useState(null);
   const [amount, setAmount] = useState("");
   const [toast, setToast] = useState("");
+  const [paid, setPaid] = useState(null); // 결제 반영 결과
 
   useEffect(() => {
     const amt = amount ? Number(amount) : undefined;
@@ -487,78 +583,120 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
     });
   }, [brand.brand_id, amount, mydata]);
 
-  if (!data) return <div className="screen center"><div className="spinner dark" /></div>;
+  if (!data) return <div className="screen page-bg center"><div className="spinner dark" /></div>;
 
   const list = data.cards.filter((c) => (tab === "woori" ? c.is_woori : true));
   const wooriCount = data.cards.filter((c) => c.is_woori).length;
 
-  async function choose() {
-    await postSelection({ recognition_id: recognitionId, brand_id: brand.brand_id, card_id: selected, expected_amount: amount ? Number(amount) : null });
-    const card = data.cards.find((c) => c.card_id === selected);
+  const chosen = data.cards.find((c) => c.card_id === selected);
+
+  /* 앱이 결제하는 건 아님: 고른 카드로 결제했다고 반영 → 실적·사용 한도가 바로 바뀜 (우리카드 승인 / 타사는 마이데이터) */
+  async function choose(method) {
+    let r;
+    try {
+      r = await postSelection({ recognition_id: recognitionId, brand_id: brand.brand_id, card_id: selected,
+                                expected_amount: amount ? Number(amount) : null, mydata, method });
+    } catch {
+      setToast("반영하지 못했어요. 다시 시도해 주세요");
+      setTimeout(() => setToast(""), 1500);
+      return;
+    }
     addHistory({
       brand_id: brand.brand_id,
       name: data.brand.name,
       logo_url: data.brand.logo_url,
       category: data.brand.category,
-      card_name: card?.name,
-      benefit: card?.expected_benefit || 0,
+      industry_code: data.brand.industry_code,
+      card_name: r.card.name,
+      benefit: r.discount,
       at: Date.now(),
     });
-    setToast("선택이 기록됐어요");
-    setTimeout(() => { setToast(""); onDone(); }, 1200);
+    setPaid(r);
   }
 
   return (
-    <div className="screen rec">
-      <header className="topbar"><button className="iconbtn" onClick={onBack} aria-label="뒤로"><BackIcon /></button></header>
+    <div className="screen page-bg rec">
+      <header className="navbar">
+        <button className="iconbtn" onClick={onBack} aria-label="뒤로"><BackIcon /></button>
+        <div className="navtitle">카드 추천</div>
+      </header>
 
-      <div className="hero row">
-        <BrandMark name={data.brand.name} logo={data.brand.logo_url} size={52} />
-        <div className="grow">
-          <div className="headline">{data.message}</div>
-          <div className="sub">{data.brand.category} · {data.hour}시 결제 기준</div>
-        </div>
-      </div>
+      <div className="page">
+        <section className="hcard hero-card">
+          <div className="row">
+            <BrandMark name={data.brand.name} logo={data.brand.logo_url} code={data.brand.industry_code} size={48} />
+            <div className="grow">
+              <div className="rowtitle">{data.brand.name}</div>
+              <div className="sub">{data.brand.category} · {data.hour}시 결제 기준</div>
+            </div>
+          </div>
+          <div className="hero-title rec-title">{data.message}</div>
+          <label className="field">
+            <span className="field-label">예상 결제금액</span>
+            <span className="field-box">
+              <input inputMode="numeric" placeholder="10,000" value={amount ? Number(amount).toLocaleString("ko-KR") : ""}
+                     onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))} />
+              <span>원</span>
+            </span>
+          </label>
+        </section>
 
-      <div className="amountrow">
-        <label>예상 결제금액</label>
-        <input inputMode="numeric" placeholder="미입력 시 10,000원 기준" value={amount}
-               onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))} />
-      </div>
+        {!mydata && <MydataRow onLink={onLinkMydata} />}
 
-      <div className="pad"><MydataBanner linked={mydata} onLink={onLinkMydata} /></div>
+        {data.coach && (
+          <section className="hcard hrow coachcard">
+            <div className="grow">
+              <div className="rowtitle">다음 달 혜택 지키기</div>
+              <div className="sub"><b>{data.coach.name}</b> · {data.coach.message}</div>
+            </div>
+            <button className={`hbtn ${selected === data.coach.card_id ? "" : "accent"}`}
+                    onClick={() => setSelected(data.coach.card_id)}>
+              {selected === data.coach.card_id ? "선택됨" : "이 카드로"}
+            </button>
+          </section>
+        )}
 
-      <div className="tabs">
-        <button className={tab === "all" ? "on" : ""} onClick={() => setTab("all")}>전체 ({data.cards.length})</button>
-        <button className={tab === "woori" ? "on" : ""} onClick={() => setTab("woori")}>우리카드 ({wooriCount})</button>
-        <span className="tab-static">추천 순</span>
-      </div>
+        <section className="hcard list">
+          <div className="list-head">
+            <div>
+              <div className="rowtitle">내 카드 추천 순</div>
+              {mydata && <div className="sub">마이데이터 연동 · 다른 카드사 카드까지 비교 중</div>}
+            </div>
+            <div className="seg">
+              <button className={tab === "all" ? "on" : ""} onClick={() => setTab("all")}>전체 {data.cards.length}</button>
+              <button className={tab === "woori" ? "on" : ""} onClick={() => setTab("woori")}>우리카드 {wooriCount}</button>
+            </div>
+          </div>
 
-      <div className="cards">
-        {list.map((c) => {
-          const best = c.card_id === data.best_card_id;
-          const usable = c.expected_benefit > 0;
-          return (
-            <button key={c.card_id} className={`cardrow ${best ? "best" : ""} ${!usable ? "none" : ""}`}
-                    onClick={() => usable && setSelected(c.card_id)}>
-              {best && (
-                <div className="bestline">
-                  <span className="badge">가장 큰 혜택</span>
-                  {data.best_reason && <span className="reason">{data.best_reason}</span>}
-                </div>
-              )}
-              <div className="row">
-                <CardThumb color={c.color} />
-                <div className="grow">
-                  <div className="cardname">
-                    {c.name} {c.is_woori && <span className="pill">우리</span>}
+          {list.map((c) => {
+            const best = c.card_id === data.best_card_id;
+            const usable = c.expected_benefit > 0;
+            const on = selected === c.card_id;
+            return (
+              <button key={c.card_id} className={`cardopt ${on ? "on" : ""} ${!usable ? "none" : ""}`}
+                      onClick={() => usable && setSelected(c.card_id)}>
+                {best && (
+                  <div className="bestline">
+                    <span className="badge">가장 큰 혜택</span>
+                    {data.best_reason && <span className="reason">{data.best_reason}</span>}
                   </div>
-                  <div className={`rate ${best ? "accent" : ""}`}>{c.rate_label}</div>
+                )}
+                <div className="row top">
+                  <CardThumb color={c.color} />
+                  <div className="grow">
+                    <div className="cardname">{c.name} {c.is_woori && <span className="pill">우리</span>}</div>
+                    <div className={`rate ${best ? "accent" : ""}`}>{c.rate_label}</div>
+                  </div>
+                  <div className="optright">
+                    {usable && <div className="save">-{won(c.expected_benefit)}</div>}
+                  </div>
+                </div>
+                <div className="optbody">
                   {c.blocked_reason && c.benefit_label && <div className="sub">원래 혜택: {c.benefit_label}</div>}
-                  {c.benefit_note && <div className="sub">{c.benefit_note}</div>}
+                  {c.benefit_note && <div className="sub clamp1">{c.benefit_note}</div>}
                   {usable && (
                     <div className="sub">
-                      결제 예상 <b>{won(c.final_payment)}</b> (할인 {won(c.expected_benefit)})
+                      결제 예상 <b>{won(c.final_payment)}</b>
                       {c.limited_by_monthly && " · 월 한도 남은 만큼만"}
                     </div>
                   )}
@@ -568,19 +706,53 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
                       {c.limit_unlimited ? "할인 한도 없음" : <>이번 달 남은 한도 {won(c.monthly_remaining)}{!c.spend_known && "(추정)"}</>}
                     </div>
                   )}
-                  <SpendBar card={c} />
+                  <SpendBar card={c} compact />
                 </div>
-                {usable && <div className={`radio ${selected === c.card_id ? "on" : ""}`} />}
-              </div>
-            </button>
-          );
-        })}
+              </button>
+            );
+          })}
+        </section>
       </div>
 
+      {/* 우리페이(타사 카드도 오픈페이로 등록해 결제)가 기본, 계산대 실물 카드는 보조 */}
       <div className="cta">
-        <button className="btn primary big" disabled={!selected} onClick={choose}>이 카드로 결제할게요</button>
+        {chosen && !chosen.is_woori && (
+          <div className="cta-note">{chosen.name}를 우리페이에 등록해 결제해요 (오픈페이)</div>
+        )}
+        <div className="btnrow cta-row">
+          <button className="btn ghost" disabled={!selected} onClick={() => choose("card")}>실물 카드로</button>
+          <button className="btn primary" disabled={!selected} onClick={() => choose("pay")}>우리페이로 결제하기</button>
+        </div>
       </div>
       {toast && <div className="toast">{toast}</div>}
+      {paid && (
+        <div className="modal">
+          <div className="modal-body">
+            <div className="row">
+              <BrandMark name={data.brand.name} logo={data.brand.logo_url} code={data.brand.industry_code} size={44} />
+              <div className="grow">
+                <div className="sub">{data.brand.name} · {paid.card.name}</div>
+                <div className="paid-amount">{paid.discount > 0 ? `${won(paid.discount)} 아꼈어요` : "결제가 반영됐어요"}</div>
+              </div>
+            </div>
+            <div className="kv">
+              <div><span>결제 금액</span><b>{won(paid.amount)}</b></div>
+              <div><span>할인</span><b className="accent">-{won(paid.discount)}</b></div>
+              <div><span>실제 낸 돈</span><b>{won(paid.paid)}</b></div>
+              <div><span>이번 달 실적</span><b>{won(paid.before.current_spend)} → {won(paid.card.current_spend)}</b></div>
+              <div>
+                <span>다음 달 혜택까지</span>
+                <b>{paid.card.upgrade_gap ? `${won(paid.card.upgrade_gap)} 남음` : "최고 구간 확보"}</b>
+              </div>
+              {!paid.card.limit_unlimited && (
+                <div><span>이번 달 남은 할인 한도</span><b>{won(paid.card.monthly_remaining)}</b></div>
+              )}
+            </div>
+            <div className="sub">{paid.source}</div>
+            <button className="btn primary big modal-cta" onClick={onDone}>확인</button>
+          </div>
+        </div>
+      )}
       {askMydata && !mydata && (
         <MydataModal onLink={() => { onMydataAsked(); onLinkMydata(); }} onClose={onMydataAsked} />
       )}
@@ -589,48 +761,64 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
 }
 
 /* ---------------- ③ 내 카드 · 실적 관리 (WALLET) ---------------- */
-function WalletScreen({ mydata, onLinkMydata, onBack }) {
+function WalletScreen({ mydata, onLinkMydata, onResetMydata, onBack }) {
   const [cards, setCards] = useState(null);
 
-  useEffect(() => { getCards(mydata).then(setCards).catch(() => setCards([])); }, [mydata]);
+  const [reloadKey, setReloadKey] = useState(0);
+  useEffect(() => { getCards(mydata).then(setCards).catch(() => setCards([])); }, [mydata, reloadKey]);
 
-  const urgent = cards?.filter((c) => c.spend_gap > 0).sort((a, b) => b.spend_gap - a.spend_gap)[0];
+  const urgent = mostAtRisk(cards);
+
+  /* 시연을 여러 번 찍을 수 있게: 실적·한도·결제 기록, 홈의 '아낀 돈', 마이데이터 연동까지 처음 상태로 */
+  async function reset() {
+    if (!window.confirm("시연 데이터를 처음 상태로 되돌릴까요? (실적·한도·결제 기록 초기화, 마이데이터 연동 해제)")) return;
+    await resetDemo();
+    clearHistory();
+    onResetMydata();
+    setCards(null);
+    setReloadKey((k) => k + 1);
+  }
 
   return (
-    <div className="screen rec wallet">
-      <header className="topbar row">
-        <button className="iconbtn" onClick={onBack} aria-label="뒤로"><BackIcon /></button>
-        <div className="title">내 카드 · 이번 달 실적</div>
-      </header>
+    <div className="screen page-bg wallet">
+      <header className="navbar"><div className="navtitle">내 카드</div></header>
+      <div className="page">
 
-      <div className="pad">
-        <MydataBanner linked={mydata} onLink={onLinkMydata} />
         {urgent && (
-          <div className="urgent">이번 달 실적이 가장 급한 카드는 <b>{urgent.name}</b> — {won(urgent.spend_gap)} 더 쓰면 다음 달 혜택 유지</div>
+          <section className="hcard hrow riskcard">
+            <div className="grow">
+              <RiskNote card={urgent} />
+            </div>
+          </section>
         )}
-      </div>
 
-      {!cards ? (
-        <div className="screen center"><div className="spinner dark" /></div>
-      ) : (
-        <div className="cards">
-          {cards.map((c) => (
-            <div key={c.card_id} className="cardrow">
+        {!mydata && <MydataRow onLink={onLinkMydata} />}
+
+        {!cards ? (
+          <div className="center pad-y"><div className="spinner dark" /></div>
+        ) : (
+          cards.map((c) => (
+            <section key={c.card_id} className="hcard walletcard">
               <div className="row">
                 <CardThumb color={c.color} />
                 <div className="grow">
                   <div className="cardname">{c.name} {c.is_woori && <span className="pill">우리</span>}</div>
                   <div className="sub mono">{c.masked_number}</div>
-                  <SpendBar card={c} />
-                  {c.eligibility !== "unmet" && <div className="sub">
-                    {c.limit_unlimited ? "월 할인 한도 없음" : <>월 할인 한도 {won(c.monthly_discount_limit)} 중 {won(c.monthly_remaining)} 남음{!c.spend_known && "(추정)"}</>}
-                  </div>}
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+              {c.eligibility !== "unmet" && (
+                <div className="limitline">
+                  <span>이번 달 남은 할인 한도</span>
+                  <b>{c.limit_unlimited ? "한도 없음" : `${won(c.monthly_remaining)}`}</b>
+                </div>
+              )}
+              <SpendBar card={c} />
+            </section>
+          ))
+        )}
+        <button className="resetbtn" onClick={reset}>시연 데이터 처음으로</button>
+      </div>
+      <TabBar active="wallet" onHome={onBack} />
     </div>
   );
 }
@@ -641,6 +829,9 @@ function loadMydata() {
 }
 function saveMydata() {
   try { localStorage.setItem("mydata", "1"); } catch { /* 저장 못 해도 이번 세션은 연동 상태 */ }
+}
+function clearMydata() {
+  try { localStorage.removeItem("mydata"); } catch { /* 없으면 그만 */ }
 }
 
 /* ---------------- App ---------------- */
@@ -655,6 +846,13 @@ export default function App() {
   function linkMydata() {
     saveMydata();
     setMydata(true);
+  }
+
+  /* 시연 초기화: 연동 해제 + 연동 유도 팝업도 다시 뜨게 */
+  function resetMydata() {
+    clearMydata();
+    setMydata(false);
+    setMydataAsked(false);
   }
 
   return (
@@ -675,7 +873,7 @@ export default function App() {
                    onBack={() => setScreen(recBack)} onDone={() => setScreen("home")} />
       )}
       {screen === "wallet" && (
-        <WalletScreen mydata={mydata} onLinkMydata={linkMydata} onBack={() => setScreen("home")} />
+        <WalletScreen mydata={mydata} onLinkMydata={linkMydata} onResetMydata={resetMydata} onBack={() => setScreen("home")} />
       )}
     </div>
   );

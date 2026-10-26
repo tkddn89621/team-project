@@ -1,0 +1,207 @@
+{
+  "card_id": "ibk-2559",
+  "issuer": "IBK기업은행",
+  "name": "K-패스 (신용)",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 2000,
+    "overseas": 4000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2559",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 200000,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "세금·공과금, 상품권, 교통특화 서비스 이용금액, 아파트관리비 등",
+  "benefits": [
+    {
+      "benefit_id": "ibk-2559-b01",
+      "target_raw": "대중교통(버스, 지하철, 유료도로) 1회당 100~300원",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철"
+      ],
+      "rate": null,
+      "fixed_amount": 100,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": 10000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "평일 100/200원, 주말 200/300원(전월 20만/50만원). 1일 3회",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "ibk-2559-b02",
+      "target_raw": "일반교통 철도, 고속버스, 택시 5%",
+      "target_kind": "non_store",
+      "brands": [
+        "KTX",
+        "고속버스",
+        "택시"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": 2,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "택시 앱 결제 제외",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "ibk-2559-b03",
+      "target_raw": "GS칼텍스(LPG 포함) 리터당 40원",
+      "target_kind": "brands",
+      "brands": [
+        "GS칼텍스"
+      ],
+      "rate": null,
+      "fixed_amount": 40,
+      "unit": "원/L",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 4,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "회당 10만원",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "ibk-2559-b04",
+      "target_raw": "SKT, KT, LG U+ 휴대폰요금 자동이체 3%",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 1200,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "ibk-2559-b05",
+      "target_raw": "아웃백, 빕스 10%",
+      "target_kind": "brands",
+      "brands": [
+        "아웃백스테이크하우스",
+        "빕스"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "1회 10만원 한도",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "ibk-2559-b06",
+      "target_raw": "영화 2천원",
+      "target_kind": "category",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": 2000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "연 6회, 대상 영화관 미표기",
+      "confidence": "medium",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "ibk-2559-b07",
+      "target_raw": "놀이공원 자유이용권 50%(서울랜드, 한국민속촌, 롯데월드, 에버랜드, 이월드 등)",
+      "target_kind": "brands",
+      "brands": [
+        "서울랜드",
+        "한국민속촌",
+        "롯데월드",
+        "에버랜드",
+        "이월드",
+        "캐리비안베이"
+      ],
+      "rate": 50,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "연 4회",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "무이자 2~3개월",
+    "환전 우대 50%",
+    "대중교통 상해보험"
+  ]
+}

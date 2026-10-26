@@ -1,0 +1,370 @@
+{
+  "card_id": "shinhan-2759",
+  "issuer": "신한카드",
+  "name": "신한카드 처음(ANNIVERSE)",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 15000,
+    "overseas": 18000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2759",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 18000
+    },
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": 36000
+    },
+    {
+      "min_prev_spend": 1000000,
+      "monthly_limit": 70000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드 구매·충전, 국세·지방세, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등(상품안내장 기준)",
+  "benefits": [
+    {
+      "benefit_id": "shinhan-2759-b01",
+      "target_raw": "[오늘도] 음식점: 한식, 중식, 일식, 양식, 일반대중음식, 패스트푸드, 뷔페 업종",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 500,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "오늘도 5%",
+      "excludes_raw": null,
+      "notes": "1회 1만원까지, 일 1천P",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-2759-b02",
+      "target_raw": "[오늘도] 카페: 스타벅스, 블루보틀, 엔제리너스, 이디야, 폴바셋, 투썸플레이스, 빽다방, 커피전문점 업종",
+      "target_kind": "category",
+      "brands": [
+        "스타벅스",
+        "블루보틀",
+        "엔제리너스",
+        "이디야커피",
+        "폴바셋",
+        "투썸플레이스",
+        "빽다방"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 500,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "오늘도 5%",
+      "excludes_raw": null,
+      "notes": "브랜드 나열 + 커피전문점 업종 전체. 스타벅스·투썸은 스마트오더 포함",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-2759-b03",
+      "target_raw": "[오늘도] 편의점: CU, GS25, 이마트24, 세븐일레븐",
+      "target_kind": "brands",
+      "brands": [
+        "CU",
+        "GS25",
+        "이마트24",
+        "세븐일레븐"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 500,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "오늘도 5%",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-2759-b04",
+      "target_raw": "[오늘도] 온라인쇼핑: 쿠팡, 컬리",
+      "target_kind": "brands",
+      "brands": [
+        "쿠팡",
+        "컬리"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 500,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "오늘도 5%",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-2759-b05",
+      "target_raw": "[일상 속] 생활: 올리브영(온·오프라인), 다이소(오프라인), 오늘의집(온라인)",
+      "target_kind": "brands",
+      "brands": [
+        "올리브영",
+        "다이소",
+        "오늘의집"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 2500,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "일상 속 5%",
+      "excludes_raw": null,
+      "notes": "1회 5만원까지",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-2759-b06",
+      "target_raw": "[일상 속] 여행: 택시, KTX",
+      "target_kind": "non_store",
+      "brands": [
+        "택시",
+        "KTX"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 2500,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "일상 속 5%",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-2759-b07",
+      "target_raw": "[일상 속] 여행: 해외일시불(해외이용·직구포함)",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 2500,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": "일상 속 5%",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-2759-b08",
+      "target_raw": "[일상 속] 패션: 무신사, 지그재그, W컨셉, 29CM, 에이블리",
+      "target_kind": "brands",
+      "brands": [
+        "무신사",
+        "지그재그",
+        "W CONCEPT",
+        "29CM",
+        "에이블리"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 2500,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "일상 속 5%",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-2759-b09",
+      "target_raw": "[정기결제] 통신 SKT, KT, LGU+ 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "정기결제",
+      "excludes_raw": null,
+      "notes": "이용금액 3만원까지",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-2759-b10",
+      "target_raw": "[정기결제] OTT 넷플릭스, 유튜브 프리미엄, 티빙, 디즈니+, SPOTV NOW 15%",
+      "target_kind": "non_store",
+      "brands": [
+        "넷플릭스",
+        "유튜브 프리미엄",
+        "티빙",
+        "디즈니플러스",
+        "SPOTV NOW"
+      ],
+      "rate": 15,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "정기결제",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-2759-b11",
+      "target_raw": "[정기결제] 멤버십 쿠팡 와우, 네이버플러스 20%",
+      "target_kind": "non_store",
+      "brands": [
+        "쿠팡 와우 멤버십",
+        "네이버플러스 멤버십"
+      ],
+      "rate": 20,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "정기결제",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-2759-b12",
+      "target_raw": "[소비관리] 계획소비 목표 ±5만원 달성 시 최대 5천P, 즉시결제 0.3%",
+      "target_kind": "non_store",
+      "brands": [],
+      "rate": 0.3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "소비관리 보너스",
+      "excludes_raw": null,
+      "notes": "결제 시점 혜택 아님",
+      "confidence": "medium",
+      "reward_type": "point",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [],
+  "limit_groups": [
+    {
+      "group": "오늘도 5%",
+      "limits": [
+        5000,
+        10000,
+        20000
+      ]
+    },
+    {
+      "group": "일상 속 5%",
+      "limits": [
+        5000,
+        10000,
+        20000
+      ]
+    },
+    {
+      "group": "정기결제",
+      "limits": [
+        5000,
+        10000,
+        20000
+      ]
+    },
+    {
+      "group": "소비관리 보너스",
+      "limits": [
+        3000,
+        6000,
+        10000
+      ]
+    }
+  ]
+}

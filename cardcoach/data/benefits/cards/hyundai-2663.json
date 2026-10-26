@@ -1,0 +1,118 @@
+{
+  "card_id": "hyundai-2663",
+  "issuer": "현대카드",
+  "name": "American Express Gold Card Edition2",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": null,
+    "overseas": 300000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2663",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 세금·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "hyundai-2663-b01",
+      "target_raw": "국내외 가맹점 1,000원당 1 MR",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "한도 없음",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2663-b02",
+      "target_raw": "해외 가맹점 1,000원당 3 MR",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "영역별 월 4,500MR",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2663-b03",
+      "target_raw": "국내 특급호텔, 여행·항공사, 골프·골프연습장, 면세점 1,000원당 3 MR",
+      "target_kind": "category",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "영역별 월 4,500MR, 국내 원화 결제",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2663-b04",
+      "target_raw": "Be My Guest: 호텔 레스토랑·아웃백 6만원 이상 3만원, 호텔 델리 4만원 이상 2만원",
+      "target_kind": "brands",
+      "brands": [
+        "아웃백스테이크하우스"
+      ],
+      "rate": null,
+      "fixed_amount": 30000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": 60000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "연 3회, 실물 카드 제시",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "연 25만원 바우처",
+    "공항 라운지·리무진",
+    "무료 발레파킹",
+    "The Hotel Collection",
+    "메탈 플레이트"
+  ]
+}

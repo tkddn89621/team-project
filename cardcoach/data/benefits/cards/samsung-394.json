@@ -1,0 +1,143 @@
+{
+  "card_id": "samsung-394",
+  "issuer": "삼성카드",
+  "name": "삼성체크카드 & CASHBACK",
+  "type": "check",
+  "annual_fee": {
+    "domestic": 0,
+    "overseas": null
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/394",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 세금·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "samsung-394-b01",
+      "target_raw": "일반가맹점 0.2% 캐시백(연간 300만원 이상 0.4%)",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 0.2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "samsung-394-b02",
+      "target_raw": "음식점(한식, 양식, 일식, 중식, 뷔페, 패밀리레스토랑, 간이음식점, 패스트푸드 등 모든 음식점) 0.3%(0.6%)",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 0.3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "samsung-394-b03",
+      "target_raw": "주유: 전국 주유소 및 LPG충전소 0.3%(0.6%)",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 0.3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "samsung-394-b04",
+      "target_raw": "할인점: 이마트(에브리데이, 트레이더스 포함), 홈플러스, 롯데마트, 코스트코 0.3%(0.6%)",
+      "target_kind": "brands",
+      "brands": [
+        "이마트",
+        "이마트 에브리데이",
+        "트레이더스",
+        "홈플러스",
+        "롯데마트",
+        "코스트코"
+      ],
+      "rate": 0.3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "samsung-394-b05",
+      "target_raw": "CGV 온라인예매 3,000원 캐시백 / 현장 3,000원 할인",
+      "target_kind": "brands",
+      "brands": [
+        "CGV"
+      ],
+      "rate": null,
+      "fixed_amount": 3000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "일 1회, 연 3회. 직전 3개월 월평균 30만원 이상",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 300000
+    }
+  ],
+  "other_services_raw": [
+    "놀이공원 자유이용권 50%·워터파크 30%(연 5회)"
+  ]
+}

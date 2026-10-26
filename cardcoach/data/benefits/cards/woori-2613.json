@@ -1,0 +1,105 @@
+{
+  "card_id": "woori-2613",
+  "issuer": "우리카드",
+  "name": "ALL 우리카드 Infinite",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 500000,
+    "overseas": 500000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2613",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "무이자할부, 정부지원금, 아파트관리비, 공공임대료, 대학등록금, 국세·지방세·관세·공공요금, 상품권·기프트카드·선불카드 구매·충전, 교통카드 충전, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소",
+  "benefits": [
+    {
+      "benefit_id": "woori-2613-b01",
+      "target_raw": "국내외 아코르호텔 숙박 및 식음 업장 3,000원당 5 ALL 포인트",
+      "target_kind": "brands",
+      "brands": [
+        "아코르호텔"
+      ],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "특별적립(월 4,000P)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 500000
+    },
+    {
+      "benefit_id": "woori-2613-b02",
+      "target_raw": "해외 가맹점 3,000원당 3 ALL 포인트",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": "특별적립(월 4,000P)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 500000
+    },
+    {
+      "benefit_id": "woori-2613-b03",
+      "target_raw": "상기 외 국내가맹점 3,000원당 1.3 ALL 포인트",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 0
+    }
+  ],
+  "other_services_raw": [
+    "14,000 ALL 포인트 기프트",
+    "아코르 플러스 멤버십 자동가입",
+    "ALL GOLD 등급",
+    "5,000 포인트 보너스(연 2천만원 이상)",
+    "공항라운지",
+    "KAL 리무진",
+    "골프",
+    "여행자보험",
+    "아코르 호텔 프리미엄",
+    "메탈 플레이트"
+  ]
+}

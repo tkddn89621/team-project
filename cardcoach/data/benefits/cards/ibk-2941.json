@@ -1,0 +1,439 @@
+{
+  "card_id": "ibk-2941",
+  "issuer": "IBK기업은행",
+  "name": "IBK나라사랑카드",
+  "type": "check",
+  "annual_fee": {
+    "domestic": 0,
+    "overseas": 0
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2941",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 80000,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 200000,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 250000,
+      "monthly_limit": 10000
+    },
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": 25000
+    },
+    {
+      "min_prev_spend": 1000000,
+      "monthly_limit": 45000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "ibk-2941-b01",
+      "target_raw": "[All in One] 대중교통 시내버스/지하철 20%",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철"
+      ],
+      "rate": 20,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "All in One",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 250000
+    },
+    {
+      "benefit_id": "ibk-2941-b02",
+      "target_raw": "[All in One] 편의점 GS25, Emart24, CU 10%",
+      "target_kind": "brands",
+      "brands": [
+        "GS25",
+        "이마트24",
+        "CU"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 10,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "All in One",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 250000
+    },
+    {
+      "benefit_id": "ibk-2941-b03",
+      "target_raw": "[All in One] 택시 카카오T 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "카카오T 택시"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 2,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "All in One",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 250000
+    },
+    {
+      "benefit_id": "ibk-2941-b04",
+      "target_raw": "[All in One] 병원·약국 10%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 2,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "All in One",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 250000
+    },
+    {
+      "benefit_id": "ibk-2941-b05",
+      "target_raw": "[All in One] 카페 스타벅스, 메가MGC커피 10%",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "메가MGC커피"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 2,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "All in One",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 250000
+    },
+    {
+      "benefit_id": "ibk-2941-b06",
+      "target_raw": "[All in One] 쇼핑·배달 쿠팡, 무신사, 네이버플러스스토어, G마켓, 배달의 민족 10%",
+      "target_kind": "brands",
+      "brands": [
+        "쿠팡",
+        "무신사",
+        "네이버플러스 스토어",
+        "G마켓",
+        "배달의민족"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 2,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "All in One",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 250000
+    },
+    {
+      "benefit_id": "ibk-2941-b07",
+      "target_raw": "[All in One] 구독·게임 유튜브 프리미엄, 넷플릭스, 티빙, 넥슨, 네이버웹툰, 라이엇게임즈, 앱스토어, 플레이스토어 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "유튜브 프리미엄",
+        "넷플릭스",
+        "티빙",
+        "넥슨",
+        "네이버웹툰",
+        "라이엇게임즈",
+        "앱스토어",
+        "구글플레이"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 2,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "All in One",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 250000
+    },
+    {
+      "benefit_id": "ibk-2941-b08",
+      "target_raw": "[All in One] 여행·레저 PC방, NOL(야놀자), 쏘카 10%",
+      "target_kind": "category",
+      "brands": [
+        "야놀자",
+        "쏘카"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 2,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "All in One",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 250000
+    },
+    {
+      "benefit_id": "ibk-2941-b09",
+      "target_raw": "Npay 결제 10% Npay 포인트 (건당 1천원)",
+      "target_kind": "channel",
+      "brands": [
+        "네이버페이"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 250000
+    },
+    {
+      "benefit_id": "ibk-2941-b10",
+      "target_raw": "군마트(PX) 10~30% 할인",
+      "target_kind": "category",
+      "brands": [
+        "PX"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "3만 미만 15%, 3만 이상 10%, 7만 20%, 10만 30%",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 0
+    },
+    {
+      "benefit_id": "ibk-2941-b11",
+      "target_raw": "[나라] GS25 주요품목(간편식, 음료, 아이스크림) 10% 현장할인",
+      "target_kind": "brands",
+      "brands": [
+        "GS25"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "상시, 일 1회",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 0
+    },
+    {
+      "benefit_id": "ibk-2941-b12",
+      "target_raw": "[나라] KTX, SRT, 새마을호, 무궁화호, 고속버스 5%",
+      "target_kind": "non_store",
+      "brands": [
+        "KTX",
+        "SRT",
+        "고속버스"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 2000,
+      "monthly_cap": null,
+      "monthly_count": 2,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 80000
+    },
+    {
+      "benefit_id": "ibk-2941-b13",
+      "target_raw": "[나라] CGV 최대 3천원 현장할인",
+      "target_kind": "brands",
+      "brands": [
+        "CGV"
+      ],
+      "rate": null,
+      "fixed_amount": 1500,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "1인 1,500원, 동반 포함 3천원",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 80000
+    },
+    {
+      "benefit_id": "ibk-2941-b14",
+      "target_raw": "[사랑] 아웃백스테이크하우스 20% 현장할인",
+      "target_kind": "brands",
+      "brands": [
+        "아웃백스테이크하우스"
+      ],
+      "rate": 20,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 40000,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 200000
+    },
+    {
+      "benefit_id": "ibk-2941-b15",
+      "target_raw": "[사랑] 이동통신요금 자동납부 5%",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 2000,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 200000
+    }
+  ],
+  "other_services_raw": [
+    "놀이공원 50%(연 2회)",
+    "토익·교보문고 2천원",
+    "트래블서비스",
+    "멤버십 서비스"
+  ],
+  "limit_groups": [
+    {
+      "group": "All in One",
+      "limits": [
+        null,
+        null,
+        null,
+        10000,
+        25000,
+        45000
+      ]
+    }
+  ],
+  "notes": "군 장병 전용"
+}

@@ -1,0 +1,190 @@
+{
+  "card_id": "hana-2446",
+  "issuer": "하나카드",
+  "name": "원더카드 2.0 FREE",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 12000,
+    "overseas": 12000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2446",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": 50000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "hana-2446-b01",
+      "target_raw": "국내외 가맹점 0.7%",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 0.7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hana-2446-b02",
+      "target_raw": "간편결제 1.2%: 하나페이 모든 결제, 삼성페이·네이버페이·카카오페이·SSG페이·페이코·쿠페이·11pay 온라인",
+      "target_kind": "channel",
+      "brands": [
+        "하나페이",
+        "삼성페이",
+        "네이버페이",
+        "카카오페이",
+        "SSG페이",
+        "페이코",
+        "쿠페이",
+        "11pay"
+      ],
+      "rate": 1.2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hana-2446-b03",
+      "target_raw": "쿠팡 2%",
+      "target_kind": "brands",
+      "brands": [
+        "쿠팡"
+      ],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "쿠팡/마트/베이커리/대중교통(통합 5만원)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hana-2446-b04",
+      "target_raw": "마트 이마트, 트레이더스, 홈플러스, 롯데마트 2%",
+      "target_kind": "brands",
+      "brands": [
+        "이마트",
+        "트레이더스",
+        "홈플러스",
+        "롯데마트"
+      ],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "쿠팡/마트/베이커리/대중교통(통합 5만원)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hana-2446-b05",
+      "target_raw": "베이커리 파리바게트, 뚜레쥬르, 아티제, 파리크라상, 카페노티드, 던킨도너츠 2%",
+      "target_kind": "brands",
+      "brands": [
+        "파리바게뜨",
+        "뚜레쥬르",
+        "아티제",
+        "파리크라상",
+        "카페노티드",
+        "던킨"
+      ],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "쿠팡/마트/베이커리/대중교통(통합 5만원)",
+      "excludes_raw": "대형시설물 입점·임대 매장, 배달앱 결제 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hana-2446-b06",
+      "target_raw": "대중교통 버스, 지하철 3%",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철"
+      ],
+      "rate": 3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "쿠팡/마트/베이커리/대중교통(통합 5만원)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "무이자할부"
+  ],
+  "limit_groups": [
+    {
+      "group": "쿠팡/마트/베이커리/대중교통(통합 5만원)",
+      "limits": [
+        50000
+      ]
+    }
+  ]
+}

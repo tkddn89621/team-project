@@ -1,0 +1,100 @@
+{
+  "card_id": "woori-2552",
+  "issuer": "우리카드",
+  "name": "카드의정석 EVERY CHECK",
+  "type": "check",
+  "annual_fee": {
+    "domestic": 0,
+    "overseas": 0
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2552",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 1000
+    },
+    {
+      "min_prev_spend": 600000,
+      "monthly_limit": 2000
+    },
+    {
+      "min_prev_spend": 900000,
+      "monthly_limit": 3000
+    }
+  ],
+  "spend_exclusions_raw": "무이자할부, 국세·지방세·공공요금, 대학등록금, 상품권·선불카드, 정부지원금, 교통카드 충전 등",
+  "benefits": [
+    {
+      "benefit_id": "woori-2552-b01",
+      "target_raw": "국내외 가맹점 0.2% 적립",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 0.2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "한도 없음",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 0
+    },
+    {
+      "benefit_id": "woori-2552-b02",
+      "target_raw": "전월실적 30/60/90만원 이상 시 1천/2천/3천원 추가 적립",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": 1000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "다음달 20일 적립, 결제 시점 혜택 아님",
+      "confidence": "medium",
+      "reward_type": "point",
+      "min_prev_spend": 300000
+    },
+    {
+      "benefit_id": "woori-2552-b03",
+      "target_raw": "4대 일상영역 중 한 곳 건당 1만원 이상 결제 시 1만원 적립",
+      "target_kind": "category",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": 10000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "통합 월 1회·연 4회. 대상 영역 표가 이미지라 미확인",
+      "confidence": "low",
+      "reward_type": "point",
+      "min_prev_spend": 300000
+    }
+  ],
+  "other_services_raw": []
+}

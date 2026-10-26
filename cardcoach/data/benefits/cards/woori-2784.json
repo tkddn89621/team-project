@@ -1,0 +1,124 @@
+{
+  "card_id": "woori-2784",
+  "issuer": "우리카드",
+  "name": "K-패스 우리카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 15000,
+    "overseas": null
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2784",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": 5000
+    },
+    {
+      "min_prev_spend": 800000,
+      "monthly_limit": 10000
+    }
+  ],
+  "spend_exclusions_raw": "무이자할부, 정부지원금, 아파트관리비, 공공임대료, 대학등록금, 국세·지방세·관세·공공요금, 상품권·기프트카드·선불카드 구매·충전, 교통카드 충전, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소",
+  "benefits": [
+    {
+      "benefit_id": "woori-2784-b01",
+      "target_raw": "국내 가맹점 0.3% 청구할인",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 0.3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "생활·대중교통 할인 적용 건 제외, 월 5천/1만원",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2784-b02",
+      "target_raw": "[생활] 스타벅스, 폴바셋 10% (건당 1만원 이상)",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "폴바셋"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": "상품권·선불카드 충전, 백화점/대형마트/공항 등 입점 매장 제외",
+      "notes": "사이렌오더/크라운오더 포함",
+      "confidence": "medium",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2784-b03",
+      "target_raw": "[생활] CU, GS25 10% (건당 1만원 이상)",
+      "target_kind": "brands",
+      "brands": [
+        "CU",
+        "GS25"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": null,
+      "excludes_raw": "입점 매장 제외",
+      "notes": null,
+      "confidence": "medium",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2784-b04",
+      "target_raw": "[대중교통] 버스, 지하철 후불교통 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": "고속·시외·공항버스, 공항철도 제외",
+      "notes": null,
+      "confidence": "medium",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [],
+  "notes": "생활·대중교통 할인 한도는 표에서 확인 안 됨(기본 할인 한도만 표기)"
+}

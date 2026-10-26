@@ -1,0 +1,274 @@
+{
+  "card_id": "kb-2685",
+  "issuer": "KB국민카드",
+  "name": "WE:SH Travel",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 25000,
+    "overseas": 25000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2685",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 10000
+    },
+    {
+      "min_prev_spend": 700000,
+      "monthly_limit": 20000
+    },
+    {
+      "min_prev_spend": 1200000,
+      "monthly_limit": 30000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드 구매·충전, 국세·지방세, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "kb-2685-b01",
+      "target_raw": "[KB Pay] 온라인 쇼핑 11번가, G마켓, SSG.COM 10%",
+      "target_kind": "brands",
+      "brands": [
+        "11번가",
+        "G마켓",
+        "SSG.COM"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 10000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "일상 영역",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2685-b02",
+      "target_raw": "[KB Pay] 온라인 패션 무신사, W컨셉, 지그재그, 29CM 10%",
+      "target_kind": "brands",
+      "brands": [
+        "무신사",
+        "W CONCEPT",
+        "지그재그",
+        "29CM"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 10000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "일상 영역",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2685-b03",
+      "target_raw": "[KB Pay] 커피 오프라인 매장(커피전문점 업종), 커피 앱(스타벅스 사이렌오더, 커피빈 퍼플오더, 메가커피 메가오더) 10%",
+      "target_kind": "category",
+      "brands": [
+        "스타벅스",
+        "커피빈",
+        "메가MGC커피"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 10000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "일상 영역",
+      "excludes_raw": null,
+      "notes": "KB Pay 결제 시에만",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2685-b04",
+      "target_raw": "[KB Pay] 편의점 GS25, CU 10%",
+      "target_kind": "brands",
+      "brands": [
+        "GS25",
+        "CU"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 10000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "일상 영역",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2685-b05",
+      "target_raw": "[KB Pay] 영화관 롯데시네마, CGV, 메가박스 10%",
+      "target_kind": "brands",
+      "brands": [
+        "롯데시네마",
+        "CGV",
+        "메가박스"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 10000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "일상 영역",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2685-b06",
+      "target_raw": "[KB Pay] 온라인 항공(대한항공, 아시아나)/면세점(롯데, 신라, 신세계, 현대백화점 면세점) 5%",
+      "target_kind": "brands",
+      "brands": [
+        "대한항공",
+        "아시아나항공",
+        "롯데면세점",
+        "신라면세점",
+        "신세계면세점",
+        "현대백화점면세점"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 20000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "연 8만원",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2685-b07",
+      "target_raw": "KB손해보험 다이렉트 여행자보험 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "KB손해보험"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2685-b08",
+      "target_raw": "철도(일반/KTX/SRT), 고속·시외버스 업종 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "KTX",
+        "SRT",
+        "고속버스"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 10000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "연 6만원",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2685-b09",
+      "target_raw": "해외 이용 환율우대 100%(USD)",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "환율우대, 할인율 아님",
+      "confidence": "medium",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "해외 이용 수수료 1.25% 면제",
+    "공항 라운지"
+  ],
+  "limit_groups": [
+    {
+      "group": "일상 영역",
+      "limits": [
+        10000,
+        20000,
+        30000
+      ]
+    }
+  ]
+}

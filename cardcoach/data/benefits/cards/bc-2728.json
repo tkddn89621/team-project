@@ -1,0 +1,244 @@
+{
+  "card_id": "bc-2728",
+  "issuer": "BC카드",
+  "name": "BC 바로 MACAO 카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 12000,
+    "overseas": 12000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2728",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 20000
+    },
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": 30000
+    },
+    {
+      "min_prev_spend": 1000000,
+      "monthly_limit": 50000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "bc-2728-b01",
+      "target_raw": "주유 업종 전체(전기차 포함) 3~10%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "주유",
+      "excludes_raw": null,
+      "notes": "3만 미만 3%, 3만~ 5%, 5만~ 7%, 7만~ 10%",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null,
+      "rate_by_amount": [
+        {
+          "min_amount": 0,
+          "rate": 3
+        },
+        {
+          "min_amount": 30000,
+          "rate": 5
+        },
+        {
+          "min_amount": 50000,
+          "rate": 7
+        },
+        {
+          "min_amount": 70000,
+          "rate": 10
+        }
+      ]
+    },
+    {
+      "benefit_id": "bc-2728-b02",
+      "target_raw": "장보기 온라인: 쿠팡, 네이버페이, 컬리, SSG.COM, 배민B마트 3~10%",
+      "target_kind": "brands",
+      "brands": [
+        "쿠팡",
+        "네이버페이",
+        "컬리",
+        "SSG.COM",
+        "B마트"
+      ],
+      "rate": 3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "장보기",
+      "excludes_raw": null,
+      "notes": "5만 미만 3%, 5만~ 5%, 10만~ 10%",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null,
+      "rate_by_amount": [
+        {
+          "min_amount": 0,
+          "rate": 3
+        },
+        {
+          "min_amount": 50000,
+          "rate": 5
+        },
+        {
+          "min_amount": 100000,
+          "rate": 10
+        }
+      ]
+    },
+    {
+      "benefit_id": "bc-2728-b03",
+      "target_raw": "장보기 대형마트: 이마트, 홈플러스, 롯데마트 3~10%",
+      "target_kind": "brands",
+      "brands": [
+        "이마트",
+        "홈플러스",
+        "롯데마트"
+      ],
+      "rate": 3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "장보기",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null,
+      "rate_by_amount": [
+        {
+          "min_amount": 0,
+          "rate": 3
+        },
+        {
+          "min_amount": 50000,
+          "rate": 5
+        },
+        {
+          "min_amount": 100000,
+          "rate": 10
+        }
+      ]
+    },
+    {
+      "benefit_id": "bc-2728-b04",
+      "target_raw": "장보기 기타 마트: 이마트 에브리데이, 홈플러스 익스프레스, 롯데슈퍼, GS THE FRESH, 트레이더스, 오아시스 매장 3~10%",
+      "target_kind": "brands",
+      "brands": [
+        "이마트 에브리데이",
+        "홈플러스 익스프레스",
+        "롯데슈퍼",
+        "GS더프레시",
+        "트레이더스",
+        "오아시스마켓"
+      ],
+      "rate": 3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "장보기",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null,
+      "rate_by_amount": [
+        {
+          "min_amount": 0,
+          "rate": 3
+        },
+        {
+          "min_amount": 50000,
+          "rate": 5
+        },
+        {
+          "min_amount": 100000,
+          "rate": 10
+        }
+      ]
+    },
+    {
+      "benefit_id": "bc-2728-b05",
+      "target_raw": "해외 전 가맹점 2%",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 0
+    }
+  ],
+  "other_services_raw": [
+    "Mastercard/VISA Platinum"
+  ],
+  "limit_groups": [
+    {
+      "group": "주유",
+      "limits": [
+        null,
+        10000,
+        15000,
+        25000
+      ]
+    },
+    {
+      "group": "장보기",
+      "limits": [
+        null,
+        10000,
+        15000,
+        25000
+      ]
+    }
+  ],
+  "notes": "월 통합 한도 기본 1.5만/2만/3만원, 장바구니(조건 충족 시) 2만/3만/5만원"
+}

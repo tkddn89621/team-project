@@ -13,6 +13,7 @@ import os
 import re
 from typing import List, Optional, Tuple
 from .models import Brand
+from . import catalog
 
 CONFIDENCE_AUTO = 0.80   # 이 이상 + 후보 1개면 자동 확정 (문서 AI-05)
 CONF_TEXT = 0.75         # OCR 텍스트만으로 찾음 → 사용자 확인 유도
@@ -21,14 +22,7 @@ CONF_GPS = 0.50          # 근처 매장이라는 것만으로 추정
 GPS_BOOST = 0.15         # 다른 근거로 찾은 후보가 근처에도 있으면 가산
 GPS_RADIUS_M = 50       # 실내에선 GPS가 20~50m 틀어져서 기획서 30m보다 넓게
 
-# Vision 라벨(사진 속 사물) → 업종. 로고/글씨로 못 찾았을 때만 사용
-# 'fast food'·'junk food' 같은 넓은 라벨은 과자에도 붙어서 넣지 않음 (구체적인 사물만)
-LABEL_CATEGORY = {
-    "hamburger": "패스트푸드", "burger": "패스트푸드", "cheeseburger": "패스트푸드",
-    "french fries": "패스트푸드",
-    "coffee": "카페", "coffee cup": "카페", "latte": "카페", "espresso": "카페", "cappuccino": "카페",
-    "popcorn": "영화", "cosmetics": "뷰티", "book": "서점",
-}
+# Vision 라벨(사진 속 사물) → 업종코드는 catalog.vision_code (data/benefits/mapping.json). 로고/글씨로 못 찾았을 때만 사용
 
 
 def _alias_list(brand: Brand) -> List[str]:
@@ -44,6 +38,8 @@ def _alias_pattern(alias: str) -> re.Pattern:
     # 영문 alias는 단어 단위로만 매칭 ('cu'가 'security', 'picture'에 걸리지 않게). 한글은 조사가 붙으니 부분 매칭
     if re.fullmatch(r"[a-z0-9 .'&-]+", alias):
         return re.compile(rf"(?<![a-z]){body}(?![a-z])")
+    if len(alias.replace(" ", "")) <= 2:   # '자라'·'씨유'처럼 짧은 한글은 다른 단어 속에 걸리지 않게 단어 단위로
+        return re.compile(rf"(?<![가-힣]){body}(?![가-힣])")
     return re.compile(body)
 
 
@@ -54,7 +50,7 @@ def brand_in_text(b: Brand, text: str) -> bool:
 
 
 def _cand(b: Brand, confidence: float, source: str) -> dict:
-    return {"brand_id": b.id, "name": b.name, "category": b.category,
+    return {"brand_id": b.id, "name": b.name, "category": b.category, "industry_code": b.industry_code,
             "logo_url": b.logo_url, "confidence": round(confidence, 2), "source": source}
 
 
@@ -81,16 +77,11 @@ def match_brands(logo_names: List[Tuple[str, float]], ocr_text: str, brands: Lis
 
 
 def infer_from_labels(labels: List[Tuple[str, float]], brands: List[Brand]) -> list:
-    """사진 속 사물(버거, 커피 등) → 업종 → 그 업종 브랜드들을 낮은 신뢰도로 후보에"""
-    cats = {}
-    for desc, sc in labels:
-        cat = LABEL_CATEGORY.get(_norm(desc))
-        if cat:
-            cats[cat] = max(cats.get(cat, 0), sc)
-    if not cats:
+    """사진 속 사물(버거, 커피 등) → 업종코드 → 그 업종 브랜드들을 낮은 신뢰도로 후보에"""
+    code, _ = catalog.vision_code(labels)
+    if not code:
         return []
-    top_cat = max(cats, key=cats.get)
-    unique = {b.id: b for b in brands if b.category == top_cat}   # 근처 목록엔 같은 브랜드가 여러 지점일 수 있음
+    unique = {b.id: b for b in brands if b.industry_code == code}   # 근처 목록엔 같은 브랜드가 여러 지점일 수 있음
     return [_cand(b, CONF_IMAGE, "image") for b in unique.values()]
 
 

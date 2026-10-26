@@ -1,0 +1,194 @@
+{
+  "card_id": "samsung-2563",
+  "issuer": "삼성카드",
+  "name": "K-패스 삼성체크카드",
+  "type": "check",
+  "annual_fee": {
+    "domestic": 0,
+    "overseas": 0
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2563",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 5500
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 세금·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "samsung-2563-b01",
+      "target_raw": "대중교통(버스, 지하철) 10% 캐시백",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "교통·통신",
+      "excludes_raw": "시외/고속버스 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "samsung-2563-b02",
+      "target_raw": "이동통신(SKT/KT/LG U+/알뜰폰) 정기결제 10% 캐시백",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "교통·통신",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "samsung-2563-b03",
+      "target_raw": "편의점(CU, GS25, 세븐일레븐, 이마트24) 1만원 이상 1,000원 캐시백",
+      "target_kind": "brands",
+      "brands": [
+        "CU",
+        "GS25",
+        "세븐일레븐",
+        "이마트24"
+      ],
+      "rate": null,
+      "fixed_amount": 1000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 3,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "생활 3회",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "samsung-2563-b04",
+      "target_raw": "커피전문점(스타벅스, 이디야커피, 투썸플레이스, 커피빈, 블루보틀) 1만원 이상 1,000원 캐시백",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "이디야커피",
+        "투썸플레이스",
+        "커피빈",
+        "블루보틀"
+      ],
+      "rate": null,
+      "fixed_amount": 1000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 3,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "생활 3회",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "samsung-2563-b05",
+      "target_raw": "제과(파리바게트, 뚜레쥬르, 던킨) 1만원 이상 1,000원 캐시백",
+      "target_kind": "brands",
+      "brands": [
+        "파리바게뜨",
+        "뚜레쥬르",
+        "던킨"
+      ],
+      "rate": null,
+      "fixed_amount": 1000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 3,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "생활 3회",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "samsung-2563-b06",
+      "target_raw": "CGV 5,000원 이상 3,000원 현장할인",
+      "target_kind": "brands",
+      "brands": [
+        "CGV"
+      ],
+      "rate": null,
+      "fixed_amount": 3000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 5000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "연 6회(온라인/현장 각 연 3회)",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "K-패스 마일리지(정부 사업)"
+  ],
+  "limit_groups": [
+    {
+      "group": "교통·통신",
+      "limits": [
+        2500
+      ]
+    },
+    {
+      "group": "생활 3회",
+      "limits": [
+        3000
+      ]
+    }
+  ]
+}

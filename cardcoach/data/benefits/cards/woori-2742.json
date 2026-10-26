@@ -1,0 +1,183 @@
+{
+  "card_id": "woori-2742",
+  "issuer": "우리카드",
+  "name": "카드의정석 EVERYDAY CHECK",
+  "type": "check",
+  "annual_fee": {
+    "domestic": 0,
+    "overseas": 0
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2742",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 3000
+    },
+    {
+      "min_prev_spend": 600000,
+      "monthly_limit": 6000
+    }
+  ],
+  "spend_exclusions_raw": "국세·지방세·공공요금, 대학등록금, 상품권·선불카드, 교통카드 충전, 고속버스, 정부지원금 등",
+  "benefits": [
+    {
+      "benefit_id": "woori-2742-b01",
+      "target_raw": "국내/해외 가맹점 0.2% 적립",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 0.2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 0
+    },
+    {
+      "benefit_id": "woori-2742-b02",
+      "target_raw": "우리페이 온라인 결제 0.5% 추가 적립 (1만원 이상)",
+      "target_kind": "channel",
+      "brands": [
+        "우리WON페이"
+      ],
+      "rate": 0.5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "월 3천/6천원",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 300000
+    },
+    {
+      "benefit_id": "woori-2742-b03",
+      "target_raw": "[커피] 스타벅스, 폴바셋, 투썸플레이스, 매머드커피 1% (1만원 이상)",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "폴바셋",
+        "투썸플레이스",
+        "매머드커피"
+      ],
+      "rate": 1,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 3000,
+      "monthly_count": null,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "스타벅스만 사이렌오더 포함, 나머지 온라인 제외",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 300000
+    },
+    {
+      "benefit_id": "woori-2742-b04",
+      "target_raw": "[쇼핑] 이마트, 롯데마트, 홈플러스, 홈플러스 익스프레스, GS 더프레시, 롯데슈퍼 1%",
+      "target_kind": "brands",
+      "brands": [
+        "이마트",
+        "롯데마트",
+        "홈플러스",
+        "홈플러스 익스프레스",
+        "GS더프레시",
+        "롯데슈퍼"
+      ],
+      "rate": 1,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 3000,
+      "monthly_count": null,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 300000
+    },
+    {
+      "benefit_id": "woori-2742-b05",
+      "target_raw": "[교통] 버스, 지하철(후불), 택시 1%",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철",
+        "택시"
+      ],
+      "rate": 1,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 3000,
+      "monthly_count": null,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 300000
+    },
+    {
+      "benefit_id": "woori-2742-b06",
+      "target_raw": "[주유] SK주유소 1% (1일 1회, 월 3회)",
+      "target_kind": "brands",
+      "brands": [
+        "SK에너지"
+      ],
+      "rate": 1,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 3,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": "LPG 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": 300000
+    }
+  ],
+  "other_services_raw": [],
+  "notes": "영역별 3천/6천원, 우리페이·특별 통합 월 한도 1만/2만원(표 해석)"
+}

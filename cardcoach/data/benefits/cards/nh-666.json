@@ -1,0 +1,272 @@
+{
+  "card_id": "nh-666",
+  "issuer": "NH농협카드",
+  "name": "올바른 FLEX 카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 10000,
+    "overseas": 12000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/666",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 15000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "nh-666-b01",
+      "target_raw": "스타벅스(사이렌오더 포함) 50%",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스"
+      ],
+      "rate": 50,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 5000,
+      "monthly_cap": 10000,
+      "monthly_count": 2,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": "상품권·선불카드 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-666-b02",
+      "target_raw": "유튜브프리미엄, 넷플릭스, 멜론 정기결제 20% (7천원 이상)",
+      "target_kind": "non_store",
+      "brands": [
+        "유튜브 프리미엄",
+        "넷플릭스",
+        "멜론"
+      ],
+      "rate": 20,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 7000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "스트리밍/배달앱",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-666-b03",
+      "target_raw": "배달의민족, 요기요 10% (1만5천원 이상)",
+      "target_kind": "brands",
+      "brands": [
+        "배달의민족",
+        "요기요"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 15000,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "스트리밍/배달앱",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-666-b04",
+      "target_raw": "CGV, 롯데시네마 30% (1만원 이상)",
+      "target_kind": "brands",
+      "brands": [
+        "CGV",
+        "롯데시네마"
+      ],
+      "rate": 30,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-666-b05",
+      "target_raw": "지하철, 버스 7%",
+      "target_kind": "non_store",
+      "brands": [
+        "지하철",
+        "버스"
+      ],
+      "rate": 7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "대중교통/통신",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-666-b06",
+      "target_raw": "SKT, KT, LGU+ 자동납부 7%",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 7,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "대중교통/통신",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-666-b07",
+      "target_raw": "쿠팡, G마켓, 11번가, 티몬, 농협몰 5% (2만원 이상)",
+      "target_kind": "brands",
+      "brands": [
+        "쿠팡",
+        "G마켓",
+        "11번가",
+        "티몬",
+        "농협몰"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 20000,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "온라인쇼핑/편의점",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-666-b08",
+      "target_raw": "CU, GS25 5% (5천원 이상)",
+      "target_kind": "brands",
+      "brands": [
+        "CU",
+        "GS25"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 5000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "온라인쇼핑/편의점",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-666-b09",
+      "target_raw": "NH pay 결제 건당 1천원 (2만원 이상)",
+      "target_kind": "channel",
+      "brands": [
+        "NH pay"
+      ],
+      "rate": null,
+      "fixed_amount": 1000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 2,
+      "min_amount": 20000,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "국제공항 라운지 연 1회"
+  ],
+  "limit_groups": [
+    {
+      "group": "스트리밍/배달앱",
+      "limits": [
+        5000
+      ]
+    },
+    {
+      "group": "대중교통/통신",
+      "limits": [
+        5000
+      ]
+    },
+    {
+      "group": "온라인쇼핑/편의점",
+      "limits": [
+        5000
+      ]
+    }
+  ]
+}

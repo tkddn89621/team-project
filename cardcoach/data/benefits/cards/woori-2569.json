@@ -1,0 +1,68 @@
+{
+  "card_id": "woori-2569",
+  "issuer": "우리카드",
+  "name": "트래블월렛 우리카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 20000,
+    "overseas": 20000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2569",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "무이자할부, 정부지원금, 아파트관리비, 공공임대료, 대학등록금, 국세·지방세·관세·공공요금, 상품권·기프트카드·선불카드 구매·충전, 교통카드 충전, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소",
+  "benefits": [
+    {
+      "benefit_id": "woori-2569-b01",
+      "target_raw": "국내 가맹점 1.0% 트래블 포인트 적립",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 1,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "한도 없음, 트래블페이 충전용 포인트",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2569-b02",
+      "target_raw": "해외 가맹점 2.0% 트래블 포인트 적립",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "해외 이용 수수료 면제"
+  ]
+}

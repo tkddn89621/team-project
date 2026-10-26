@@ -1,0 +1,44 @@
+{
+  "card_id": "hyundai-408",
+  "issuer": "현대카드",
+  "name": "현대카드X CHECK",
+  "type": "check",
+  "annual_fee": {
+    "domestic": 2000,
+    "overseas": null
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/408",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "연회비, 수수료, 이자, 세금, 도시가스요금, 학교납입금, 대학등록금",
+  "benefits": [
+    {
+      "benefit_id": "hyundai-408-b01",
+      "target_raw": "국내 모든 가맹점 X캐시백 0.3%(월 100만원 이상 0.6%)",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 0.3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": []
+}

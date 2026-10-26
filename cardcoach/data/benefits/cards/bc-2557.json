@@ -1,0 +1,190 @@
+{
+  "card_id": "bc-2557",
+  "issuer": "BC카드",
+  "name": "K-패스 카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 6000,
+    "overseas": 6000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2557",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 10000
+    },
+    {
+      "min_prev_spend": 600000,
+      "monthly_limit": 20000
+    },
+    {
+      "min_prev_spend": 1000000,
+      "monthly_limit": 30000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "bc-2557-b01",
+      "target_raw": "대중교통 후불(시내버스, 지하철) 15%",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철"
+      ],
+      "rate": 15,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "통합한도 내 대중교통 7천/1.2만/1.5만원",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2557-b02",
+      "target_raw": "OTT/스트리밍 넷플릭스, 유튜브 프리미엄, 티빙, 웨이브, 왓챠, 디즈니플러스, 멜론, 지니뮤직 15%",
+      "target_kind": "non_store",
+      "brands": [
+        "넷플릭스",
+        "유튜브 프리미엄",
+        "티빙",
+        "웨이브",
+        "왓챠",
+        "디즈니플러스",
+        "멜론",
+        "지니"
+      ],
+      "rate": 15,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2557-b03",
+      "target_raw": "이동통신 KT, SKT, LG U+ 자동이체 5%",
+      "target_kind": "non_store",
+      "brands": [
+        "KT",
+        "SKT",
+        "LG U+"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2557-b04",
+      "target_raw": "편의점 CU, GS25, 세븐일레븐, 이마트24 5% (5천원 이상, 현장결제)",
+      "target_kind": "brands",
+      "brands": [
+        "CU",
+        "GS25",
+        "세븐일레븐",
+        "이마트24"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 5000,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": null,
+      "excludes_raw": "간편결제 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2557-b05",
+      "target_raw": "카페 스타벅스, 투썸플레이스, 커피빈, 이디야, MGC메가커피, 매머드커피 5% (3천원 이상)",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "투썸플레이스",
+        "커피빈",
+        "이디야커피",
+        "메가MGC커피",
+        "매머드커피"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 3000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": "간편결제, 백화점/대형할인점·공항 임대매장 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2557-b06",
+      "target_raw": "해외 3% (USD10 이상)",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": []
+}

@@ -1,0 +1,70 @@
+{
+  "card_id": "hyundai-3042",
+  "issuer": "현대카드",
+  "name": "네이버 현대카드 Edition3",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 15000,
+    "overseas": 15000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/3042",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 세금·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "hyundai-3042-b01",
+      "target_raw": "국내외 가맹점 0.5% 네이버페이 포인트",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 0.5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-3042-b02",
+      "target_raw": "네이버플러스 멤버십 적립 대상(네이버페이 결제) 5% 네이버페이 포인트",
+      "target_kind": "brands",
+      "brands": [
+        "네이버플러스 스토어"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 15000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "네이버플러스 멤버십 회원만, 비회원 0.5%",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "메탈 플레이트"
+  ]
+}

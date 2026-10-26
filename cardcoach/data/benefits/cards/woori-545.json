@@ -1,0 +1,80 @@
+{
+  "card_id": "woori-545",
+  "issuer": "우리카드",
+  "name": "카드의정석 APT CHECK",
+  "type": "check",
+  "annual_fee": {
+    "domestic": 9000,
+    "overseas": 9000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/545",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 3000
+    },
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": 5000
+    },
+    {
+      "min_prev_spend": 1000000,
+      "monthly_limit": 10000
+    }
+  ],
+  "spend_exclusions_raw": "관리비(임대료), 세금, 공공요금, 대학등록금, 수수료, 이자, 연회비, 선불카드/상품권",
+  "benefits": [
+    {
+      "benefit_id": "woori-545-b01",
+      "target_raw": "아파트관리비(공공 임대료) 자동납부 캐시백",
+      "target_kind": "non_store",
+      "brands": [
+        "아파트관리비",
+        "LH",
+        "SH"
+      ],
+      "rate": null,
+      "fixed_amount": 3000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "전월 30/50/100만원 이상 시 3천/5천/1만원",
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-545-b02",
+      "target_raw": "유튜브 프리미엄 정기권 30% 캐시백",
+      "target_kind": "non_store",
+      "brands": [
+        "유튜브 프리미엄"
+      ],
+      "rate": 30,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "cashback",
+      "min_prev_spend": 300000
+    }
+  ],
+  "other_services_raw": []
+}

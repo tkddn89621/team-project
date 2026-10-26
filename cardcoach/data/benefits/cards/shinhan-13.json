@@ -1,0 +1,306 @@
+{
+  "card_id": "shinhan-13",
+  "issuer": "신한카드",
+  "name": "신한카드 Mr.Life",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": null,
+    "overseas": 15000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/13",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 16000
+    },
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": 34000
+    },
+    {
+      "min_prev_spend": 1000000,
+      "monthly_limit": 50000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드 구매·충전, 국세·지방세, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등(상품안내장 기준)",
+  "benefits": [
+    {
+      "benefit_id": "shinhan-13-b01",
+      "target_raw": "월납요금: 전기요금, 도시가스요금, SKT/LG U+/KT 통신요금",
+      "target_kind": "non_store",
+      "brands": [
+        "전기요금",
+        "도시가스",
+        "SKT",
+        "LG U+",
+        "KT"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 5000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "월납",
+      "excludes_raw": null,
+      "notes": "일 1회, 1회 5만원까지",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-13-b02",
+      "target_raw": "[TIME] 편의점 업종",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 5,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "TIME",
+      "excludes_raw": null,
+      "notes": "일 1회, 1회 1만원까지",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-13-b03",
+      "target_raw": "[TIME] 병원/약국업종(동물병원 제외)",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 5,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "TIME",
+      "excludes_raw": null,
+      "notes": "치과/한의원 포함",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-13-b04",
+      "target_raw": "[TIME] 세탁소 업종",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 5,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "TIME",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-13-b05",
+      "target_raw": "[NIGHT] 온라인 쇼핑: 옥션, G마켓, AK몰, 11번가, 티켓몬스터, 위메프, 쿠팡",
+      "target_kind": "brands",
+      "brands": [
+        "옥션",
+        "G마켓",
+        "AK몰",
+        "11번가",
+        "티몬",
+        "위메프",
+        "쿠팡"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 10,
+      "min_amount": null,
+      "hours": "21:00-09:00",
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "TIME",
+      "excludes_raw": null,
+      "notes": "TIME 한도 공유, 21시~익일 9시",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-13-b06",
+      "target_raw": "[NIGHT] 택시",
+      "target_kind": "non_store",
+      "brands": [
+        "택시"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 10,
+      "min_amount": null,
+      "hours": "21:00-09:00",
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "TIME",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-13-b07",
+      "target_raw": "[NIGHT] 식음료: 한식, 양식, 일식, 중식, 뷔페, 일반대중음식, 패스트푸드, 커피전문점 업종",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": 10,
+      "min_amount": null,
+      "hours": "21:00-09:00",
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "TIME",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-13-b08",
+      "target_raw": "[주말] 3대 마트: 이마트, 롯데마트, 홈플러스(기업형 슈퍼마켓, 온라인몰 포함)",
+      "target_kind": "brands",
+      "brands": [
+        "이마트",
+        "롯데마트",
+        "홈플러스",
+        "이마트 에브리데이",
+        "롯데슈퍼",
+        "홈플러스 익스프레스"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 5000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": "토,일",
+      "channel": "any",
+      "shared_limit_group": "주말",
+      "excludes_raw": "상품권 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-13-b09",
+      "target_raw": "[주말] 4대 정유사 리터당 60원",
+      "target_kind": "brands",
+      "brands": [
+        "SK에너지",
+        "GS칼텍스",
+        "HD현대오일뱅크",
+        "S-OIL"
+      ],
+      "rate": null,
+      "fixed_amount": 60,
+      "unit": "원/L",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": "토,일",
+      "channel": "any",
+      "shared_limit_group": "주말",
+      "excludes_raw": null,
+      "notes": "1회 10만원, 월 30만원 이용금액까지, LPG 제외",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "shinhan-13-b10",
+      "target_raw": "인테이크몰 20%",
+      "target_kind": "brands",
+      "brands": [
+        "인테이크몰"
+      ],
+      "rate": 20,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 4,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 1
+    }
+  ],
+  "other_services_raw": [],
+  "limit_groups": [
+    {
+      "group": "TIME",
+      "limits": [
+        10000,
+        20000,
+        30000
+      ]
+    },
+    {
+      "group": "월납",
+      "limits": [
+        3000,
+        7000,
+        10000
+      ]
+    },
+    {
+      "group": "주말",
+      "limits": [
+        3000,
+        7000,
+        10000
+      ]
+    }
+  ]
+}

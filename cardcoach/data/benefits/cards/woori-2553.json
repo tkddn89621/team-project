@@ -1,0 +1,69 @@
+{
+  "card_id": "woori-2553",
+  "issuer": "우리카드",
+  "name": "카드의정석 EVERY MILE SKYPASS",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 39000,
+    "overseas": 39000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2553",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "무이자할부, 정부지원금, 아파트관리비, 공공임대료, 대학등록금, 국세·지방세·관세·공공요금, 상품권·기프트카드·선불카드 구매·충전, 교통카드 충전, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소",
+  "benefits": [
+    {
+      "benefit_id": "woori-2553-b01",
+      "target_raw": "국내외 가맹점 1천원당 SKYPASS 1마일",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "1,000원당 1마일, 한도 없음",
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2553-b02",
+      "target_raw": "해외 가맹점 1천원당 1마일 추가",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "월 1천 마일 한도",
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "해외수수료 면제",
+    "국내 공항라운지(전월 50만원 이상)"
+  ]
+}

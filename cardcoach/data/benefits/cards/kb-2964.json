@@ -1,0 +1,174 @@
+{
+  "card_id": "kb-2964",
+  "issuer": "KB국민카드",
+  "name": "KB NEED Pay 카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 19000,
+    "overseas": 19000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2964",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": 15000
+    },
+    {
+      "min_prev_spend": 800000,
+      "monthly_limit": 30000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드 구매·충전, 국세·지방세, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "kb-2964-b01",
+      "target_raw": "[간편결제 택1] KB Pay 국내 온·오프라인 15%",
+      "target_kind": "channel",
+      "brands": [
+        "KB Pay"
+      ],
+      "rate": 15,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 3000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "간편결제",
+      "excludes_raw": null,
+      "notes": "KB Pay 월 1.5만/3만원",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2964-b02",
+      "target_raw": "[간편결제 택1] 네이버페이 / 카카오페이 / 토스페이 10%",
+      "target_kind": "channel",
+      "brands": [
+        "네이버페이",
+        "카카오페이",
+        "토스페이"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 2000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "간편결제",
+      "excludes_raw": null,
+      "notes": "월 1만/2만원",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2964-b03",
+      "target_raw": "온라인패션몰(무신사, 지그재그, W컨셉, 29CM, 에이블리) KB Pay 결제 5%",
+      "target_kind": "brands",
+      "brands": [
+        "무신사",
+        "지그재그",
+        "W CONCEPT",
+        "29CM",
+        "에이블리"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2964-b04",
+      "target_raw": "디지털콘텐츠(넷플릭스, 유튜브, 디즈니플러스, 티빙, 웨이브, 스포티파이)/멤버십(네이버플러스, 컬리멤버스, 배민클럽) 30%",
+      "target_kind": "non_store",
+      "brands": [
+        "넷플릭스",
+        "유튜브 프리미엄",
+        "디즈니플러스",
+        "티빙",
+        "웨이브",
+        "스포티파이",
+        "네이버플러스 멤버십",
+        "컬리멤버스",
+        "배민클럽"
+      ],
+      "rate": 30,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 3000,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2964-b05",
+      "target_raw": "해외 가맹점 2%",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 0
+    }
+  ],
+  "other_services_raw": [
+    "전월실적 채워드림"
+  ],
+  "limit_groups": [
+    {
+      "group": "간편결제",
+      "limits": [
+        null,
+        15000,
+        30000
+      ]
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "card_id": "nh-2560",
+  "issuer": "NH농협카드",
+  "name": "K-패스카드(신용)",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 13000,
+    "overseas": 15000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2560",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": 15000
+    },
+    {
+      "min_prev_spend": 800000,
+      "monthly_limit": 30000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "nh-2560-b01",
+      "target_raw": "버스, 지하철, 택시(카카오T 포함), 철도(KTX/SRT) 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철",
+        "택시",
+        "카카오T 택시",
+        "KTX",
+        "SRT"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "모빌리티",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2560-b02",
+      "target_raw": "렌터카, 쏘카, 그린카 10%",
+      "target_kind": "brands",
+      "brands": [
+        "쏘카",
+        "그린카"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "모빌리티",
+      "excludes_raw": null,
+      "notes": "렌터카 업종 포함",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2560-b03",
+      "target_raw": "환경부 공공 급속충전기 전기차 충전 10%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "모빌리티",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2560-b04",
+      "target_raw": "[라이프①] SKT, KT, LG U+ 자동납부 5% (월 1회)",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "라이프①",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2560-b05",
+      "target_raw": "[라이프①] 오픈마켓 쿠팡/11번가/G마켓/옥션/농협몰 5%",
+      "target_kind": "brands",
+      "brands": [
+        "쿠팡",
+        "11번가",
+        "G마켓",
+        "옥션",
+        "농협몰"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "라이프①",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2560-b06",
+      "target_raw": "[라이프①] 배달앱 배달의민족, 요기요 5%",
+      "target_kind": "brands",
+      "brands": [
+        "배달의민족",
+        "요기요"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": "라이프①",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2560-b07",
+      "target_raw": "[라이프①] 스포츠(종합스포츠센터/요가/수영장/볼링장) 5%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "라이프①",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2560-b08",
+      "target_raw": "[라이프①] 올리브영 5%",
+      "target_kind": "brands",
+      "brands": [
+        "올리브영"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "라이프①",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2560-b09",
+      "target_raw": "[라이프②] 커피전문점 스타벅스/이디야/커피빈/투썸플레이스 10% (1만원 이상)",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "이디야커피",
+        "커피빈",
+        "투썸플레이스"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 2000,
+      "monthly_count": 2,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "스타벅스 사이렌오더 가능",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2560-b10",
+      "target_raw": "[라이프②] 편의점 GS25/CU 10% (1만원 이상)",
+      "target_kind": "brands",
+      "brands": [
+        "GS25",
+        "CU"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 1000,
+      "monthly_count": 2,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [],
+  "limit_groups": [
+    {
+      "group": "모빌리티",
+      "limits": [
+        10000,
+        20000
+      ]
+    },
+    {
+      "group": "라이프①",
+      "limits": [
+        5000,
+        10000
+      ]
+    }
+  ]
+}

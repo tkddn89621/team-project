@@ -1,0 +1,119 @@
+{
+  "card_id": "woori-2898",
+  "issuer": "우리카드",
+  "name": "카드의정석2 MILE&POINT",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 75000,
+    "overseas": 75000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2898",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 500000,
+      "monthly_limit": 30000
+    }
+  ],
+  "spend_exclusions_raw": "무이자할부, 정부지원금, 아파트관리비, 공공임대료, 대학등록금, 국세·지방세·관세·공공요금, 상품권·기프트카드·선불카드 구매·충전, 교통카드 충전, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소",
+  "benefits": [
+    {
+      "benefit_id": "woori-2898-b01",
+      "target_raw": "국내 가맹점 1,500원당 SKYPASS 1마일",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": 0
+    },
+    {
+      "benefit_id": "woori-2898-b02",
+      "target_raw": "해외 가맹점 1,500원당 최대 2마일",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "추가 적립 월 2,000마일 한도",
+      "confidence": "high",
+      "reward_type": "mileage",
+      "min_prev_spend": 500000
+    },
+    {
+      "benefit_id": "woori-2898-b03",
+      "target_raw": "당월 적립 마일리지의 5배 포인트 추가 적립",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": 30000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "medium",
+      "reward_type": "point",
+      "min_prev_spend": 500000
+    },
+    {
+      "benefit_id": "woori-2898-b04",
+      "target_raw": "인천공항 주차장 5만원 이상 결제 시 1만원 청구할인",
+      "target_kind": "brands",
+      "brands": [
+        "인천공항 주차장"
+      ],
+      "rate": null,
+      "fixed_amount": 10000,
+      "unit": "원",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": 1,
+      "min_amount": 50000,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "연 2회",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 500000
+    }
+  ],
+  "other_services_raw": [
+    "공항라운지(더라운지)",
+    "국내공항 무료 발레파킹"
+  ]
+}

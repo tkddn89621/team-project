@@ -3,7 +3,9 @@ from fastapi import FastAPI, UploadFile, File, Form, Depends, HTTPException, Que
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from sqlalchemy import func
 from sqlalchemy.orm import Session
+import calendar
 import os
 from datetime import datetime, timedelta, timezone
 from concurrent.futures import ThreadPoolExecutor
@@ -26,10 +28,10 @@ def _load_dotenv():
 
 _load_dotenv()
 
-from .models import SessionLocal, Brand, Card, BenefitRule, BenefitTier, Recognition, Selection
-from .seed import seed
+from .models import SessionLocal, Brand, WalletCard, Recognition, Selection
+from .seed import seed, reset as reset_seed
 from .recognize import detect, decide, seeded_near, brand_in_text, CONFIDENCE_AUTO, GPS_RADIUS_M
-from . import places, ai_pick
+from . import places, ai_pick, catalog, engine
 
 app = FastAPI(title="내 지갑 카드 코치 API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -86,14 +88,34 @@ def resolve_place(db: Session, p: dict, known: list):
             return b
     b = db.query(Brand).filter(Brand.kakao_place_id == p["id"]).first()
     if not b:
-        b = Brand(name=p["name"], category=p["category"], aliases=p["name"].lower(),
+        b = Brand(name=p["name"], industry_code=p["code"], category=p["category"], aliases=p["name"].lower(),
                   lat=p["lat"], lng=p["lng"], kakao_place_id=p["id"])
         db.add(b)
         db.flush()
     return b
 
 
-def ask_ai(image_bytes: bytes, det: dict, cands: list, near: list, known: list):
+def brand_from_ai(db: Session, nb: dict, known: list, near: list) -> Brand:
+    """Claude가 알아본 목록 밖 브랜드명 → 등록 브랜드('스타벅스')나 근처 카카오 매장('BHC치킨 상암점')과 같으면 그것,
+    아니면 'ai:이름'으로 등록 (업종 혜택)"""
+    for b in known:
+        if brand_in_text(b, nb["name"]):
+            return b
+    name = nb["name"].lower().replace(" ", "")
+    for b, _ in near:
+        if name in b.name.lower().replace(" ", ""):
+            return b
+    key = f'ai:{nb["name"].lower()}'
+    b = db.query(Brand).filter(Brand.kakao_place_id == key).first()
+    if not b:
+        b = Brand(name=nb["name"], industry_code=catalog.code_by_name().get(nb["category"]), category=nb["category"],
+                  aliases=nb["name"].lower(), kakao_place_id=key)
+        db.add(b)
+        db.flush()
+    return b
+
+
+def ask_ai(image_bytes: bytes, det: dict, cands: list, near: list, known: list, db: Session, located: bool = False):
     """애매한 사진 → Claude가 후보 중 하나를 고름. 고르면 맨 앞에 source='ai'로.
     '맞는 매장 없음'이면 근처라는 이유만으로 붙은 후보(gps)는 뺀다. 호출 실패면 원래 후보 그대로"""
     dist = {}
@@ -108,6 +130,7 @@ def ask_ai(image_bytes: bytes, det: dict, cands: list, near: list, known: list):
     for bid, b in list(by_id.items())[:20]:
         c = next((x for x in cands if x["brand_id"] == bid), None)
         options.append({"id": bid, "name": b.name if b else c["name"], "category": b.category if b else c["category"],
+                        "code": b.industry_code if b else c.get("industry_code"),
                         "distance_m": round(dist[bid]) if bid in dist else None})
 
     labels = ", ".join(l for l, _ in det["labels"][:6])
@@ -118,10 +141,30 @@ def ask_ai(image_bytes: bytes, det: dict, cands: list, near: list, known: list):
     choice = ai_pick.pick(image_bytes, options, hints)
     if not choice:
         return cands, None
+    if choice["new_brand"]:   # 후보 밖 브랜드 (예: 집에서 찍은 bhc 포장지) → 등록 브랜드에 있으면 그것, 없으면 자동 등록
+        b = brand_from_ai(db, choice["new_brand"], known, near)
+        if b.id not in {o["id"] for o in options}:
+            options.append({"id": b.id, "name": b.name, "category": b.category, "code": b.industry_code, "distance_m": None})
+        choice["brand_id"] = b.id
+    if choice["brand_id"] is None and choice["category"] != "기타":
+        # 업종만 앎 (예: 껌 → 편의점): 하나를 짐작하지 않고 그 업종 매장들을 고르게 함. 근처 매장이 있으면 그 안에서,
+        # 근처에 그 업종이 없으면(GPS 오차·미등록 매장일 수도) 막지 않고 등록 브랜드로 — '근처엔 없어요'라고 알려줌
+        same = [o for o in options if o["category"] == choice["category"]]
+        none_nearby = False
+        if not same:
+            same = [{"id": b.id, "name": b.name, "category": b.category, "code": b.industry_code, "distance_m": None}
+                    for b in known if b.category == choice["category"]]
+            none_nearby = located and bool(same)
+        same.sort(key=lambda o: (o["distance_m"] is None, o["distance_m"] or 0))
+        if same:
+            return [{"brand_id": o["id"], "name": o["name"], "category": o["category"], "industry_code": o["code"], "confidence": 0.5,
+                     "source": "ai_category", "ai_reason": choice["reason"], "none_nearby": none_nearby,
+                     **({"distance_m": o["distance_m"]} if o["distance_m"] is not None else {})}
+                    for o in same[:4]], choice
     if choice["brand_id"] is None:   # 예: 집에서 찍은 담배 + 근처엔 곱창집뿐 → '근처 곱창집이 맞나요?'라고 묻지 않음
         return [c for c in cands if c["source"] != "gps"], choice
     opt = next(o for o in options if o["id"] == choice["brand_id"])
-    top = {"brand_id": opt["id"], "name": opt["name"], "category": opt["category"],
+    top = {"brand_id": opt["id"], "name": opt["name"], "category": opt["category"], "industry_code": opt["code"],
            "confidence": round(choice["confidence"], 2), "source": "ai", "ai_reason": choice["reason"]}
     if opt["distance_m"] is not None:
         top["distance_m"] = opt["distance_m"]
@@ -160,7 +203,8 @@ async def create_recognition(image: UploadFile = File(...),
 
     # 규칙으로 확실하지 않을 때만 Claude에게 (실제 사진일 때만, 키가 있을 때만)
     if (not cands or cands[0]["confidence"] < CONFIDENCE_AUTO) and det["mode"] == "vision" and ai_pick.enabled():
-        cands, raw["ai"] = ask_ai(data, det, cands, near, known)
+        # located: 실제 매장 검색(카카오)으로 근처를 확인했을 때만 '근처엔 없어요'라고 말할 수 있음
+        cands, raw["ai"] = ask_ai(data, det, cands, near, known, db, located=bool(coords) and places.enabled())
     status = "done" if cands else "not_found"
     rec = Recognition(status=status, candidates=cands, raw=raw)
     db.add(rec); db.commit(); db.refresh(rec)
@@ -169,14 +213,15 @@ async def create_recognition(image: UploadFile = File(...),
         "recognition_id": rec.id,
         "status": status,
         "auto_confirm": auto_confirm,          # true면 FIND에서 바로 REC로
-        "candidates": [{**c, "logo_url": logo_url(c["name"])} for c in cands],  # source: logo | text | image | gps | ai(+ai_reason), 근처면 distance_m
+        "candidates": [{**c, "logo_url": logo_url(c["name"])} for c in cands],  # source: logo | text | image | gps | ai(+ai_reason) | ai_category(업종만, 고르게 함), 근처면 distance_m
     }
 
 
 # ---------- 브랜드 목록 (인식 실패 fallback 선택용) ----------
 @app.get("/brands")
 def list_brands(db: Session = Depends(get_db)):
-    return [{"brand_id": b.id, "name": b.name, "category": b.category, "logo_url": logo_url(b.name)}
+    return [{"brand_id": b.id, "name": b.name, "category": b.category, "industry_code": b.industry_code,
+             "logo_url": logo_url(b.name)}
             for b in db.query(Brand).filter(Brand.kakao_place_id.is_(None)).order_by(Brand.id).all()]
 
 
@@ -185,159 +230,196 @@ def mask_number(last4: str) -> str:
     return f"**** **** **** {last4 or '****'}"
 
 
-def tier_at(tiers: list, spend: int):
-    """실적 spend로 들어가는 가장 높은 구간 (index, tier). 첫 구간 미만이면 (None, None)"""
-    hit = (None, None)
-    for i, t in enumerate(tiers):
-        if spend >= t.min_spend:
-            hit = (i, t)
-    return hit
+def month_info():
+    """(이번 달 남은 일수(오늘 포함), 이번 달 시작 시각 UTC, 오늘 시작 시각 UTC) — 한국 시간 기준"""
+    now = datetime.now(KST)
+    last_day = calendar.monthrange(now.year, now.month)[1]
+    to_utc = lambda d: d.astimezone(timezone.utc).replace(tzinfo=None)
+    month_start = to_utc(datetime(now.year, now.month, 1, tzinfo=KST))
+    today_start = to_utc(datetime(now.year, now.month, now.day, tzinfo=KST))
+    return last_day - now.day + 1, month_start, today_start
 
 
-def tiers_by_card(db: Session) -> dict:
-    out = {}
-    for t in db.query(BenefitTier).order_by(BenefitTier.min_spend).all():
-        out.setdefault(t.card_id, []).append(t)
-    return out
+def usage_this_month(db: Session) -> dict:
+    """이번 달 결제 기록 → 혜택별·영역별 받은 할인, 혜택별 월·오늘 횟수, 카드별 합계"""
+    _, month_start, today_start = month_info()
+    u = {"benefit": {}, "group": {}, "card": {}, "count_month": {}, "count_today": {}}
+    for s in db.query(Selection).filter(Selection.created_at >= month_start, Selection.discount > 0).all():
+        u["card"][s.card_id] = u["card"].get(s.card_id, 0) + s.discount
+        if s.benefit_id:
+            k = (s.card_id, s.benefit_id)
+            u["benefit"][k] = u["benefit"].get(k, 0) + s.discount
+            u["count_month"][k] = u["count_month"].get(k, 0) + 1
+            if s.created_at >= today_start:
+                u["count_today"][k] = u["count_today"].get(k, 0) + 1
+        if s.limit_group:
+            k = (s.card_id, s.limit_group)
+            u["group"][k] = u["group"].get(k, 0) + s.discount
+    return u
+
+
+def is_woori(card: dict) -> bool:
+    return card["issuer"] == "우리카드"
 
 
 def visible_cards(db: Session, mydata: bool) -> list:
     """앱이 알고 있는 카드. 우리카드는 자사 고객 정보로 항상 안다.
     타사 카드는 보유 사실 자체를 모르다가 마이데이터를 연동해야 목록에 생긴다."""
-    cards = db.query(Card).order_by(Card.id).all()
-    return [c for c in cards if c.is_woori or mydata]
+    wallet = db.query(WalletCard).order_by(WalletCard.id).all()
+    return [w for w in wallet if is_woori(catalog.cards()[w.card_id]) or mydata]
 
 
-def card_state(c: Card, mydata: bool, tiers: list) -> dict:
-    """우리카드는 자사 데이터로 실적/구간/한도를 안다. 타사 카드는 마이데이터 연동 시에만 안다.
-    이번 달 구간·한도 = 지난달 실적으로 결정, 다음 달 구간 = 이번 달 실적으로 결정"""
-    known = c.is_woori or mydata
-    tier_info = [{"min_spend": t.min_spend, "monthly_limit": t.monthly_limit} for t in tiers]
-    target = tiers[0].min_spend if tiers else c.target_spend
-    unlimited = False
+def card_state(w: WalletCard, mydata: bool, usage: dict) -> dict:
+    """이번 달 구간·한도 = 지난달 실적으로 결정, 다음 달 구간 = 이번 달 실적으로 결정"""
+    card = catalog.cards()[w.card_id]
+    woori = is_woori(card)
+    known = woori or mydata
+    benefits = engine.enabled_benefits(card, set(w.disabled_benefits or []))
+    tiers = card["tiers"]
+    tier_info = [{"min_spend": t.get("min_prev_spend") or 0, "monthly_limit": engine.card_limit(card, i, benefits)}
+                 for i, t in enumerate(tiers)]
+    target = tier_info[0]["min_spend"] if tier_info else 0
     tier_idx = next_idx = None
-    upgrade_gap = upgrade_limit = None
+    upgrade_gap = upgrade_limit = at_stake = None
 
-    if not tiers:
-        # 구간 없는 카드
-        unlimited = c.monthly_discount_limit == 0
-        limit = c.monthly_discount_limit
-        if not target:
-            eligibility = "none"
-        elif not known:
-            eligibility = "assumed"
-        else:
-            eligibility = "met" if c.prev_spend >= target else "unmet"
+    if not target:
+        eligibility, tier_idx = "none", (0 if tiers else None)
     elif not known:
-        # 모르면 첫 구간은 넘었다고 가정 (실제로는 미달이라 0원일 수 있음 → 마이데이터 유도 포인트)
-        eligibility, tier_idx, limit = "assumed", 0, tiers[0].monthly_limit
+        eligibility, tier_idx = "assumed", 0   # 모르면 첫 구간은 넘었다고 가정
     else:
-        tier_idx, t = tier_at(tiers, c.prev_spend)
-        eligibility = "met" if t else "unmet"
-        limit = t.monthly_limit if t else 0
+        tier_idx = engine.tier_index(card, w.prev_spend)
+        eligibility = "met" if tier_idx is not None else "unmet"
         # 다음 달 코칭: 이번 달 실적으로 들어갈 구간, 그 위 구간까지 남은 금액
-        next_idx, _ = tier_at(tiers, c.current_spend)
+        next_idx = engine.tier_index(card, w.current_spend)
         up = 0 if next_idx is None else next_idx + 1
         if up < len(tiers):
-            upgrade_gap = tiers[up].min_spend - c.current_spend
-            upgrade_limit = tiers[up].monthly_limit
+            upgrade_gap = tier_info[up]["min_spend"] - w.current_spend
+            upgrade_limit = tier_info[up]["monthly_limit"]
+            # 그 구간에 못 가면 다음 달에 덜 받는 한도 (예: 40만 못 채우면 그 카드 혜택 전부)
+            if upgrade_limit is not None:
+                at_stake = upgrade_limit - ((tier_info[next_idx]["monthly_limit"] or 0) if next_idx is not None else 0)
 
-    if unlimited:
-        remaining = None
-    elif known:
-        remaining = max(0, limit - c.monthly_discount_used)
-    else:
-        remaining = limit   # 모르면 한도 전체가 남았다고 가정
-
+    limit = engine.card_limit(card, tier_idx, benefits) if eligibility != "unmet" else 0
+    used = usage["card"].get(w.id, 0) if known else 0
+    remaining = None if limit is None else max(0, limit - used)
+    days_left, _, _ = month_info()
     return {
-        "card_id": c.id, "name": c.name, "issuer": c.issuer, "is_woori": c.is_woori, "color": c.color,
-        "masked_number": mask_number(c.number_last4),
+        "card_id": w.id, "product_id": w.card_id, "name": card["name"], "issuer": card["issuer"], "is_woori": woori,
+        "color": w.color, "masked_number": mask_number(w.number_last4),
         "spend_known": known,
         "target_spend": target,                     # 혜택을 받기 위한 최소 실적 (첫 구간)
         "tiers": tier_info,
-        "prev_spend": c.prev_spend if known else None,
+        "prev_spend": w.prev_spend if known else None,
         "eligibility": eligibility,                 # met | unmet | assumed | none
         "tier_index": tier_idx,                     # 이번 달 구간 (0부터, 미달이면 None)
-        "current_spend": c.current_spend if known else None,
+        "current_spend": w.current_spend if known else None,
         "next_tier_index": next_idx,                # 지금 실적대로면 다음 달 구간
         "upgrade_gap": upgrade_gap,                 # 한 구간 위까지 더 써야 할 금액
         "upgrade_limit": upgrade_limit,             # 그 구간의 월 한도
+        "at_stake": at_stake,                       # 그 구간을 못 채우면 다음 달 덜 받는 한도(원)
+        "days_left": days_left,                     # 이번 달 남은 일수 (오늘 포함)
+        "daily_needed": -(-upgrade_gap // days_left) if upgrade_gap else None,   # 하루 평균 더 써야 할 금액
         # 다음 달 혜택(첫 구간)까지 남은 금액 = 실적 시급도. 모르면 0으로 보고 정렬
-        "spend_gap": max(0, target - c.current_spend) if known else 0,
+        "spend_gap": max(0, target - w.current_spend) if known else 0,
         "monthly_discount_limit": limit,
-        "limit_unlimited": unlimited,
-        "monthly_remaining": remaining,   # 한도 없는 카드는 None
+        "limit_unlimited": limit is None,
+        "monthly_remaining": remaining,   # 한도를 모르는 카드는 None
     }
 
 
-def rate_text(rate: float) -> str:
-    return f"{round(rate * 100, 1):g}%"   # 0.012 → 1.2%, 0.1 → 10%
-
-
-def now_hour() -> int:
-    return datetime.now(KST).hour
+def now_kst():
+    return datetime.now(KST)
 
 
 @app.get("/cards")
 def list_cards(mydata: bool = Query(False), db: Session = Depends(get_db)):
-    tiers = tiers_by_card(db)
-    return [card_state(c, mydata, tiers.get(c.id, [])) for c in visible_cards(db, mydata)]
+    usage = usage_this_month(db)
+    return [card_state(w, mydata, usage) for w in visible_cards(db, mydata)]
 
 
-def rule_label(r: BenefitRule, brand: Brand) -> str:
-    if r.fixed_amount:
-        text = f"{r.fixed_amount:,}원 {r.benefit_type}"
-        if r.min_amount:
-            text += f" ({r.min_amount:,}원 이상)"
-    else:
-        if r.brand_id:
-            scope = ""
-        elif r.category == "*":
-            scope = " (전 가맹점)"
-        else:
-            scope = f" ({brand.category} 업종)"
-        text = f"{rate_text(r.rate)} {r.benefit_type}{scope}"
-    if r.start_hour is not None:
-        text += f" · {r.start_hour:02d}~{r.end_hour:02d}시"
-    return text
-
-
-def apply_rule(r: BenefitRule, row: dict, amount: int, hour: int, brand: Brand) -> dict:
-    """조건(전월실적·시간대·최소금액) 확인 → 할인액 = min(정액 또는 금액×할인율, 건당 한도, 월 잔여 한도)"""
-    label = rule_label(r, brand)
-    blocked = None
-    if row["eligibility"] == "unmet":
-        blocked = "지난달 실적 미달 · 이번 달 혜택 없음"
-    elif r.start_hour is not None and not (r.start_hour <= hour < r.end_hour):
-        blocked = f"할인 시간 아님 ({r.start_hour:02d}~{r.end_hour:02d}시만)"
-    elif r.min_amount and amount < r.min_amount:
-        blocked = f"{r.min_amount:,}원 이상 결제해야 할인"
-    elif row["monthly_remaining"] == 0:
-        blocked = "이번 달 할인 한도 소진"
-
-    discount, limited = 0, False
-    if not blocked:
-        discount = r.fixed_amount if r.fixed_amount else int(amount * r.rate)
-        discount = min(discount, amount)
-        if r.max_per_txn:
-            discount = min(discount, r.max_per_txn)
-        remaining = row["monthly_remaining"]
-        if remaining is not None and discount > remaining:
-            discount, limited = remaining, True
-
+@app.get("/catalog")
+def catalog_summary():
+    """카드 상품 DB 요약 (내 지갑은 이 중 몇 장)"""
+    cards = catalog.cards().values()
     return {
-        "has_benefit": True, "benefit_type": r.benefit_type, "rate": r.rate,
-        "fixed_amount": r.fixed_amount, "min_amount": r.min_amount,
-        "rate_label": blocked or label,
-        "benefit_label": label,           # 조건 충족 여부와 상관없는 원래 혜택 문구
-        "blocked_reason": blocked,
-        "benefit_note": r.note or "",
-        "max_per_txn": r.max_per_txn, "limited_by_monthly": limited,
-        "expected_benefit": discount,
+        "card_count": len(cards),
+        "benefit_count": sum(len(c["benefits"]) for c in cards),
+        "industry_codes": len(catalog.store_codes()),
+        "cards": [{"card_id": c["card_id"], "issuer": c["issuer"], "name": c["name"], "type": c["type"],
+                   "store_benefits": sum(1 for b in c["benefits"] if engine.in_store(b))} for c in cards],
     }
 
 
 # ---------- 2. 내 카드 중 최대 혜택 추천 ----------
+NO_BENEFIT = {
+    "has_benefit": False, "benefit_id": None, "limit_group": None, "benefit_type": None, "rate": 0, "fixed_amount": 0,
+    "min_amount": 0, "rate_label": "이 가맹점 혜택 없음", "benefit_label": "", "blocked_reason": None,
+    "benefit_note": "", "max_per_txn": 0, "limited_by_monthly": False, "benefit_remaining": None, "expected_benefit": 0,
+}
+
+
+def evaluate(db: Session, brand: Brand, amount: int, hour: int, weekday: int, mydata: bool) -> list:
+    """보이는 카드마다: 이 가게(브랜드·업종코드)에 걸린 혜택 중 가장 큰 것 → 할인액·최종 결제금액 → 추천 순 정렬"""
+    usage = usage_this_month(db)
+    rows = []
+    for w in visible_cards(db, mydata):
+        card = catalog.cards()[w.card_id]
+        row = card_state(w, mydata, usage)
+        benefits = engine.enabled_benefits(card, set(w.disabled_benefits or []))
+        prev = w.prev_spend if row["spend_known"] else None
+        results = [engine.evaluate(card, b, benefits, row["tier_index"], prev, amount, hour, weekday, usage, w.id,
+                                   brand.industry_code)
+                   for b in benefits if engine.in_store(b) and engine.applies(b, brand.name, brand.industry_code)]
+        if results:
+            spec = {b["benefit_id"]: engine.specificity(b) for b in benefits}
+            # 받을 수 있는 할인이 가장 큰 혜택. 다 막혔으면 가장 구체적인 혜택의 막힌 이유를 보여줌
+            row.update(max(results, key=lambda r: (r["expected_benefit"], -spec[r["benefit_id"]])))
+        else:
+            row.update(NO_BENEFIT)
+        row["final_payment"] = amount - row["expected_benefit"]
+        rows.append(row)
+
+    # 추천 엔진 (기획서 3.1): ① 최종 결제금액 오름차순 ② 이번 달 실적까지 남은 금액 내림차순 ③ 우리카드 우선
+    rows.sort(key=lambda x: (x["final_payment"], -x["spend_gap"], not x["is_woori"]))
+    for i, row in enumerate(rows):
+        row["rank"] = i + 1
+    return rows
+
+
+COACH_SHARE = 0.10        # 지킬 수 있는 다음 달 한도의 10%까지는 이번 할인을 양보할 만하다고 봄
+COACH_SHARE_LATE = 0.20   # 월말(7일 이하)이면 20%까지
+COACH_EFFICIENCY = 2.0    # 1등 카드보다 '1원 쓸 때 지키는 다음 달 혜택'이 2배 이상일 때만 (너무 자주 뜨지 않게)
+
+
+def protect_rate(r: dict) -> float:
+    """1원을 더 쓸 때 지키는 다음 달 혜택 = 걸린 혜택 ÷ 남은 실적. 예: KB 2만원 ÷ 12만원 = 0.17"""
+    return r["at_stake"] / r["upgrade_gap"] if r["spend_known"] and r["upgrade_gap"] and r["at_stake"] else 0.0
+
+
+def coach_for(rows: list, best: dict, amount: int):
+    """1등은 아니지만, 이번 할인을 조금 양보하고 그 카드로 내면 다음 달 혜택을 지키는 데 도움이 되는 카드"""
+    picks = []
+    for r in rows:
+        if r is best or not protect_rate(r):
+            continue
+        if protect_rate(r) < protect_rate(best) * COACH_EFFICIENCY:   # 1등 카드로 내도 비슷하게 다음 달 혜택을 지키면 바꿀 이유 없음
+            continue
+        give_up = best["expected_benefit"] - r["expected_benefit"]
+        share = COACH_SHARE_LATE if r["days_left"] <= 7 else COACH_SHARE
+        if 0 <= give_up <= r["at_stake"] * share:   # 0: 할인이 같은데 정렬에서 밀린 카드
+            picks.append((r, give_up))
+    if not picks:
+        return None
+    r, give_up = max(picks, key=lambda x: protect_rate(x[0]))
+    return {
+        "card_id": r["card_id"], "name": r["name"], "give_up": give_up, "at_stake": r["at_stake"],
+        "gap_before": r["upgrade_gap"], "gap_after": max(0, r["upgrade_gap"] - amount), "days_left": r["days_left"],
+        "message": ((f"할인은 {give_up:,}원 적지만, " if give_up else "할인은 같아요. ") +
+                    f"다음 달 혜택 {r['at_stake']:,}원을 지키려면 "
+                    f"이번 달 {r['upgrade_gap']:,}원 더 써야 해요 (남은 {r['days_left']}일)"),
+    }
+
+
 @app.get("/recommendations")
 def recommendations(brand_id: int = Query(...), amount: Optional[int] = Query(None),
                     mydata: bool = Query(False),
@@ -347,33 +429,9 @@ def recommendations(brand_id: int = Query(...), amount: Optional[int] = Query(No
     if not brand:
         raise HTTPException(404, "브랜드 없음")
     base_amount = amount or DEFAULT_AMOUNT
-    at_hour = now_hour() if hour is None else hour
-    cards = visible_cards(db, mydata)
-    # 같은 카드에 여러 룰이 있으면 브랜드 > 업종 > 전 가맹점 순으로 덮어쓴다
-    rules = {r.card_id: r for r in db.query(BenefitRule).filter(BenefitRule.category == "*").all()}
-    rules.update({r.card_id: r for r in db.query(BenefitRule).filter(BenefitRule.category == brand.category).all()})
-    rules.update({r.card_id: r for r in db.query(BenefitRule).filter(BenefitRule.brand_id == brand_id).all()})
-
-    tiers = tiers_by_card(db)
-    rows = []
-    for c in cards:
-        row = card_state(c, mydata, tiers.get(c.id, []))
-        r = rules.get(c.id)
-        if r:
-            row.update(apply_rule(r, row, base_amount, at_hour, brand))
-        else:
-            row.update({
-                "has_benefit": False, "benefit_type": None, "rate": 0, "fixed_amount": 0, "min_amount": 0,
-                "rate_label": "이 가맹점 혜택 없음", "benefit_label": "", "blocked_reason": None,
-                "benefit_note": "", "max_per_txn": 0, "limited_by_monthly": False, "expected_benefit": 0,
-            })
-        row["final_payment"] = base_amount - row["expected_benefit"]
-        rows.append(row)
-
-    # 추천 엔진 (기획서 3.1): ① 최종 결제금액 오름차순 ② 실적까지 남은 금액 내림차순 ③ 우리카드 우선
-    rows.sort(key=lambda x: (x["final_payment"], -x["spend_gap"], not x["is_woori"]))
-    for i, row in enumerate(rows):
-        row["rank"] = i + 1
+    now = now_kst()
+    at_hour = now.hour if hour is None else hour
+    rows = evaluate(db, brand, base_amount, at_hour, now.weekday(), mydata)
     best = rows[0] if rows and rows[0]["expected_benefit"] > 0 else None
 
     reason = None
@@ -387,32 +445,75 @@ def recommendations(brand_id: int = Query(...), amount: Optional[int] = Query(No
             reason = "할인·실적 조건이 같아서 우리카드를 우선했어요"
 
     return {
-        "brand": {"brand_id": brand.id, "name": brand.name, "category": brand.category, "logo_url": logo_url(brand.name)},
+        "brand": {"brand_id": brand.id, "name": brand.name, "category": brand.category,
+                  "industry_code": brand.industry_code, "logo_url": logo_url(brand.name)},
         "amount": base_amount,
         "hour": at_hour,
         "mydata_linked": mydata,
         "cards": rows,
         "best_card_id": best["card_id"] if best else None,
         "best_reason": reason,
+        "coach": coach_for(rows, best, base_amount) if best else None,   # 다음 달 혜택을 지키는 대안 카드
         "message": f"{brand.name}에서 받을 수 있는 최대 혜택을 찾았어요!" if best else f"{brand.name}에서 지금 할인되는 카드가 없어요",
     }
 
 
-# ---------- 카드 선택 기록 (결제 아님) ----------
+# ---------- 3. 결제 반영 (앱이 결제하진 않음: 고른 카드로 결제했다는 승인 데이터를 반영) ----------
 class SelectionIn(BaseModel):
     recognition_id: Optional[int] = None
     brand_id: int
     card_id: int
     expected_amount: Optional[int] = None
+    mydata: bool = False
+    hour: Optional[int] = None
+    method: str = "pay"   # pay: 우리페이(타사 카드는 오픈페이로 등록해 결제) | card: 계산대에서 실물 카드
+
+
+def payment_source(method: str, woori: bool) -> str:
+    """결제 정보가 어떻게 들어와 실적에 반영되는지"""
+    if method == "pay":
+        return ("우리페이 결제 · 우리카드 승인 데이터로 바로 반영" if woori
+                else "우리페이(오픈페이) 결제 · 우리 앱을 거친 결제라 바로 반영")
+    return ("실물 카드 결제 · 우리카드 승인 데이터로 바로 반영" if woori
+            else "실물 카드 결제 · 마이데이터로 반영 (실서비스에선 보통 다음 날, 시연에선 바로)")
 
 
 @app.post("/selections")
 def create_selection(body: SelectionIn, db: Session = Depends(get_db)):
-    if not db.get(Brand, body.brand_id) or not db.get(Card, body.card_id):
+    """우리카드는 자사 승인 데이터로 바로, 타사 카드는 마이데이터로 들어온다고 보고(시연에선 바로) 실적·사용 한도에 반영"""
+    brand, w = db.get(Brand, body.brand_id), db.get(WalletCard, body.card_id)
+    if not brand or not w:
         raise HTTPException(404, "브랜드 또는 카드 없음")
-    s = Selection(**body.model_dump())
+    amount = body.expected_amount or DEFAULT_AMOUNT
+    now = now_kst()
+    hour = now.hour if body.hour is None else body.hour
+    row = next((r for r in evaluate(db, brand, amount, hour, now.weekday(), body.mydata) if r["card_id"] == w.id), None)
+    if not row:
+        raise HTTPException(400, "마이데이터를 연동해야 쓸 수 있는 카드예요")
+    before = {"current_spend": w.current_spend, "upgrade_gap": row["upgrade_gap"], "next_tier_index": row["next_tier_index"]}
+
+    discount = row["expected_benefit"]
+    w.current_spend += amount
+    s = Selection(recognition_id=body.recognition_id, brand_id=brand.id, card_id=w.id, expected_amount=amount,
+                  benefit_id=row["benefit_id"] if discount else None, limit_group=row["limit_group"] if discount else None,
+                  discount=discount)
     db.add(s); db.commit(); db.refresh(s)
-    return {"selection_id": s.id, "ok": True}
+
+    after = card_state(w, body.mydata, usage_this_month(db))
+    return {
+        "selection_id": s.id, "ok": True,
+        "amount": amount, "discount": discount, "paid": amount - discount,
+        "method": body.method,
+        "source": payment_source(body.method, after["is_woori"]),
+        "before": before, "card": after,
+    }
+
+
+@app.post("/demo/reset")
+def demo_reset():
+    """시연 데이터 처음으로 (실적·결제 기록·자동 등록 가게 초기화)"""
+    reset_seed()
+    return {"ok": True}
 
 
 @app.get("/health")

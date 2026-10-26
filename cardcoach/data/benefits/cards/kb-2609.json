@@ -1,0 +1,97 @@
+{
+  "card_id": "kb-2609",
+  "issuer": "KB국민카드",
+  "name": "쿠팡 와우카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 20000,
+    "overseas": 20000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2609",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": 22000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드 구매·충전, 국세·지방세, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "kb-2609-b01",
+      "target_raw": "쿠팡, 쿠팡이츠, 쿠팡플레이 2% 쿠팡캐시 적립",
+      "target_kind": "brands",
+      "brands": [
+        "쿠팡",
+        "쿠팡이츠",
+        "쿠팡플레이"
+      ],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 20000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "online",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "프로모션(~2026-10-31) +2%",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2609-b02",
+      "target_raw": "쿠팡 외 국내외 가맹점 0.2% 쿠팡캐시 적립",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 0.2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 2000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "프로모션(~2026-10-31) 편의점 2.2%, 그 외 1% 추가",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "kb-2609-b03",
+      "target_raw": "[프로모션 ~2026-10-31] 편의점 CU, GS25, 세븐일레븐, 이마트24 오프라인 2.2% 추가 적립",
+      "target_kind": "brands",
+      "brands": [
+        "CU",
+        "GS25",
+        "세븐일레븐",
+        "이마트24"
+      ],
+      "rate": 2.2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 22000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "행사 기간 한정. KB PAY·삼성페이 외 간편결제 제외",
+      "confidence": "medium",
+      "reward_type": "point",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": []
+}

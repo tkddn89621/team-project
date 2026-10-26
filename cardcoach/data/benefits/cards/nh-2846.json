@@ -1,0 +1,71 @@
+{
+  "card_id": "nh-2846",
+  "issuer": "NH농협카드",
+  "name": "클래시 트래블카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 120000,
+    "overseas": 120000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2846",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": 100000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "nh-2846-b01",
+      "target_raw": "국내 가맹점 1.2% NH포인트 (건당 1만원 이상)",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 1.2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": 10000,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "세금·공과금 포함",
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "nh-2846-b02",
+      "target_raw": "해외 가맹점 3% (국내 전월실적 100만원 초과 시 4%)",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 3,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "해외 서비스·국제 브랜드 수수료 면제",
+    "공항라운지",
+    "연 1천만원 이상 5만P"
+  ],
+  "notes": "국내·해외 통합 월 10만점. 카드고릴라 표기 전월실적 100만원은 해외 4% 구간 기준"
+}

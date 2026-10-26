@@ -1,11 +1,16 @@
+/* 디자인: 우리카드 앱 (맞춤카드 찾기 화면 기준)
+   흰 배경 · 섹션 사이 옅은 회색 띠 · 가운데 제목 · 회색 버튼에 선택하면 파란 테두리 · 아이콘+이름 타일 · 밝은 파랑 #4587EC */
 :root {
-  --blue: #0067AC;
-  --blue-light: #E8F1F9;
-  --ink: #191F28;
-  --muted: #6B7684;
-  --line: #E5E8EB;
-  --bg: #F2F4F6;
-  --radius: 16px;
+  --blue: #4587EC;
+  --blue-light: #EDF3FD;
+  --ink: #1E2124;
+  --muted: #6C7278;
+  --hint: #A6ABB0;
+  --line: #EEF0F2;
+  --chip: #F2F3F5;      /* 버튼·입력칸 */
+  --tile: #F8F9F9;      /* 타일 · 섹션 사이 띠 */
+  --red: #F04452;
+  --amber: #F59E0B;
   font-family: -apple-system, "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
 }
 * { box-sizing: border-box; }
@@ -13,51 +18,63 @@ body { margin: 0; background: #DDE1EA; color: var(--ink); }
 button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; padding: 0; }
 input { font: inherit; }
 
-.phone { max-width: 430px; min-height: 100dvh; margin: 0 auto; background: var(--bg); position: relative; overflow: hidden; }
-.screen { min-height: 100dvh; display: flex; flex-direction: column; }
+.phone { max-width: 430px; min-height: 100dvh; margin: 0 auto; background: #fff; position: relative; overflow: hidden; }
+.screen { min-height: 100dvh; display: flex; flex-direction: column; background: #fff; }
 .center { align-items: center; justify-content: center; }
 .row { display: flex; align-items: center; gap: 12px; }
 .grow { flex: 1; min-width: 0; }
-.title { font-size: 17px; font-weight: 700; }
-.sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
-.headline { font-size: 18px; font-weight: 800; line-height: 1.35; word-break: keep-all; }
+.title { font-size: 18px; font-weight: 700; line-height: 1.4; }
+.sub { font-size: 14px; line-height: 1.5; color: var(--muted); margin-top: 3px; }
+.clamp1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mono { font-family: ui-monospace, Menlo, Consolas, monospace; letter-spacing: .5px; }
 
 .brandmark { border-radius: 50%; color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.brandmark.logo { background: #fff; object-fit: contain; border: 1px solid #E3E7EF; padding: 3px; display: block; }
-.cardthumb { width: 56px; height: 36px; border-radius: 6px; flex-shrink: 0; }
+.brandmark.logo { background: #fff; object-fit: contain; border: 1px solid var(--line); padding: 3px; display: block; }
+.brandmark.emoji { background: var(--tile); line-height: 1; } /* 로고 없는 가게: 업종 이모지 */
+.cardthumb { width: 44px; height: 28px; border-radius: 6px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+.pill { font-size: 11px; font-weight: 600; color: var(--blue); border: 1px solid var(--blue); border-radius: 999px; padding: 1px 7px; margin-left: 6px; vertical-align: middle; }
 
-/* ---- buttons ---- */
-.btn { border-radius: 12px; padding: 14px; font-weight: 700; font-size: 15px; flex: 1; }
+/* ---- 버튼: 기본 = 파랑 채움, 보조 = 회색 (우리카드 앱 '카드 검색' / '초기화') ---- */
+.btn { height: 54px; border-radius: 14px; font-weight: 600; font-size: 16px; flex: 1; }
 .btn.primary { background: var(--blue); color: #fff; }
-.btn.primary:disabled { background: #A9C6DE; }
-.btn.ghost { background: var(--blue-light); color: var(--blue); }
-.btn.big { padding: 16px; font-size: 16px; width: 100%; display: block; }
-.btnrow { display: flex; gap: 10px; margin-top: 14px; }
-.textbtn { color: #fff; font-size: 14px; padding: 8px; }
+.btn.primary:disabled { background: #B5CDF6; }
+.btn.ghost { background: var(--chip); color: #33383D; }
+.btn.big { width: 100%; display: block; flex: none; }
+.btnrow { display: flex; gap: 10px; margin-top: 24px; }
+.btnrow .btn.ghost { flex: 0 0 36%; }
 .iconbtn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
 .iconbtn.light { color: #fff; }
-.chip { background: var(--bg); border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; font-size: 13px; }
-.cands { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-.pill { font-size: 11px; color: var(--blue); border: 1px solid var(--blue); border-radius: 999px; padding: 1px 7px; margin-left: 6px; vertical-align: middle; }
+/* 작은 선택 버튼: 회색, 고르면 파란 테두리 */
+.hbtn { height: 36px; padding: 0 14px; border-radius: 10px; background: var(--chip); color: #33383D; font-size: 14px; font-weight: 500; white-space: nowrap; }
+.hbtn.accent { background: var(--blue); color: #fff; font-weight: 600; }
+.chip { height: 36px; padding: 0 14px; border-radius: 10px; background: var(--chip); color: #33383D; font-size: 14px; font-weight: 500; }
+.cands { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.chipnote { color: var(--muted); }
 
-/* ---- HOME ---- */
-.home { background: var(--bg); padding-bottom: 82px; }
-.home-body { display: flex; flex-direction: column; gap: 12px; padding: 56px 12px 24px; }
-.hcard { background: #fff; border-radius: 20px; }
-.hero-card { padding: 24px 20px 20px; display: flex; flex-direction: column; gap: 6px; }
-.hero-title { font-size: 20px; font-weight: 700; line-height: 1.4; letter-spacing: -0.3px; word-break: keep-all; }
-.hero-card .sub { font-size: 14px; }
-.scanbtn { margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-.hrow { display: flex; align-items: center; gap: 14px; padding: 20px; }
-.amount { font-size: 22px; font-weight: 700; letter-spacing: -0.4px; }
-.rowtitle { font-size: 16px; font-weight: 700; }
-.hbtn { height: 40px; padding: 0 14px; border-radius: 10px; background: var(--bg); color: #4E5968; font-size: 15px; font-weight: 500; white-space: nowrap; }
-.hbtn.accent { background: var(--blue-light); color: var(--blue); font-weight: 700; }
-.list { padding: 18px 20px 6px; }
+/* ---- 상단: 가운데 제목 (뒤로 가기는 왼쪽) ---- */
+.navbar { position: sticky; top: 0; z-index: 4; height: 60px; display: flex; align-items: center; justify-content: center; background: #fff; }
+.navbar .iconbtn { position: absolute; left: 4px; top: 6px; }
+.navtitle { font-size: 17px; font-weight: 700; }
+
+/* ---- 섹션: 흰 바탕, 섹션 사이에 옅은 회색 띠 ---- */
+.page, .home-body { display: flex; flex-direction: column; gap: 12px; background: var(--tile); padding-bottom: 12px; }
+.hcard { background: #fff; border-radius: 0; }
+.hero-card { padding: 28px 24px; display: flex; flex-direction: column; gap: 6px; }
+.hero-title { font-size: 22px; font-weight: 700; line-height: 1.4; letter-spacing: -0.4px; word-break: keep-all; }
+.hero-card .sub { font-size: 15px; }
+.scanbtn { margin-top: 22px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.hrow { display: flex; align-items: center; gap: 16px; padding: 24px 24px; }
+.amount { font-size: 20px; font-weight: 700; letter-spacing: -0.4px; }
+.rowtitle { font-size: 17px; font-weight: 700; line-height: 1.4; letter-spacing: -0.2px; word-break: keep-all; }
+.list { padding: 24px 24px 8px; }
 .listrow { width: 100%; display: flex; align-items: center; gap: 14px; min-height: 64px; text-align: left; }
-.listname { font-size: 16px; font-weight: 500; }
+.listname { font-size: 16px; font-weight: 600; }
+.pad-y { display: flex; justify-content: center; padding: 40px 0; background: #fff; }
+.home { padding-bottom: 82px; }
+
+/* ---- 하단 탭바 ---- */
 .tabbar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; height: 82px; padding-bottom: 20px; background: #fff; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; z-index: 5; }
-.tabbar button { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; color: var(--muted); }
+.tabbar button { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; color: var(--hint); }
 .tabbar button.on { color: var(--ink); font-weight: 700; }
 
 /* ---- FIND ---- */
@@ -80,57 +97,90 @@ input { font: inherit; }
 .albumspacer { display: block; }
 .shutter { justify-self: center; width: 72px; height: 72px; border-radius: 50%; background: #fff; border: 5px solid #111315; box-shadow: 0 0 0 4px #fff; }
 .shutter:disabled { opacity: .5; }
-.sheet { background: #fff; border-radius: var(--radius) var(--radius) 0 0; padding: 18px 18px 28px; position: relative; z-index: 3; }
 
+/* ---- 아래에서 올라오는 시트·팝업 ---- */
+.sheet { background: #fff; border-radius: 24px 24px 0 0; padding: 28px 24px 28px; position: relative; z-index: 3; }
 .modal { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: flex-end; z-index: 10; }
-.modal-body { background: #fff; width: 100%; max-width: 430px; margin: 0 auto; border-radius: 20px 20px 0 0; padding: 20px 18px 30px; max-height: 70dvh; overflow: auto; }
-.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 8px; margin-top: 16px; }
-.gridcell { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; }
+.modal-body { background: #fff; width: 100%; max-width: 430px; margin: 0 auto; border-radius: 24px 24px 0 0; padding: 28px 24px 28px; max-height: 82dvh; overflow: auto; }
+.modal-body > .title { font-size: 19px; }
+.modal-body .body { font-size: 15px; line-height: 1.6; color: #4E5459; word-break: keep-all; }
+.modal-cta { margin-top: 24px; }
+.toast { position: fixed; bottom: 150px; left: 50%; transform: translateX(-50%); z-index: 6; background: #222; color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 14px; }
 
-/* ---- REC ---- */
-.rec { background: #fff; padding-bottom: 96px; }
-.topbar { padding: 8px 10px; }
-.hero { padding: 6px 20px 14px; }
-.amountrow { display: flex; align-items: center; gap: 10px; padding: 0 20px 12px; font-size: 13px; color: var(--muted); }
-.amountrow input { flex: 1; border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; font-size: 14px; }
-.tabs { display: flex; gap: 8px; padding: 0 20px 14px; align-items: center; }
-.tabs button { padding: 7px 14px; border-radius: 999px; background: var(--bg); font-size: 13px; font-weight: 600; color: var(--muted); }
-.tabs button.on { background: var(--blue); color: #fff; }
-.tab-static { margin-left: auto; font-size: 13px; color: var(--muted); }
-.cards { display: flex; flex-direction: column; gap: 12px; padding: 0 16px; }
-.cardrow { text-align: left; width: 100%; padding: 16px; border-radius: var(--radius); background: var(--bg); border: 1.5px solid transparent; }
-.cardrow.best { background: var(--blue-light); border-color: #B9D3EA; }
-.cardrow.none { opacity: .5; }
-.badge { display: inline-block; background: var(--blue); color: #fff; font-weight: 700; font-size: 12px; padding: 4px 10px; border-radius: 999px; margin-bottom: 10px; }
-.cardname { font-weight: 700; font-size: 15px; }
-.rate { font-size: 15px; font-weight: 700; margin-top: 2px; }
-.rate.accent { color: var(--blue); font-size: 17px; }
-.radio { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #C6CBD9; flex-shrink: 0; }
-.radio.on { border-color: var(--blue); background: var(--blue) radial-gradient(circle, #fff 35%, transparent 38%); }
-.cta { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; padding: 12px 16px 26px; background: linear-gradient(transparent, #fff 30%); }
-.toast { position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%); background: #222; color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 14px; }
-
-/* ---- 근거 표시 / 검색 ---- */
-.chipnote { color: var(--muted); }
-.search { width: 100%; margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 14px; }
+/* ---- 타일: 아이콘 + 이름 (우리카드 앱 '카드 혜택' 타일) ---- */
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 20px; }
+.tile { min-height: 64px; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 16px; background: var(--tile); text-align: left; }
+.tile .brandmark.emoji { background: transparent; }
+.tile .brandmark.logo { border: 0; }
+.tilename { display: block; font-size: 15px; color: #33383D; word-break: keep-all; }
+.tilesub { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.tile.big { min-height: 72px; }
+.tile:active { box-shadow: inset 0 0 0 2px var(--blue); }
+.search { width: 100%; height: 50px; margin-top: 20px; border: 0; border-radius: 12px; background: var(--chip); padding: 0 16px; font-size: 15px; outline: none; }
+.search:focus { box-shadow: inset 0 0 0 2px var(--blue); }
 .empty { text-align: center; padding: 16px 0; }
-.modal-body .body { font-size: 14px; line-height: 1.55; color: #444; word-break: keep-all; }
+.textlinks { display: flex; justify-content: center; gap: 28px; margin-top: 20px; }
+.textlinks button { padding: 8px 4px; font-size: 14px; color: var(--muted); }
 
-/* ---- 실적 / 마이데이터 / 보안 ---- */
-.pad { padding: 0 16px 12px; display: flex; flex-direction: column; gap: 8px; }
-.mydata { display: flex; align-items: center; gap: 10px; background: var(--blue-light); color: #1D4E7A; font-size: 12.5px; line-height: 1.4; padding: 10px 12px; border-radius: 12px; word-break: keep-all; }
-.mydata span { flex: 1; }
-.mydata button { background: var(--blue); color: #fff; font-weight: 700; font-size: 12.5px; padding: 7px 10px; border-radius: 8px; white-space: nowrap; }
-.mydata.on { background: #E9F8EF; color: #137A3F; }
-.secure { background: var(--blue-light); color: #24438F; font-size: 12.5px; line-height: 1.5; padding: 10px 12px; border-radius: 12px; word-break: keep-all; }
-.urgent { background: #FFEFEF; color: #A12B2B; font-size: 13px; line-height: 1.45; padding: 10px 12px; border-radius: 12px; word-break: keep-all; }
-.spend { margin-top: 8px; }
-.spend .bar { height: 6px; background: var(--line); border-radius: 999px; overflow: hidden; }
-.spend .bar div { height: 100%; background: var(--blue); border-radius: 999px; }
-.spend.unknown { font-size: 12px; color: #A86B00; }
-.bestline { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; margin-bottom: 10px; }
-.bestline .badge { margin-bottom: 0; }
+/* ---- REC (카드 추천) ---- */
+.rec { padding-bottom: 170px; }
+.rec-title { font-size: 19px; margin-top: 20px; }
+.field { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+.field-label { font-size: 15px; font-weight: 600; color: var(--ink); }
+.field-box { display: flex; align-items: center; gap: 6px; height: 52px; padding: 0 16px; border-radius: 12px; background: var(--chip); }
+.field-box:focus-within { box-shadow: inset 0 0 0 2px var(--blue); }
+.field-box input { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; text-align: right; font-size: 18px; font-weight: 700; color: var(--ink); }
+.field-box input::placeholder { color: var(--hint); }
+.field-box span { font-size: 16px; font-weight: 600; }
+.coachcard .rowtitle::before, .riskcard .rowtitle::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: 3px; }
+.coachcard .rowtitle::before { background: var(--amber); }
+.riskcard .rowtitle::before { background: var(--red); }
+.coachcard .sub, .riskcard .sub { line-height: 1.55; word-break: keep-all; }
+.riskcard { width: 100%; text-align: left; }
+.list-head { display: flex; flex-direction: column; gap: 14px; padding-bottom: 16px; }
+/* 전체 / 우리카드: 우리카드 앱 '신용카드 / 체크카드' 선택 버튼 */
+.seg { display: flex; gap: 10px; }
+.seg button { flex: 1; height: 44px; padding: 0 14px; border-radius: 12px; background: var(--chip); font-size: 14px; font-weight: 500; color: var(--muted); white-space: nowrap; }
+.seg button.on { color: var(--ink); box-shadow: inset 0 0 0 2px var(--blue); }
+/* 카드 하나 = 타일. 고르면 파란 테두리 */
+.cardopt { display: block; width: 100%; text-align: left; padding: 18px; margin-bottom: 10px; border-radius: 16px; background: var(--tile); }
+.cardopt.on { box-shadow: inset 0 0 0 2px var(--blue); }
+.cardopt.none { opacity: .55; }
+.cardopt .row.top { align-items: flex-start; }
+.cardopt .cardthumb { margin-top: 2px; }
+.optright { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.save { font-size: 16px; font-weight: 700; color: var(--blue); white-space: nowrap; }
+.optbody { padding-left: 56px; margin-top: 6px; }
+.optbody .sub { line-height: 1.45; word-break: keep-all; }
+.badge { display: inline-block; background: var(--blue); color: #fff; font-weight: 600; font-size: 11px; padding: 3px 9px; border-radius: 999px; }
+.bestline { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; margin-bottom: 14px; }
 .reason { font-size: 12px; color: var(--blue); font-weight: 600; }
-.mono { font-family: ui-monospace, Menlo, Consolas, monospace; letter-spacing: .5px; }
-.wallet { padding-bottom: 32px; }
-.wallet .topbar { gap: 4px; }
+.cardname { font-weight: 700; font-size: 16px; }
+.rate { font-size: 14px; font-weight: 600; margin-top: 3px; color: #4E5459; word-break: keep-all; }
+.rate.accent { color: var(--blue); }
+.cta { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 5; width: 100%; max-width: 430px; padding: 12px 24px 32px; background: #fff; box-shadow: 0 -8px 16px rgba(255,255,255,.9); }
+.cta-note { font-size: 13px; line-height: 1.5; color: var(--muted); text-align: center; margin-bottom: 10px; word-break: keep-all; }
+
+/* ---- 결제 반영 결과 ---- */
+.paid-amount { font-size: 21px; font-weight: 700; letter-spacing: -0.4px; margin-top: 2px; }
+.kv { display: flex; flex-direction: column; margin: 22px 0 12px; padding: 4px 18px; border-radius: 16px; background: var(--tile); }
+.kv > div { display: flex; justify-content: space-between; gap: 12px; padding: 13px 0; font-size: 15px; }
+.kv > div + div { border-top: 1px solid var(--line); }
+.kv span { color: var(--muted); }
+.kv b.accent { color: var(--blue); }
+
+/* ---- WALLET (내 카드) ---- */
+.wallet { padding-bottom: 82px; }
+.walletcard { padding: 24px 24px; }
+.limitline { display: flex; justify-content: space-between; align-items: baseline; margin: 20px 0 4px; padding: 16px 18px; border-radius: 14px; background: var(--tile); font-size: 14px; }
+.limitline span { color: var(--muted); font-size: 14px; }
+.limitline b { font-size: 17px; letter-spacing: -0.3px; }
+.resetbtn { align-self: center; margin: 18px 0 8px; font-size: 13px; color: var(--muted); text-decoration: underline; padding: 8px; }
+
+/* ---- 실적 진행 바 ---- */
+.spend { margin-top: 14px; }
+.spend .bar { height: 8px; margin: 10px 0 6px; background: var(--chip); border-radius: 999px; overflow: hidden; }
+.spend .bar div { height: 100%; background: var(--blue); border-radius: 999px; }
+.spend .sub { line-height: 1.45; word-break: keep-all; }
+.spend.unknown { font-size: 12px; color: #A86B00; }
+.cta-row { margin-top: 0; }   /* 결제 버튼 두 개: 실물 카드(회색) · 우리페이(파랑) */

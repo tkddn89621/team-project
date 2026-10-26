@@ -1,0 +1,4101 @@
+{
+ "version": "2026-10-27",
+ "how_to_use": [
+  "1) 사진 → 로고/OCR 별칭(brands[].aliases)으로 브랜드를 찾으면 brands[].code가 업종",
+  "2) 브랜드를 못 찾으면 GPS 근처 카카오 장소의 category_name을 \" > \"로 나눠 kakao.category_name_segments와 비교(같은 세그먼트가 여러 코드에 있으면 place_name_contains로 구분, 예: 트레이더스)",
+  "3) 그래도 없으면 Vision label이 vision_labels에 있는 코드를 낮은 신뢰도 후보로",
+  "4) 업종코드 → taxonomy.json의 raw_expressions가 같은 코드인 카드 혜택(benefit_codes)으로 추천"
+ ],
+ "kakao_note": "category_group_codes는 카카오 로컬 공식 그룹코드(MT1 대형마트, CS2 편의점, AC5 학원, PK6 주차장, OL7 주유소·충전소, CT1 문화시설, AT4 관광명소, AD5 숙박, FD6 음식점, CE7 카페, HP8 병원, PM9 약국). category_name_segments는 카카오맵 검색 결과에서 확인한 업종명(kakao_observed) + 추정. 추정 세그먼트는 실제 API 응답으로 한 번 더 확인 필요",
+ "codes": [
+  {
+   "code": "FD-REST",
+   "name": "음식점(일반)",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "FD6"
+    ],
+    "category_name_segments": [
+     "한식",
+     "한정식",
+     "중식",
+     "중국요리",
+     "양꼬치",
+     "일식",
+     "양식",
+     "이탈리안",
+     "돈까스,우동",
+     "뷔페",
+     "아시아음식",
+     "육류,고기",
+     "해물,생선",
+     "국수",
+     "칼국수",
+     "샤브샤브",
+     "퓨전요리",
+     "구내식당"
+    ]
+   },
+   "kakao_observed": [
+    "고깃집 → 육류,고기",
+    "한정식 → 한정식",
+    "중식 → 중국요리 / 양꼬치",
+    "양식 → 이탈리안 / 양식",
+    "일식 → 일식"
+   ],
+   "vision_labels": [
+    "restaurant",
+    "korean cuisine",
+    "food",
+    "dish",
+    "meal",
+    "tableware",
+    "noodle",
+    "soup",
+    "barbecue",
+    "sushi",
+    "chinese food",
+    "japanese cuisine"
+   ]
+  },
+  {
+   "code": "FD-FAST",
+   "name": "패스트푸드·버거",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "FD6"
+    ],
+    "category_name_segments": [
+     "패스트푸드",
+     "햄버거",
+     "샌드위치",
+     "치킨"
+    ]
+   },
+   "kakao_observed": [
+    "버거킹 → 패스트푸드",
+    "맥도날드 → 패스트푸드",
+    "롯데리아 → 패스트푸드",
+    "노브랜드버거 → 패스트푸드",
+    "치킨집 → 치킨",
+    "수제버거 → 햄버거"
+   ],
+   "vision_labels": [
+    "fast food",
+    "hamburger",
+    "burger",
+    "cheeseburger",
+    "french fries",
+    "junk food",
+    "fried chicken",
+    "sandwich"
+   ]
+  },
+  {
+   "code": "FD-FAMILY",
+   "name": "패밀리레스토랑",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "FD6"
+    ],
+    "category_name_segments": [
+     "패밀리레스토랑"
+    ]
+   },
+   "kakao_observed": [],
+   "vision_labels": [
+    "steak",
+    "restaurant"
+   ]
+  },
+  {
+   "code": "FD-BAKERY",
+   "name": "제과·베이커리·아이스크림",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "FD6",
+     "CE7"
+    ],
+    "category_name_segments": [
+     "제과,베이커리",
+     "도넛",
+     "아이스크림",
+     "떡,한과"
+    ]
+   },
+   "kakao_observed": [
+    "파리바게뜨 → 제과,베이커리",
+    "배스킨라빈스 → 아이스크림"
+   ],
+   "vision_labels": [
+    "bakery",
+    "baked goods",
+    "bread",
+    "pastry",
+    "doughnut",
+    "cake",
+    "ice cream",
+    "frozen dessert"
+   ]
+  },
+  {
+   "code": "FD-SNACK",
+   "name": "분식",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "FD6"
+    ],
+    "category_name_segments": [
+     "분식",
+     "떡볶이"
+    ]
+   },
+   "kakao_observed": [
+    "김밥천국 → 분식",
+    "엽기떡볶이 → 떡볶이"
+   ],
+   "vision_labels": [
+    "tteokbokki",
+    "gimbap",
+    "street food"
+   ]
+  },
+  {
+   "code": "FD-CAFE",
+   "name": "카페·커피전문점",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "CE7"
+    ],
+    "category_name_segments": [
+     "카페",
+     "커피전문점"
+    ]
+   },
+   "kakao_observed": [
+    "스타벅스 → 커피전문점",
+    "메가MGC커피 → 커피전문점"
+   ],
+   "vision_labels": [
+    "coffee",
+    "coffee cup",
+    "cup",
+    "latte",
+    "espresso",
+    "cappuccino",
+    "cafe",
+    "coffeehouse",
+    "drink"
+   ]
+  },
+  {
+   "code": "FD-BAR",
+   "name": "주점",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "FD6"
+    ],
+    "category_name_segments": [
+     "술집",
+     "호프,요리주점",
+     "일본식주점",
+     "와인바",
+     "칵테일바",
+     "이자카야"
+    ]
+   },
+   "kakao_observed": [
+    "이자카야 → 일본식주점",
+    "호프 → 호프,요리주점"
+   ],
+   "vision_labels": [
+    "beer",
+    "alcoholic beverage",
+    "bar",
+    "pub",
+    "drinking establishment",
+    "wine"
+   ]
+  },
+  {
+   "code": "RT-CVS",
+   "name": "편의점",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "CS2"
+    ],
+    "category_name_segments": [
+     "편의점"
+    ]
+   },
+   "kakao_observed": [
+    "GS25 → 편의점",
+    "CU → 편의점",
+    "세븐일레븐 → 편의점",
+    "이마트24 → 편의점"
+   ],
+   "vision_labels": [
+    "convenience store",
+    "convenience food",
+    "retail",
+    "shelf",
+    "snack"
+   ]
+  },
+  {
+   "code": "RT-MART",
+   "name": "대형마트",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "MT1"
+    ],
+    "category_name_segments": [
+     "대형마트"
+    ]
+   },
+   "kakao_observed": [
+    "이마트 → 대형마트",
+    "롯데마트 → 대형마트"
+   ],
+   "vision_labels": [
+    "supermarket",
+    "grocery store",
+    "retail",
+    "shopping cart",
+    "aisle"
+   ]
+  },
+  {
+   "code": "RT-WAREHOUSE",
+   "name": "창고형 할인매장",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "MT1"
+    ],
+    "category_name_segments": [
+     "대형마트"
+    ],
+    "place_name_contains": [
+     "트레이더스",
+     "코스트코",
+     "맥스"
+    ]
+   },
+   "kakao_observed": [
+    "트레이더스 홀세일 클럽 → 대형마트",
+    "코스트코 → 대형마트"
+   ],
+   "vision_labels": [
+    "warehouse store",
+    "supermarket",
+    "shopping cart"
+   ]
+  },
+  {
+   "code": "RT-SSM",
+   "name": "기업형 슈퍼마켓",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "MT1"
+    ],
+    "category_name_segments": [
+     "대형슈퍼",
+     "슈퍼마켓"
+    ]
+   },
+   "kakao_observed": [
+    "이마트에브리데이 → 대형슈퍼",
+    "GS더프레시 → 대형슈퍼",
+    "농협하나로마트(지역농협) → 대형슈퍼"
+   ],
+   "vision_labels": [
+    "supermarket",
+    "grocery store"
+   ]
+  },
+  {
+   "code": "RT-DEPT",
+   "name": "백화점",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "백화점"
+    ]
+   },
+   "kakao_observed": [
+    "현대백화점 → 백화점"
+   ],
+   "vision_labels": [
+    "department store",
+    "shopping mall",
+    "retail"
+   ]
+  },
+  {
+   "code": "RT-OUTLET",
+   "name": "아울렛·복합쇼핑몰",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "상설할인매장",
+     "아울렛",
+     "복합쇼핑몰",
+     "쇼핑몰"
+    ]
+   },
+   "kakao_observed": [
+    "신세계사이먼 프리미엄아울렛 → 상설할인매장",
+    "스타필드 → 복합쇼핑몰"
+   ],
+   "vision_labels": [
+    "shopping mall",
+    "outlet store",
+    "retail"
+   ]
+  },
+  {
+   "code": "RT-DUTYFREE",
+   "name": "면세점",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "면세점"
+    ]
+   },
+   "kakao_observed": [
+    "롯데면세점 → 면세점"
+   ],
+   "vision_labels": [
+    "duty free shop",
+    "airport",
+    "retail"
+   ]
+  },
+  {
+   "code": "RT-HB",
+   "name": "드럭스토어(H&B)",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "드럭스토어",
+     "화장품"
+    ]
+   },
+   "kakao_observed": [
+    "올리브영 → 드럭스토어"
+   ],
+   "vision_labels": [
+    "cosmetics",
+    "beauty",
+    "skin care",
+    "personal care",
+    "drugstore"
+   ]
+  },
+  {
+   "code": "RT-LIVING",
+   "name": "생활용품점(다이소)",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "생활용품점",
+     "생활,잡화"
+    ]
+   },
+   "kakao_observed": [
+    "다이소 → 생활용품점"
+   ],
+   "vision_labels": [
+    "household supply",
+    "retail",
+    "shelf"
+   ]
+  },
+  {
+   "code": "RT-BOOK",
+   "name": "서점",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "서점",
+     "도서"
+    ]
+   },
+   "kakao_observed": [
+    "교보문고 → 서점"
+   ],
+   "vision_labels": [
+    "book",
+    "bookcase",
+    "publication",
+    "bookselling",
+    "library"
+   ]
+  },
+  {
+   "code": "RT-FASHION",
+   "name": "의류(SPA)",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "의류판매",
+     "패션",
+     "SPA브랜드"
+    ]
+   },
+   "kakao_observed": [
+    "유니클로 → 의류판매"
+   ],
+   "vision_labels": [
+    "clothing",
+    "boutique",
+    "fashion"
+   ]
+  },
+  {
+   "code": "RT-OPTICAL",
+   "name": "안경점",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "안경,렌즈",
+     "안경"
+    ]
+   },
+   "kakao_observed": [
+    "안경원 → 안경,렌즈"
+   ],
+   "vision_labels": [
+    "eyewear",
+    "glasses",
+    "optician"
+   ]
+  },
+  {
+   "code": "RT-LIQUOR",
+   "name": "주류 판매점(보틀숍)",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "주류판매",
+     "와인샵"
+    ]
+   },
+   "kakao_observed": [
+    "와인앤모어 → 주류판매"
+   ],
+   "vision_labels": [
+    "wine",
+    "liquor store",
+    "bottle"
+   ]
+  },
+  {
+   "code": "RT-PET",
+   "name": "반려동물용품",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "애견용품",
+     "반려동물용품",
+     "애완동물"
+    ]
+   },
+   "kakao_observed": [
+    "애견용품점 → 반려동물용품"
+   ],
+   "vision_labels": [
+    "pet supply",
+    "dog",
+    "cat"
+   ]
+  },
+  {
+   "code": "RT-MARKET",
+   "name": "전통시장",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "시장",
+     "전통시장"
+    ]
+   },
+   "kakao_observed": [
+    "망원시장 → 시장"
+   ],
+   "vision_labels": [
+    "marketplace",
+    "market",
+    "bazaar"
+   ]
+  },
+  {
+   "code": "RT-PX",
+   "name": "군마트(PX)",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "군마트"
+    ]
+   },
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "HL-HOSP",
+   "name": "병원·의원",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "HP8"
+    ],
+    "category_name_segments": [
+     "병원",
+     "의원",
+     "내과",
+     "치과",
+     "한의원",
+     "종합병원",
+     "정형외과",
+     "소아청소년과",
+     "이비인후과",
+     "피부과",
+     "안과"
+    ]
+   },
+   "kakao_observed": [
+    "내과의원 → 내과",
+    "치과의원 → 치과",
+    "한의원 → 한의원"
+   ],
+   "vision_labels": [
+    "hospital",
+    "clinic",
+    "medical"
+   ]
+  },
+  {
+   "code": "HL-PHARM",
+   "name": "약국",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "PM9"
+    ],
+    "category_name_segments": [
+     "약국"
+    ]
+   },
+   "kakao_observed": [
+    "약국 → 약국"
+   ],
+   "vision_labels": [
+    "pharmacy",
+    "medicine",
+    "pharmaceutical drug"
+   ]
+  },
+  {
+   "code": "HL-VET",
+   "name": "동물병원",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "동물병원"
+    ]
+   },
+   "kakao_observed": [
+    "동물병원 → 동물병원"
+   ],
+   "vision_labels": [
+    "veterinarian",
+    "dog",
+    "cat"
+   ]
+  },
+  {
+   "code": "LS-CINEMA",
+   "name": "영화관",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "CT1"
+    ],
+    "category_name_segments": [
+     "영화관"
+    ]
+   },
+   "kakao_observed": [
+    "메가박스 → 영화관",
+    "롯데시네마 → 영화관"
+   ],
+   "vision_labels": [
+    "movie theater",
+    "cinema",
+    "popcorn",
+    "film"
+   ]
+  },
+  {
+   "code": "LS-THEME",
+   "name": "테마파크·놀이공원",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "AT4"
+    ],
+    "category_name_segments": [
+     "테마파크",
+     "워터테마파크",
+     "놀이공원"
+    ]
+   },
+   "kakao_observed": [
+    "에버랜드 → 테마파크",
+    "롯데월드 어드벤처 → 테마파크",
+    "아쿠아필드 → 워터테마파크"
+   ],
+   "vision_labels": [
+    "amusement park",
+    "roller coaster",
+    "amusement ride",
+    "theme park"
+   ]
+  },
+  {
+   "code": "LS-SPORTS",
+   "name": "스포츠시설(헬스·수영·요가·골프연습장 등)",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "헬스클럽",
+     "수영장",
+     "요가",
+     "필라테스",
+     "볼링장",
+     "테니스장",
+     "골프연습장",
+     "스크린골프연습장",
+     "스포츠시설"
+    ]
+   },
+   "kakao_observed": [
+    "헬스장 → 헬스클럽",
+    "골프존파크 → 스크린골프연습장"
+   ],
+   "vision_labels": [
+    "gym",
+    "exercise equipment",
+    "fitness",
+    "swimming pool",
+    "bowling",
+    "yoga"
+   ]
+  },
+  {
+   "code": "LS-GOLF",
+   "name": "골프장",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "골프장"
+    ]
+   },
+   "kakao_observed": [
+    "골프장(CC) → 골프장"
+   ],
+   "vision_labels": [
+    "golf",
+    "golf course"
+   ]
+  },
+  {
+   "code": "LS-PCROOM",
+   "name": "PC방",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "게임방,PC방",
+     "PC방"
+    ]
+   },
+   "kakao_observed": [
+    "PC방 → 게임방,PC방"
+   ],
+   "vision_labels": [
+    "computer",
+    "gaming",
+    "pc game"
+   ]
+  },
+  {
+   "code": "LS-KARAOKE",
+   "name": "노래방",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "노래방",
+     "코인노래방"
+    ]
+   },
+   "kakao_observed": [
+    "노래연습장 → 노래방 / 코인노래방"
+   ],
+   "vision_labels": [
+    "karaoke",
+    "microphone"
+   ]
+  },
+  {
+   "code": "LS-TICKET",
+   "name": "공연·티켓 예매",
+   "store_recognizable": false,
+   "kakao": null,
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "SV-HAIR",
+   "name": "미용실",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "미용실",
+     "헤어샵",
+     "이발소"
+    ]
+   },
+   "kakao_observed": [
+    "준오헤어 → 미용실"
+   ],
+   "vision_labels": [
+    "hairdresser",
+    "barber",
+    "hair",
+    "beauty salon"
+   ]
+  },
+  {
+   "code": "SV-LAUNDRY",
+   "name": "세탁소",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "세탁소",
+     "셀프빨래방"
+    ]
+   },
+   "kakao_observed": [
+    "크린토피아 코인워시 → 셀프빨래방"
+   ],
+   "vision_labels": [
+    "laundry",
+    "dry cleaning"
+   ]
+  },
+  {
+   "code": "SV-EDU",
+   "name": "학원·교육",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "AC5"
+    ],
+    "category_name_segments": [
+     "학원",
+     "입시학원",
+     "영어학원",
+     "외국어학원",
+     "예체능학원",
+     "보습학원"
+    ]
+   },
+   "kakao_observed": [],
+   "vision_labels": [
+    "classroom",
+    "education"
+   ]
+  },
+  {
+   "code": "SV-STUDY",
+   "name": "독서실",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "독서실",
+     "스터디카페"
+    ]
+   },
+   "kakao_observed": [],
+   "vision_labels": [
+    "study",
+    "library"
+   ]
+  },
+  {
+   "code": "SV-EXAM",
+   "name": "어학시험 접수",
+   "store_recognizable": false,
+   "kakao": null,
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "TR-FUEL",
+   "name": "주유소",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "OL7"
+    ],
+    "category_name_segments": [
+     "주유소",
+     "GS칼텍스",
+     "SK주유소",
+     "S-OIL",
+     "현대오일뱅크",
+     "알뜰주유소"
+    ]
+   },
+   "kakao_observed": [
+    "GS칼텍스 주유소 → GS칼텍스(정유사명이 마지막 세그먼트)",
+    "SK주유소 → SK주유소"
+   ],
+   "vision_labels": [
+    "gas station",
+    "fuel",
+    "filling station"
+   ]
+  },
+  {
+   "code": "TR-LPG",
+   "name": "LPG 충전소",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "OL7"
+    ],
+    "category_name_segments": [
+     "LPG충전소",
+     "가스충전소"
+    ]
+   },
+   "kakao_observed": [
+    "LPG 충전소 → LPG충전소"
+   ],
+   "vision_labels": [
+    "gas station",
+    "fuel"
+   ]
+  },
+  {
+   "code": "TR-EV",
+   "name": "전기차 충전",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "OL7"
+    ],
+    "category_name_segments": [
+     "전기차 충전소",
+     "전기차충전소"
+    ]
+   },
+   "kakao_observed": [
+    "전기차충전소 → 전기차 충전소"
+   ],
+   "vision_labels": [
+    "electric vehicle",
+    "charging station"
+   ]
+  },
+  {
+   "code": "TR-PARK",
+   "name": "주차장",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "PK6"
+    ],
+    "category_name_segments": [
+     "주차장",
+     "공영주차장"
+    ]
+   },
+   "kakao_observed": [
+    "주차장 → 주차장 / 공영주차장"
+   ],
+   "vision_labels": [
+    "parking",
+    "parking lot",
+    "car park"
+   ]
+  },
+  {
+   "code": "TR-CARCARE",
+   "name": "정비·세차",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "자동차정비",
+     "정비소",
+     "세차장"
+    ]
+   },
+   "kakao_observed": [
+    "자동차정비소 → 자동차정비",
+    "세차장 → 세차장"
+   ],
+   "vision_labels": [
+    "car wash",
+    "auto mechanic",
+    "automobile repair shop"
+   ]
+  },
+  {
+   "code": "TR-CARSHARE",
+   "name": "렌터카·카셰어링",
+   "store_recognizable": false,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "렌터카",
+     "카셰어링"
+    ]
+   },
+   "kakao_observed": [
+    "쏘카존 → 카셰어링"
+   ],
+   "vision_labels": []
+  },
+  {
+   "code": "TR-TAXI",
+   "name": "택시(카드 단말·앱)",
+   "store_recognizable": false,
+   "kakao": null,
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "TV-HOTEL",
+   "name": "호텔·숙박",
+   "store_recognizable": true,
+   "kakao": {
+    "category_group_codes": [
+     "AD5"
+    ],
+    "category_name_segments": [
+     "호텔",
+     "리조트",
+     "콘도미니엄"
+    ]
+   },
+   "kakao_observed": [
+    "호텔 → 호텔",
+    "모텔 → 여관,모텔"
+   ],
+   "vision_labels": [
+    "hotel",
+    "resort",
+    "lobby"
+   ]
+  },
+  {
+   "code": "TV-AGENCY",
+   "name": "여행사·숙박예약",
+   "store_recognizable": false,
+   "kakao": {
+    "category_group_codes": [],
+    "category_name_segments": [
+     "여행사"
+    ]
+   },
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "TV-AIR",
+   "name": "항공",
+   "store_recognizable": false,
+   "kakao": null,
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "ON-ALL",
+   "name": "온라인 업종 전체",
+   "store_recognizable": false,
+   "kakao": null,
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "ON-MALL",
+   "name": "온라인 종합몰·오픈마켓",
+   "store_recognizable": false,
+   "kakao": null,
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "ON-FASHION",
+   "name": "온라인 패션몰",
+   "store_recognizable": false,
+   "kakao": null,
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "ON-GROCERY",
+   "name": "온라인 장보기·새벽배송",
+   "store_recognizable": false,
+   "kakao": null,
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "ON-HOMESHOP",
+   "name": "홈쇼핑",
+   "store_recognizable": false,
+   "kakao": null,
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "ON-RESELL",
+   "name": "리셀·중고거래",
+   "store_recognizable": false,
+   "kakao": null,
+   "kakao_observed": [],
+   "vision_labels": []
+  },
+  {
+   "code": "ON-DELIVERY",
+   "name": "배달앱",
+   "store_recognizable": false,
+   "kakao": null,
+   "kakao_observed": [],
+   "vision_labels": []
+  }
+ ],
+ "brands": [
+  {
+   "brand": "던킨",
+   "code": "FD-BAKERY",
+   "store_recognizable": true,
+   "aliases": [
+    "dunkin",
+    "던킨"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "뚜레쥬르",
+   "code": "FD-BAKERY",
+   "store_recognizable": true,
+   "aliases": [
+    "tous les jours",
+    "뚜레쥬르"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "배스킨라빈스",
+   "code": "FD-BAKERY",
+   "store_recognizable": true,
+   "aliases": [
+    "baskin robbins",
+    "배스킨라빈스",
+    "베스킨라빈스"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "카페노티드",
+   "code": "FD-BAKERY",
+   "store_recognizable": true,
+   "aliases": [
+    "cafe knotted",
+    "노티드"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "파리바게뜨",
+   "code": "FD-BAKERY",
+   "store_recognizable": true,
+   "aliases": [
+    "paris baguette",
+    "파리바게뜨",
+    "파리바게트"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "파리크라상",
+   "code": "FD-BAKERY",
+   "store_recognizable": true,
+   "aliases": [
+    "paris croissant",
+    "파리크라상"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "매머드커피",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "mammoth coffee",
+    "매머드"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "메가MGC커피",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "mega mgc coffee",
+    "mega coffee",
+    "메가커피",
+    "메가엠지씨"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "블루보틀",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "blue bottle",
+    "블루보틀"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "빽다방",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "paik",
+    "빽다방"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "스타벅스",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "starbucks",
+    "스타벅스"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "아티제",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "artisee",
+    "아티제"
+   ],
+   "in_seed": false,
+   "note": "베이커리 카페. 카드 원문(삼성 taptap O)이 커피전문점으로 분류"
+  },
+  {
+   "brand": "엔제리너스",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "angel-in-us",
+    "엔제리너스"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "이디야커피",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "ediya",
+    "이디야"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "카페 오로르",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "카페 오로르",
+    "오로르",
+    "cafe aurore"
+   ],
+   "in_seed": true,
+   "note": "seed.py의 가상 동네 카페(GPS 시나리오용)"
+  },
+  {
+   "brand": "카페베네",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "caffe bene",
+    "카페베네"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "커피빈",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "coffee bean",
+    "커피빈"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "컴포즈커피",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "compose coffee",
+    "컴포즈"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "탐앤탐스",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "tom n toms",
+    "탐앤탐스"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "투썸플레이스",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "twosome",
+    "a twosome place",
+    "투썸플레이스",
+    "투썸"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "파스쿠찌",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "pascucci",
+    "파스쿠찌"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "폴바셋",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "paul bassett",
+    "폴바셋"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "할리스",
+   "code": "FD-CAFE",
+   "store_recognizable": true,
+   "aliases": [
+    "hollys",
+    "할리스"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "빕스",
+   "code": "FD-FAMILY",
+   "store_recognizable": true,
+   "aliases": [
+    "vips",
+    "빕스"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "아웃백스테이크하우스",
+   "code": "FD-FAMILY",
+   "store_recognizable": true,
+   "aliases": [
+    "outback",
+    "아웃백"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "KFC",
+   "code": "FD-FAST",
+   "store_recognizable": true,
+   "aliases": [
+    "kfc",
+    "케이에프씨"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데리아",
+   "code": "FD-FAST",
+   "store_recognizable": true,
+   "aliases": [
+    "lotteria",
+    "롯데리아"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "맘스터치",
+   "code": "FD-FAST",
+   "store_recognizable": true,
+   "aliases": [
+    "mom's touch",
+    "맘스터치"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "맥도날드",
+   "code": "FD-FAST",
+   "store_recognizable": true,
+   "aliases": [
+    "mcdonald's",
+    "mcdonalds",
+    "맥도날드"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "버거킹",
+   "code": "FD-FAST",
+   "store_recognizable": true,
+   "aliases": [
+    "burger king",
+    "버거킹"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "쉐이크쉑",
+   "code": "FD-FAST",
+   "store_recognizable": true,
+   "aliases": [
+    "shake shack",
+    "쉐이크쉑"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "써브웨이",
+   "code": "FD-FAST",
+   "store_recognizable": true,
+   "aliases": [
+    "subway",
+    "써브웨이",
+    "서브웨이"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "파이브가이즈",
+   "code": "FD-FAST",
+   "store_recognizable": true,
+   "aliases": [
+    "five guys",
+    "파이브가이즈"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "신전떡볶이",
+   "code": "FD-SNACK",
+   "store_recognizable": true,
+   "aliases": [
+    "신전떡볶이"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "엽기떡볶이",
+   "code": "FD-SNACK",
+   "store_recognizable": true,
+   "aliases": [
+    "엽기떡볶이",
+    "동대문엽기떡볶이"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "CGV",
+   "code": "LS-CINEMA",
+   "store_recognizable": true,
+   "aliases": [
+    "cgv",
+    "씨지브이"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "롯데시네마",
+   "code": "LS-CINEMA",
+   "store_recognizable": true,
+   "aliases": [
+    "lotte cinema",
+    "롯데시네마"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "메가박스",
+   "code": "LS-CINEMA",
+   "store_recognizable": true,
+   "aliases": [
+    "megabox",
+    "메가박스"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "게토 PC방",
+   "code": "LS-PCROOM",
+   "store_recognizable": true,
+   "aliases": [
+    "게토",
+    "geto"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "경주월드",
+   "code": "LS-THEME",
+   "store_recognizable": true,
+   "aliases": [
+    "gyeongju world",
+    "경주월드"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데월드",
+   "code": "LS-THEME",
+   "store_recognizable": true,
+   "aliases": [
+    "lotte world",
+    "롯데월드"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "서울랜드",
+   "code": "LS-THEME",
+   "store_recognizable": true,
+   "aliases": [
+    "seoul land",
+    "서울랜드"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "에버랜드",
+   "code": "LS-THEME",
+   "store_recognizable": true,
+   "aliases": [
+    "everland",
+    "에버랜드"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "이월드",
+   "code": "LS-THEME",
+   "store_recognizable": true,
+   "aliases": [
+    "e-world",
+    "이월드"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "캐리비안베이",
+   "code": "LS-THEME",
+   "store_recognizable": true,
+   "aliases": [
+    "caribbean bay",
+    "캐리비안베이"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "통도환타지아",
+   "code": "LS-THEME",
+   "store_recognizable": true,
+   "aliases": [
+    "통도환타지아"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "한국민속촌",
+   "code": "LS-THEME",
+   "store_recognizable": true,
+   "aliases": [
+    "한국민속촌"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "NOL 티켓",
+   "code": "LS-TICKET",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "YES24티켓",
+   "code": "LS-TICKET",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "멜론티켓",
+   "code": "LS-TICKET",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "인터파크티켓",
+   "code": "LS-TICKET",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "티켓링크",
+   "code": "LS-TICKET",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "땡겨요",
+   "code": "ON-DELIVERY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "배달의민족",
+   "code": "ON-DELIVERY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "요기요",
+   "code": "ON-DELIVERY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "쿠팡이츠",
+   "code": "ON-DELIVERY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "29CM",
+   "code": "ON-FASHION",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "W CONCEPT",
+   "code": "ON-FASHION",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "머스트잇",
+   "code": "ON-FASHION",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "무신사",
+   "code": "ON-FASHION",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "발란",
+   "code": "ON-FASHION",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "에이블리",
+   "code": "ON-FASHION",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "지그재그",
+   "code": "ON-FASHION",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "트렌비",
+   "code": "ON-FASHION",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "B마트",
+   "code": "ON-GROCERY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "오아시스마켓",
+   "code": "ON-GROCERY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "컬리",
+   "code": "ON-GROCERY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "CJ온스타일",
+   "code": "ON-HOMESHOP",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "GS SHOP",
+   "code": "ON-HOMESHOP",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "NS홈쇼핑",
+   "code": "ON-HOMESHOP",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데홈쇼핑",
+   "code": "ON-HOMESHOP",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "현대홈쇼핑",
+   "code": "ON-HOMESHOP",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "홈앤쇼핑",
+   "code": "ON-HOMESHOP",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "11번가",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "AK몰",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "G마켓",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "Hmall",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "SSG.COM",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "네이버플러스 스토어",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "농협몰",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "더현대닷컴",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데ON",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "삼성카드 쇼핑",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "오늘의집",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "옥션",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "위메프",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "인터파크",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "인테이크몰",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "쿠팡",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "쿠팡플레이",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "티몬",
+   "code": "ON-MALL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "번개장터",
+   "code": "ON-RESELL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "솔드아웃",
+   "code": "ON-RESELL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "중고나라",
+   "code": "ON-RESELL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "크림",
+   "code": "ON-RESELL",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "YES24",
+   "code": "RT-BOOK",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "교보문고",
+   "code": "RT-BOOK",
+   "store_recognizable": true,
+   "aliases": [
+    "kyobo",
+    "교보문고"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "알라딘",
+   "code": "RT-BOOK",
+   "store_recognizable": true,
+   "aliases": [
+    "aladin",
+    "알라딘"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "영풍문고",
+   "code": "RT-BOOK",
+   "store_recognizable": true,
+   "aliases": [
+    "ypbooks",
+    "영풍문고"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "CU",
+   "code": "RT-CVS",
+   "store_recognizable": true,
+   "aliases": [
+    "cu",
+    "씨유"
+   ],
+   "in_seed": true,
+   "note": "영문 \"cu\"는 단어 단위로만 매칭(security 등 오인식 방지)"
+  },
+  {
+   "brand": "GS25",
+   "code": "RT-CVS",
+   "store_recognizable": true,
+   "aliases": [
+    "gs25",
+    "지에스25"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "미니스톱",
+   "code": "RT-CVS",
+   "store_recognizable": true,
+   "aliases": [
+    "ministop",
+    "미니스톱"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "세븐일레븐",
+   "code": "RT-CVS",
+   "store_recognizable": true,
+   "aliases": [
+    "7-eleven",
+    "seven eleven",
+    "세븐일레븐"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "이마트24",
+   "code": "RT-CVS",
+   "store_recognizable": true,
+   "aliases": [
+    "emart24",
+    "이마트24"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "AK플라자",
+   "code": "RT-DEPT",
+   "store_recognizable": true,
+   "aliases": [
+    "ak plaza",
+    "ak플라자"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "갤러리아백화점",
+   "code": "RT-DEPT",
+   "store_recognizable": true,
+   "aliases": [
+    "galleria",
+    "갤러리아"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "대구백화점",
+   "code": "RT-DEPT",
+   "store_recognizable": true,
+   "aliases": [
+    "대구백화점"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "더현대",
+   "code": "RT-DEPT",
+   "store_recognizable": true,
+   "aliases": [
+    "the hyundai",
+    "더현대"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "동아백화점",
+   "code": "RT-DEPT",
+   "store_recognizable": true,
+   "aliases": [
+    "동아백화점"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데백화점",
+   "code": "RT-DEPT",
+   "store_recognizable": true,
+   "aliases": [
+    "lotte department store",
+    "롯데백화점"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "신세계백화점",
+   "code": "RT-DEPT",
+   "store_recognizable": true,
+   "aliases": [
+    "shinsegae",
+    "신세계백화점"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "현대백화점",
+   "code": "RT-DEPT",
+   "store_recognizable": true,
+   "aliases": [
+    "hyundai department store",
+    "현대백화점"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데면세점",
+   "code": "RT-DUTYFREE",
+   "store_recognizable": true,
+   "aliases": [
+    "lotte duty free",
+    "롯데면세점"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데인터넷면세점",
+   "code": "RT-DUTYFREE",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "신라면세점",
+   "code": "RT-DUTYFREE",
+   "store_recognizable": true,
+   "aliases": [
+    "shilla duty free",
+    "신라면세점"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "신라인터넷면세점",
+   "code": "RT-DUTYFREE",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "신세계면세점",
+   "code": "RT-DUTYFREE",
+   "store_recognizable": true,
+   "aliases": [
+    "shinsegae duty free",
+    "신세계면세점"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "신세계인터넷면세점",
+   "code": "RT-DUTYFREE",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "현대백화점면세점",
+   "code": "RT-DUTYFREE",
+   "store_recognizable": true,
+   "aliases": [
+    "hyundai duty free",
+    "현대백화점면세점"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "현대인터넷면세점",
+   "code": "RT-DUTYFREE",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "H&M",
+   "code": "RT-FASHION",
+   "store_recognizable": true,
+   "aliases": [
+    "h&m",
+    "에이치앤엠"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "에잇세컨즈",
+   "code": "RT-FASHION",
+   "store_recognizable": true,
+   "aliases": [
+    "8seconds",
+    "에잇세컨즈"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "유니클로",
+   "code": "RT-FASHION",
+   "store_recognizable": true,
+   "aliases": [
+    "uniqlo",
+    "유니클로"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "자라",
+   "code": "RT-FASHION",
+   "store_recognizable": true,
+   "aliases": [
+    "zara",
+    "자라"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "롭스",
+   "code": "RT-HB",
+   "store_recognizable": true,
+   "aliases": [
+    "lohb's",
+    "롭스"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "시코르",
+   "code": "RT-HB",
+   "store_recognizable": true,
+   "aliases": [
+    "chicor",
+    "시코르"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "올리브영",
+   "code": "RT-HB",
+   "store_recognizable": true,
+   "aliases": [
+    "olive young",
+    "올리브영"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "와인앤모어",
+   "code": "RT-LIQUOR",
+   "store_recognizable": true,
+   "aliases": [
+    "wine&more",
+    "와인앤모어"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "다이소",
+   "code": "RT-LIVING",
+   "store_recognizable": true,
+   "aliases": [
+    "daiso",
+    "다이소"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "Y_MART",
+   "code": "RT-MART",
+   "store_recognizable": true,
+   "aliases": [
+    "영암마트",
+    "y mart"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "농협하나로마트",
+   "code": "RT-MART",
+   "store_recognizable": true,
+   "aliases": [
+    "하나로마트",
+    "하나로클럽",
+    "nh hanaro"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데마트",
+   "code": "RT-MART",
+   "store_recognizable": true,
+   "aliases": [
+    "lotte mart",
+    "롯데마트"
+   ],
+   "in_seed": true
+  },
+  {
+   "brand": "메가마트",
+   "code": "RT-MART",
+   "store_recognizable": true,
+   "aliases": [
+    "megamart",
+    "메가마트"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "이마트",
+   "code": "RT-MART",
+   "store_recognizable": true,
+   "aliases": [
+    "emart",
+    "e-mart",
+    "이마트"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "홈플러스",
+   "code": "RT-MART",
+   "store_recognizable": true,
+   "aliases": [
+    "homeplus",
+    "홈플러스"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데몰",
+   "code": "RT-OUTLET",
+   "store_recognizable": true,
+   "aliases": [
+    "lotte mall",
+    "롯데몰"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데아울렛",
+   "code": "RT-OUTLET",
+   "store_recognizable": true,
+   "aliases": [
+    "lotte outlets",
+    "롯데아울렛"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데프리미엄아울렛",
+   "code": "RT-OUTLET",
+   "store_recognizable": true,
+   "aliases": [
+    "lotte premium outlets",
+    "롯데프리미엄아울렛"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "스타필드",
+   "code": "RT-OUTLET",
+   "store_recognizable": true,
+   "aliases": [
+    "starfield",
+    "스타필드"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "스타필드시티",
+   "code": "RT-OUTLET",
+   "store_recognizable": true,
+   "aliases": [
+    "starfield city",
+    "스타필드시티"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "신세계사이먼프리미엄아울렛",
+   "code": "RT-OUTLET",
+   "store_recognizable": true,
+   "aliases": [
+    "shinsegae simon",
+    "신세계사이먼"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "현대아울렛",
+   "code": "RT-OUTLET",
+   "store_recognizable": true,
+   "aliases": [
+    "hyundai outlets",
+    "현대아울렛"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "현대프리미엄아울렛",
+   "code": "RT-OUTLET",
+   "store_recognizable": true,
+   "aliases": [
+    "hyundai premium outlets",
+    "현대프리미엄아울렛"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "PX",
+   "code": "RT-PX",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "GS더프레시",
+   "code": "RT-SSM",
+   "store_recognizable": true,
+   "aliases": [
+    "gs the fresh",
+    "gs더프레시",
+    "gs수퍼마켓"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "노브랜드",
+   "code": "RT-SSM",
+   "store_recognizable": true,
+   "aliases": [
+    "no brand",
+    "노브랜드"
+   ],
+   "in_seed": false,
+   "note": "카카오맵에서 \"노브랜드\" 검색 시 노브랜드버거(패스트푸드)가 먼저 나옴. 별칭에 \"버거\"가 함께 있으면 FD-FAST로 볼 것"
+  },
+  {
+   "brand": "롯데슈퍼",
+   "code": "RT-SSM",
+   "store_recognizable": true,
+   "aliases": [
+    "lotte super",
+    "롯데슈퍼",
+    "롯데프레시"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "이마트 에브리데이",
+   "code": "RT-SSM",
+   "store_recognizable": true,
+   "aliases": [
+    "emart everyday",
+    "이마트에브리데이"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "홈플러스 익스프레스",
+   "code": "RT-SSM",
+   "store_recognizable": true,
+   "aliases": [
+    "homeplus express",
+    "홈플러스익스프레스"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "롯데마트 맥스",
+   "code": "RT-WAREHOUSE",
+   "store_recognizable": true,
+   "aliases": [
+    "lotte mart maxx",
+    "롯데마트 맥스",
+    "빅마켓"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "이케아",
+   "code": "RT-WAREHOUSE",
+   "store_recognizable": true,
+   "aliases": [
+    "ikea",
+    "이케아"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "코스트코",
+   "code": "RT-WAREHOUSE",
+   "store_recognizable": true,
+   "aliases": [
+    "costco",
+    "코스트코"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "트레이더스",
+   "code": "RT-WAREHOUSE",
+   "store_recognizable": true,
+   "aliases": [
+    "traders",
+    "트레이더스"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "교원",
+   "code": "SV-EDU",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "대교",
+   "code": "SV-EDU",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "대성마이맥",
+   "code": "SV-EDU",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "메가스터디",
+   "code": "SV-EDU",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "밀크T",
+   "code": "SV-EDU",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "웅진씽크빅",
+   "code": "SV-EDU",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "이투스",
+   "code": "SV-EDU",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "한솔교육",
+   "code": "SV-EDU",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "HSK",
+   "code": "SV-EXAM",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "JPT",
+   "code": "SV-EXAM",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "OPIc",
+   "code": "SV-EXAM",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "TEPS",
+   "code": "SV-EXAM",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "TOEFL",
+   "code": "SV-EXAM",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "TOEIC",
+   "code": "SV-EXAM",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "스피드메이트",
+   "code": "TR-CARCARE",
+   "store_recognizable": true,
+   "aliases": [
+    "speedmate",
+    "스피드메이트"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "그린카",
+   "code": "TR-CARSHARE",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "쏘카",
+   "code": "TR-CARSHARE",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "GS칼텍스",
+   "code": "TR-FUEL",
+   "store_recognizable": true,
+   "aliases": [
+    "gs caltex",
+    "gs칼텍스"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "HD현대오일뱅크",
+   "code": "TR-FUEL",
+   "store_recognizable": true,
+   "aliases": [
+    "hyundai oilbank",
+    "현대오일뱅크"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "S-OIL",
+   "code": "TR-FUEL",
+   "store_recognizable": true,
+   "aliases": [
+    "s-oil",
+    "에쓰오일"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "SK에너지",
+   "code": "TR-FUEL",
+   "store_recognizable": true,
+   "aliases": [
+    "sk energy",
+    "sk에너지",
+    "sk주유소"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "알뜰주유소",
+   "code": "TR-FUEL",
+   "store_recognizable": true,
+   "aliases": [
+    "알뜰주유소"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "김포공항 주차장",
+   "code": "TR-PARK",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "인천공항 주차장",
+   "code": "TR-PARK",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "카카오T 주차",
+   "code": "TR-PARK",
+   "store_recognizable": true,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "카카오T 택시",
+   "code": "TR-TAXI",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "택시",
+   "code": "TR-TAXI",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "아고다",
+   "code": "TV-AGENCY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "야놀자",
+   "code": "TV-AGENCY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "여기어때",
+   "code": "TV-AGENCY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "익스피디아",
+   "code": "TV-AGENCY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "하나투어",
+   "code": "TV-AGENCY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "호텔스닷컴",
+   "code": "TV-AGENCY",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "대한항공",
+   "code": "TV-AIR",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "아시아나항공",
+   "code": "TV-AIR",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "에어부산",
+   "code": "TV-AIR",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "에어서울",
+   "code": "TV-AIR",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "이스타항공",
+   "code": "TV-AIR",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "제주항공",
+   "code": "TV-AIR",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "진에어",
+   "code": "TV-AIR",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "티웨이항공",
+   "code": "TV-AIR",
+   "store_recognizable": false,
+   "aliases": [],
+   "in_seed": false
+  },
+  {
+   "brand": "아코르호텔",
+   "code": "TV-HOTEL",
+   "store_recognizable": true,
+   "aliases": [
+    "accor",
+    "아코르"
+   ],
+   "in_seed": false
+  },
+  {
+   "brand": "힐튼호텔",
+   "code": "TV-HOTEL",
+   "store_recognizable": true,
+   "aliases": [
+    "hilton",
+    "힐튼"
+   ],
+   "in_seed": false
+  }
+ ],
+ "seed_category_to_code": {
+  "패스트푸드": "FD-FAST",
+  "카페": "FD-CAFE",
+  "편의점": "RT-CVS",
+  "뷰티": "RT-HB",
+  "마트": "RT-MART",
+  "영화": "LS-CINEMA",
+  "서점": "RT-BOOK"
+ },
+ "benefit_codes": {
+  "bc-2362-b02": [
+   "RT-BOOK",
+   "SV-STUDY"
+  ],
+  "bc-2362-b03": [
+   "RT-HB",
+   "RT-LIVING",
+   "LS-PCROOM"
+  ],
+  "bc-2362-b04": [
+   "RT-CVS",
+   "FD-BAKERY",
+   "FD-FAST",
+   "FD-CAFE",
+   "FD-SNACK"
+  ],
+  "bc-2400-b01": [
+   "FD-CAFE"
+  ],
+  "bc-2400-b02": [
+   "FD-REST"
+  ],
+  "bc-2400-b03": [
+   "RT-CVS"
+  ],
+  "bc-2400-b04": [
+   "ON-DELIVERY"
+  ],
+  "bc-2400-b05": [
+   "FD-BAKERY"
+  ],
+  "bc-2400-b06": [
+   "FD-FAST"
+  ],
+  "bc-2557-b04": [
+   "RT-CVS"
+  ],
+  "bc-2557-b05": [
+   "FD-CAFE"
+  ],
+  "bc-2591-b02": [
+   "FD-REST",
+   "FD-CAFE"
+  ],
+  "bc-2728-b01": [
+   "TR-FUEL",
+   "TR-EV"
+  ],
+  "bc-2728-b02": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "bc-2728-b03": [
+   "RT-MART"
+  ],
+  "bc-2728-b04": [
+   "RT-SSM",
+   "RT-WAREHOUSE",
+   "ON-GROCERY"
+  ],
+  "bc-2927-b02": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "bc-2927-b03": [
+   "RT-LIVING",
+   "RT-HB"
+  ],
+  "bc-2927-b04": [
+   "FD-CAFE"
+  ],
+  "bc-2928-b01": [
+   "FD-CAFE"
+  ],
+  "bc-2928-b02": [
+   "FD-FAST"
+  ],
+  "bc-2928-b03": [
+   "ON-DELIVERY"
+  ],
+  "bc-2928-b04": [
+   "ON-MALL",
+   "ON-FASHION",
+   "ON-RESELL"
+  ],
+  "bc-2928-b05": [
+   "RT-LIVING",
+   "RT-HB"
+  ],
+  "bc-2928-b07": [
+   "RT-MARKET"
+  ],
+  "hana-2446-b03": [
+   "ON-MALL"
+  ],
+  "hana-2446-b04": [
+   "RT-MART",
+   "RT-WAREHOUSE"
+  ],
+  "hana-2446-b05": [
+   "FD-BAKERY",
+   "FD-CAFE"
+  ],
+  "hana-2657-b03": [
+   "TV-AIR"
+  ],
+  "hana-2657-b04": [
+   "RT-DUTYFREE"
+  ],
+  "hana-2657-b05": [
+   "TV-AGENCY"
+  ],
+  "hana-2657-b06": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "hana-2657-b07": [
+   "RT-DEPT"
+  ],
+  "hana-2657-b08": [
+   "RT-OUTLET"
+  ],
+  "hana-2657-b09": [
+   "RT-MART",
+   "RT-WAREHOUSE"
+  ],
+  "hana-2657-b10": [
+   "TR-FUEL"
+  ],
+  "hana-2657-b12": [
+   "FD-CAFE"
+  ],
+  "hana-2703-b03": [
+   "TV-AIR"
+  ],
+  "hana-2703-b04": [
+   "RT-DUTYFREE"
+  ],
+  "hana-2703-b05": [
+   "TV-AGENCY"
+  ],
+  "hana-2703-b06": [
+   "TR-FUEL"
+  ],
+  "hana-2703-b07": [
+   "TR-EV"
+  ],
+  "hana-2934-b01": [
+   "RT-PX"
+  ],
+  "hana-2934-b02": [
+   "ON-MALL"
+  ],
+  "hana-2934-b03": [
+   "RT-CVS"
+  ],
+  "hana-2934-b05": [
+   "ON-DELIVERY"
+  ],
+  "hana-2934-b08": [
+   "FD-CAFE"
+  ],
+  "hana-2934-b09": [
+   "FD-FAMILY"
+  ],
+  "hana-2934-b10": [
+   "FD-FAST"
+  ],
+  "hana-2934-b11": [
+   "ON-FASHION",
+   "ON-MALL"
+  ],
+  "hana-2934-b12": [
+   "SV-EXAM"
+  ],
+  "hana-2934-b13": [
+   "RT-BOOK"
+  ],
+  "hana-2934-b15": [
+   "LS-THEME"
+  ],
+  "hana-2934-b16": [
+   "TV-HOTEL"
+  ],
+  "hana-2961-b04": [
+   "TV-AIR"
+  ],
+  "hana-2961-b05": [
+   "RT-DUTYFREE"
+  ],
+  "hana-2961-b06": [
+   "TV-AGENCY"
+  ],
+  "hana-2995-b03": [
+   "ON-MALL"
+  ],
+  "hana-2995-b04": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "hana-2995-b05": [
+   "RT-MART",
+   "RT-WAREHOUSE"
+  ],
+  "hana-2995-b06": [
+   "RT-SSM"
+  ],
+  "hana-2995-b07": [
+   "RT-DEPT"
+  ],
+  "hana-2995-b08": [
+   "ON-DELIVERY"
+  ],
+  "hana-2996-b06": [
+   "FD-CAFE"
+  ],
+  "hana-2996-b07": [
+   "FD-FAST"
+  ],
+  "hana-2998-b01": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "hana-2998-b02": [
+   "RT-MART",
+   "RT-WAREHOUSE",
+   "RT-SSM"
+  ],
+  "hana-2998-b03": [
+   "HL-HOSP",
+   "HL-PHARM"
+  ],
+  "hana-2998-b04": [
+   "SV-EDU"
+  ],
+  "hana-2998-b06": [
+   "TR-FUEL"
+  ],
+  "hana-2998-b07": [
+   "TR-EV"
+  ],
+  "hyundai-2663-b03": [
+   "RT-DUTYFREE",
+   "LS-SPORTS",
+   "LS-GOLF",
+   "TV-HOTEL",
+   "TV-AGENCY",
+   "TV-AIR"
+  ],
+  "hyundai-2663-b04": [
+   "FD-FAMILY"
+  ],
+  "hyundai-2711-b02": [
+   "TV-AIR"
+  ],
+  "hyundai-2711-b04": [
+   "RT-DEPT",
+   "LS-GOLF",
+   "TV-HOTEL"
+  ],
+  "hyundai-2880-b01": [
+   "TR-FUEL",
+   "TR-LPG",
+   "TR-EV",
+   "TR-CARCARE"
+  ],
+  "hyundai-2881-b01": [
+   "ON-MALL",
+   "ON-GROCERY",
+   "ON-HOMESHOP"
+  ],
+  "hyundai-2881-b02": [
+   "RT-MART"
+  ],
+  "hyundai-2881-b03": [
+   "RT-SSM"
+  ],
+  "hyundai-2881-b04": [
+   "RT-DEPT"
+  ],
+  "hyundai-2881-b05": [
+   "RT-OUTLET"
+  ],
+  "hyundai-2881-b06": [
+   "FD-CAFE"
+  ],
+  "hyundai-2881-b07": [
+   "RT-CVS"
+  ],
+  "hyundai-2969-b05": [
+   "FD-CAFE"
+  ],
+  "hyundai-2969-b06": [
+   "RT-CVS"
+  ],
+  "hyundai-3042-b02": [
+   "ON-MALL"
+  ],
+  "ibk-2482-b02": [
+   "ON-MALL"
+  ],
+  "ibk-2482-b03": [
+   "ON-HOMESHOP"
+  ],
+  "ibk-2482-b04": [
+   "ON-DELIVERY"
+  ],
+  "ibk-2482-b05": [
+   "RT-MART"
+  ],
+  "ibk-2482-b06": [
+   "FD-CAFE"
+  ],
+  "ibk-2482-b07": [
+   "RT-CVS"
+  ],
+  "ibk-2482-b09": [
+   "TR-FUEL"
+  ],
+  "ibk-2559-b03": [
+   "TR-FUEL"
+  ],
+  "ibk-2559-b05": [
+   "FD-FAMILY"
+  ],
+  "ibk-2559-b06": [
+   "LS-CINEMA"
+  ],
+  "ibk-2559-b07": [
+   "LS-THEME"
+  ],
+  "ibk-2674-b03": [
+   "FD-CAFE"
+  ],
+  "ibk-2778-b03": [
+   "ON-MALL"
+  ],
+  "ibk-2941-b02": [
+   "RT-CVS"
+  ],
+  "ibk-2941-b04": [
+   "HL-HOSP",
+   "HL-PHARM"
+  ],
+  "ibk-2941-b05": [
+   "FD-CAFE"
+  ],
+  "ibk-2941-b06": [
+   "ON-MALL",
+   "ON-FASHION",
+   "ON-DELIVERY"
+  ],
+  "ibk-2941-b08": [
+   "TV-AGENCY",
+   "TR-CARSHARE",
+   "LS-PCROOM"
+  ],
+  "ibk-2941-b10": [
+   "RT-PX"
+  ],
+  "ibk-2941-b11": [
+   "RT-CVS"
+  ],
+  "ibk-2941-b13": [
+   "LS-CINEMA"
+  ],
+  "ibk-2941-b14": [
+   "FD-FAMILY"
+  ],
+  "kb-106-b01": [
+   "TR-FUEL",
+   "TR-LPG"
+  ],
+  "kb-106-b04": [
+   "FD-REST",
+   "FD-FAMILY",
+   "FD-BAR"
+  ],
+  "kb-106-b05": [
+   "FD-CAFE"
+  ],
+  "kb-106-b06": [
+   "RT-CVS"
+  ],
+  "kb-106-b07": [
+   "HL-PHARM"
+  ],
+  "kb-106-b08": [
+   "LS-SPORTS",
+   "SV-EDU"
+  ],
+  "kb-2441-b02": [
+   "FD-REST",
+   "FD-FAMILY"
+  ],
+  "kb-2441-b03": [
+   "RT-CVS"
+  ],
+  "kb-2441-b06": [
+   "ON-DELIVERY",
+   "ON-GROCERY"
+  ],
+  "kb-2441-b07": [
+   "FD-CAFE"
+  ],
+  "kb-2441-b09": [
+   "LS-CINEMA"
+  ],
+  "kb-2441-b10": [
+   "RT-HB",
+   "RT-BOOK",
+   "LS-SPORTS",
+   "SV-HAIR"
+  ],
+  "kb-2555-b03": [
+   "FD-CAFE"
+  ],
+  "kb-2555-b04": [
+   "HL-PHARM"
+  ],
+  "kb-2555-b05": [
+   "RT-CVS"
+  ],
+  "kb-2555-b06": [
+   "LS-CINEMA"
+  ],
+  "kb-2555-b07": [
+   "FD-FAST"
+  ],
+  "kb-2609-b01": [
+   "ON-MALL",
+   "ON-DELIVERY"
+  ],
+  "kb-2609-b03": [
+   "RT-CVS"
+  ],
+  "kb-2685-b01": [
+   "ON-MALL"
+  ],
+  "kb-2685-b02": [
+   "ON-FASHION"
+  ],
+  "kb-2685-b03": [
+   "FD-CAFE"
+  ],
+  "kb-2685-b04": [
+   "RT-CVS"
+  ],
+  "kb-2685-b05": [
+   "LS-CINEMA"
+  ],
+  "kb-2685-b06": [
+   "TV-AIR",
+   "RT-DUTYFREE"
+  ],
+  "kb-2691-b03": [
+   "FD-CAFE"
+  ],
+  "kb-2691-b04": [
+   "FD-BAKERY"
+  ],
+  "kb-2691-b07": [
+   "TR-PARK"
+  ],
+  "kb-2691-b08": [
+   "FD-REST"
+  ],
+  "kb-2929-b03": [
+   "LS-PCROOM",
+   "LS-KARAOKE"
+  ],
+  "kb-2929-b05": [
+   "RT-CVS"
+  ],
+  "kb-2929-b06": [
+   "LS-CINEMA"
+  ],
+  "kb-2929-b09": [
+   "ON-FASHION",
+   "RT-HB",
+   "TV-AGENCY"
+  ],
+  "kb-2929-b10": [
+   "ON-DELIVERY"
+  ],
+  "kb-2929-b11": [
+   "FD-FAMILY",
+   "LS-THEME"
+  ],
+  "kb-2929-b12": [
+   "FD-CAFE"
+  ],
+  "kb-2930-b01": [
+   "TR-FUEL",
+   "TR-EV"
+  ],
+  "kb-2930-b02": [
+   "ON-DELIVERY"
+  ],
+  "kb-2930-b04": [
+   "ON-MALL",
+   "ON-FASHION"
+  ],
+  "kb-2930-b05": [
+   "RT-CVS"
+  ],
+  "kb-2930-b06": [
+   "LS-SPORTS",
+   "SV-HAIR"
+  ],
+  "kb-2930-b08": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "kb-2930-b09": [
+   "HL-HOSP",
+   "HL-PHARM",
+   "SV-HAIR",
+   "SV-LAUNDRY"
+  ],
+  "kb-2930-b10": [
+   "SV-EDU"
+  ],
+  "kb-2930-b11": [
+   "RT-MART"
+  ],
+  "kb-2930-b12": [
+   "FD-CAFE"
+  ],
+  "kb-2964-b03": [
+   "ON-FASHION"
+  ],
+  "lotte-2330-b05": [
+   "ON-DELIVERY"
+  ],
+  "lotte-2330-b07": [
+   "SV-EDU"
+  ],
+  "lotte-2786-b02": [
+   "RT-DUTYFREE"
+  ],
+  "lotte-403-b02": [
+   "TR-FUEL"
+  ],
+  "lotte-404-b01": [
+   "RT-MART",
+   "ON-HOMESHOP",
+   "ON-MALL"
+  ],
+  "lotte-404-b02": [
+   "HL-HOSP",
+   "HL-PHARM"
+  ],
+  "lotte-404-b04": [
+   "SV-EDU"
+  ],
+  "lotte-404-b05": [
+   "LS-THEME"
+  ],
+  "lotte-404-b06": [
+   "RT-SSM"
+  ],
+  "lotte-404-b07": [
+   "RT-CVS"
+  ],
+  "nh-2305-b01": [
+   "ON-ALL"
+  ],
+  "nh-2305-b02": [
+   "ON-FASHION"
+  ],
+  "nh-2305-b03": [
+   "ON-RESELL"
+  ],
+  "nh-2305-b04": [
+   "TV-AGENCY",
+   "ON-MALL"
+  ],
+  "nh-2305-b06": [
+   "FD-CAFE"
+  ],
+  "nh-2305-b07": [
+   "RT-CVS"
+  ],
+  "nh-2305-b09": [
+   "ON-DELIVERY"
+  ],
+  "nh-2305-b11": [
+   "LS-THEME"
+  ],
+  "nh-2560-b02": [
+   "TR-CARSHARE"
+  ],
+  "nh-2560-b03": [
+   "TR-EV"
+  ],
+  "nh-2560-b05": [
+   "ON-MALL"
+  ],
+  "nh-2560-b06": [
+   "ON-DELIVERY"
+  ],
+  "nh-2560-b07": [
+   "LS-SPORTS"
+  ],
+  "nh-2560-b08": [
+   "RT-HB"
+  ],
+  "nh-2560-b09": [
+   "FD-CAFE"
+  ],
+  "nh-2560-b10": [
+   "RT-CVS"
+  ],
+  "nh-2706-b06": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "nh-2706-b07": [
+   "RT-MART"
+  ],
+  "nh-2706-b08": [
+   "RT-PET",
+   "HL-VET"
+  ],
+  "nh-2727-b03": [
+   "RT-CVS"
+  ],
+  "nh-2727-b04": [
+   "FD-CAFE"
+  ],
+  "nh-360-b02": [
+   "RT-MART",
+   "ON-MALL"
+  ],
+  "nh-360-b03": [
+   "RT-CVS",
+   "RT-HB"
+  ],
+  "nh-360-b04": [
+   "LS-CINEMA"
+  ],
+  "nh-360-b05": [
+   "FD-CAFE",
+   "FD-BAKERY"
+  ],
+  "nh-666-b01": [
+   "FD-CAFE"
+  ],
+  "nh-666-b03": [
+   "ON-DELIVERY"
+  ],
+  "nh-666-b04": [
+   "LS-CINEMA"
+  ],
+  "nh-666-b07": [
+   "ON-MALL"
+  ],
+  "nh-666-b08": [
+   "RT-CVS"
+  ],
+  "samsung-1909-b04": [
+   "FD-CAFE"
+  ],
+  "samsung-1909-b05": [
+   "TR-PARK"
+  ],
+  "samsung-2563-b03": [
+   "RT-CVS"
+  ],
+  "samsung-2563-b04": [
+   "FD-CAFE"
+  ],
+  "samsung-2563-b05": [
+   "FD-BAKERY"
+  ],
+  "samsung-2563-b06": [
+   "LS-CINEMA"
+  ],
+  "samsung-2676-b04": [
+   "TV-AIR",
+   "RT-DUTYFREE",
+   "ON-RESELL",
+   "ON-MALL",
+   "RT-DEPT",
+   "ON-HOMESHOP"
+  ],
+  "samsung-2676-b05": [
+   "RT-CVS"
+  ],
+  "samsung-2676-b06": [
+   "FD-CAFE"
+  ],
+  "samsung-2676-b07": [
+   "TR-FUEL",
+   "TR-LPG"
+  ],
+  "samsung-2885-b03": [
+   "SV-EDU"
+  ],
+  "samsung-2885-b04": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "samsung-2885-b05": [
+   "HL-HOSP",
+   "HL-PHARM",
+   "HL-VET"
+  ],
+  "samsung-2885-b06": [
+   "ON-DELIVERY"
+  ],
+  "samsung-2885-b07": [
+   "FD-REST",
+   "FD-FAST",
+   "FD-FAMILY"
+  ],
+  "samsung-2885-b08": [
+   "RT-CVS"
+  ],
+  "samsung-2885-b09": [
+   "RT-MART",
+   "RT-WAREHOUSE"
+  ],
+  "samsung-2885-b10": [
+   "TR-FUEL"
+  ],
+  "samsung-2885-b11": [
+   "RT-LIVING",
+   "LS-TICKET",
+   "RT-BOOK",
+   "RT-LIQUOR"
+  ],
+  "samsung-2986-b02": [
+   "RT-DEPT",
+   "RT-MART",
+   "RT-WAREHOUSE",
+   "ON-MALL",
+   "ON-HOMESHOP",
+   "ON-GROCERY",
+   "RT-OUTLET"
+  ],
+  "samsung-2986-b03": [
+   "TV-AIR",
+   "RT-DUTYFREE",
+   "LS-TICKET",
+   "LS-SPORTS",
+   "LS-GOLF"
+  ],
+  "samsung-2986-b04": [
+   "HL-HOSP",
+   "HL-PHARM",
+   "HL-VET"
+  ],
+  "samsung-394-b02": [
+   "FD-REST",
+   "FD-FAST",
+   "FD-FAMILY"
+  ],
+  "samsung-394-b03": [
+   "TR-FUEL",
+   "TR-LPG"
+  ],
+  "samsung-394-b04": [
+   "RT-MART",
+   "RT-SSM",
+   "RT-WAREHOUSE"
+  ],
+  "samsung-394-b05": [
+   "LS-CINEMA"
+  ],
+  "samsung-49-b02": [
+   "RT-DEPT"
+  ],
+  "samsung-49-b03": [
+   "TR-FUEL",
+   "TR-LPG"
+  ],
+  "samsung-49-b04": [
+   "FD-CAFE"
+  ],
+  "samsung-49-b05": [
+   "RT-CVS"
+  ],
+  "samsung-51-b01": [
+   "FD-CAFE"
+  ],
+  "samsung-51-b02": [
+   "FD-CAFE"
+  ],
+  "samsung-51-b03": [
+   "ON-MALL"
+  ],
+  "samsung-51-b04": [
+   "ON-MALL"
+  ],
+  "samsung-51-b05": [
+   "RT-HB",
+   "RT-FASHION",
+   "RT-CVS"
+  ],
+  "samsung-51-b08": [
+   "LS-CINEMA"
+  ],
+  "shinhan-13-b02": [
+   "RT-CVS"
+  ],
+  "shinhan-13-b03": [
+   "HL-HOSP",
+   "HL-PHARM"
+  ],
+  "shinhan-13-b04": [
+   "SV-LAUNDRY"
+  ],
+  "shinhan-13-b05": [
+   "ON-MALL"
+  ],
+  "shinhan-13-b07": [
+   "FD-REST",
+   "FD-FAST",
+   "FD-CAFE"
+  ],
+  "shinhan-13-b08": [
+   "RT-MART",
+   "RT-SSM"
+  ],
+  "shinhan-13-b09": [
+   "TR-FUEL"
+  ],
+  "shinhan-13-b10": [
+   "ON-MALL"
+  ],
+  "shinhan-2666-b03": [
+   "FD-REST"
+  ],
+  "shinhan-2666-b04": [
+   "ON-DELIVERY"
+  ],
+  "shinhan-2667-b02": [
+   "RT-CVS"
+  ],
+  "shinhan-2690-b03": [
+   "ON-DELIVERY"
+  ],
+  "shinhan-2690-b04": [
+   "RT-CVS"
+  ],
+  "shinhan-2690-b05": [
+   "FD-CAFE"
+  ],
+  "shinhan-2690-b06": [
+   "RT-HB"
+  ],
+  "shinhan-2690-b07": [
+   "HL-HOSP",
+   "HL-PHARM"
+  ],
+  "shinhan-2759-b01": [
+   "FD-REST",
+   "FD-FAST"
+  ],
+  "shinhan-2759-b02": [
+   "FD-CAFE"
+  ],
+  "shinhan-2759-b03": [
+   "RT-CVS"
+  ],
+  "shinhan-2759-b04": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "shinhan-2759-b05": [
+   "RT-HB",
+   "RT-LIVING",
+   "ON-MALL"
+  ],
+  "shinhan-2759-b08": [
+   "ON-FASHION"
+  ],
+  "shinhan-2835-b01": [
+   "FD-CAFE"
+  ],
+  "shinhan-2835-b02": [
+   "FD-REST",
+   "FD-FAST"
+  ],
+  "shinhan-2835-b03": [
+   "RT-CVS"
+  ],
+  "shinhan-2835-b04": [
+   "ON-DELIVERY"
+  ],
+  "shinhan-2835-b05": [
+   "RT-MART",
+   "RT-WAREHOUSE"
+  ],
+  "shinhan-2835-b06": [
+   "ON-MALL",
+   "ON-FASHION"
+  ],
+  "shinhan-2835-b07": [
+   "RT-OUTLET"
+  ],
+  "shinhan-2835-b08": [
+   "RT-HB",
+   "RT-LIVING"
+  ],
+  "shinhan-2835-b09": [
+   "TR-FUEL"
+  ],
+  "shinhan-2835-b10": [
+   "TR-CARSHARE"
+  ],
+  "shinhan-2835-b11": [
+   "TR-PARK"
+  ],
+  "shinhan-2835-b14": [
+   "HL-HOSP",
+   "HL-PHARM"
+  ],
+  "shinhan-2835-b15": [
+   "SV-HAIR"
+  ],
+  "shinhan-2835-b16": [
+   "RT-BOOK"
+  ],
+  "shinhan-2835-b19": [
+   "LS-SPORTS",
+   "LS-GOLF"
+  ],
+  "shinhan-2835-b20": [
+   "LS-CINEMA"
+  ],
+  "shinhan-2977-b01": [],
+  "shinhan-2977-b02": [
+   "RT-CVS"
+  ],
+  "shinhan-2977-b03": [
+   "RT-CVS"
+  ],
+  "shinhan-3027-b02": [
+   "RT-MART"
+  ],
+  "shinhan-3027-b03": [
+   "RT-LIVING",
+   "RT-HB"
+  ],
+  "shinhan-3027-b04": [
+   "TR-FUEL"
+  ],
+  "shinhan-3027-b05": [
+   "FD-CAFE"
+  ],
+  "shinhan-39-b01": [
+   "TR-FUEL"
+  ],
+  "shinhan-39-b02": [
+   "TR-CARCARE"
+  ],
+  "shinhan-39-b03": [
+   "TR-PARK"
+  ],
+  "shinhan-39-b04": [
+   "RT-CVS"
+  ],
+  "shinhan-39-b05": [
+   "FD-CAFE"
+  ],
+  "shinhan-39-b07": [
+   "LS-CINEMA"
+  ],
+  "woori-2552-b03": [],
+  "woori-2570-b01": [
+   "ON-MALL",
+   "ON-FASHION"
+  ],
+  "woori-2570-b03": [
+   "RT-OPTICAL"
+  ],
+  "woori-2570-b04": [
+   "FD-CAFE"
+  ],
+  "woori-2570-b05": [
+   "ON-DELIVERY",
+   "ON-GROCERY"
+  ],
+  "woori-2570-b07": [
+   "LS-TICKET"
+  ],
+  "woori-2570-b11": [
+   "SV-EXAM"
+  ],
+  "woori-2613-b01": [
+   "TV-HOTEL"
+  ],
+  "woori-2687-b01": [
+   "ON-ALL"
+  ],
+  "woori-2687-b02": [
+   "RT-DEPT"
+  ],
+  "woori-2687-b03": [
+   "RT-MART"
+  ],
+  "woori-2687-b04": [
+   "RT-WAREHOUSE"
+  ],
+  "woori-2687-b05": [
+   "RT-SSM"
+  ],
+  "woori-2687-b06": [
+   "RT-OUTLET"
+  ],
+  "woori-2687-b07": [
+   "RT-CVS"
+  ],
+  "woori-2687-b08": [
+   "RT-HB",
+   "RT-LIVING"
+  ],
+  "woori-2687-b10": [
+   "TR-FUEL"
+  ],
+  "woori-2687-b11": [
+   "FD-CAFE"
+  ],
+  "woori-2699-b01": [
+   "FD-CAFE"
+  ],
+  "woori-2699-b02": [
+   "RT-CVS"
+  ],
+  "woori-2699-b05": [
+   "FD-REST",
+   "FD-BAR"
+  ],
+  "woori-2700-b03": [
+   "ON-MALL",
+   "ON-FASHION",
+   "RT-HB"
+  ],
+  "woori-2700-b04": [
+   "FD-CAFE"
+  ],
+  "woori-2700-b05": [
+   "ON-DELIVERY",
+   "ON-GROCERY"
+  ],
+  "woori-2742-b03": [
+   "FD-CAFE"
+  ],
+  "woori-2742-b04": [
+   "RT-MART",
+   "RT-SSM"
+  ],
+  "woori-2742-b06": [
+   "TR-FUEL"
+  ],
+  "woori-2784-b02": [
+   "FD-CAFE"
+  ],
+  "woori-2784-b03": [
+   "RT-CVS"
+  ],
+  "woori-2851-b01": [
+   "ON-MALL",
+   "ON-GROCERY",
+   "RT-DUTYFREE"
+  ],
+  "woori-2851-b02": [
+   "RT-MART",
+   "RT-WAREHOUSE"
+  ],
+  "woori-2851-b03": [
+   "ON-DELIVERY"
+  ],
+  "woori-2851-b04": [
+   "FD-CAFE"
+  ],
+  "woori-2851-b05": [
+   "RT-BOOK",
+   "SV-EDU"
+  ],
+  "woori-2851-b06": [
+   "HL-HOSP",
+   "HL-VET"
+  ],
+  "woori-2851-b07": [
+   "TR-FUEL"
+  ],
+  "woori-2898-b04": [
+   "TR-PARK"
+  ],
+  "woori-2902-b02": [
+   "RT-DEPT"
+  ],
+  "woori-2902-b03": [
+   "ON-MALL"
+  ],
+  "woori-2902-b04": [
+   "TV-AIR"
+  ],
+  "woori-2902-b05": [
+   "TV-HOTEL"
+  ],
+  "woori-2902-b06": [
+   "RT-DUTYFREE"
+  ],
+  "woori-2902-b07": [
+   "LS-GOLF"
+  ],
+  "woori-2902-b09": [
+   "TR-PARK"
+  ],
+  "woori-2902-b10": [
+   "RT-HB",
+   "FD-CAFE",
+   "TR-PARK",
+   "LS-CINEMA"
+  ],
+  "woori-2978-b01": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "woori-2978-b02": [
+   "RT-DEPT"
+  ],
+  "woori-2978-b03": [
+   "RT-DUTYFREE"
+  ],
+  "woori-2978-b04": [
+   "RT-OUTLET"
+  ],
+  "woori-2978-b05": [
+   "RT-MART",
+   "RT-WAREHOUSE"
+  ],
+  "woori-2978-b06": [
+   "RT-SSM"
+  ],
+  "woori-2978-b07": [
+   "RT-HB",
+   "RT-LIVING"
+  ],
+  "woori-2978-b08": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "woori-2978-b09": [
+   "RT-DEPT",
+   "RT-MART",
+   "RT-WAREHOUSE",
+   "RT-SSM",
+   "RT-HB",
+   "RT-LIVING"
+  ],
+  "woori-2992-b02": [
+   "FD-REST",
+   "FD-BAR"
+  ],
+  "woori-2992-b03": [
+   "ON-DELIVERY"
+  ],
+  "woori-2992-b04": [
+   "ON-MALL",
+   "ON-GROCERY",
+   "RT-MART",
+   "RT-LIVING"
+  ],
+  "woori-2992-b05": [
+   "TR-TAXI"
+  ],
+  "woori-2992-b06": [
+   "TR-FUEL"
+  ],
+  "woori-3022-b02": [
+   "RT-DEPT"
+  ],
+  "woori-3022-b03": [
+   "RT-OUTLET"
+  ],
+  "woori-3022-b04": [
+   "RT-MART",
+   "RT-WAREHOUSE"
+  ],
+  "woori-3022-b05": [
+   "ON-MALL",
+   "ON-FASHION"
+  ],
+  "woori-3022-b06": [
+   "TR-FUEL",
+   "TR-LPG"
+  ],
+  "woori-3022-b07": [
+   "TV-AIR"
+  ],
+  "woori-3022-b08": [
+   "TV-HOTEL"
+  ],
+  "woori-3022-b09": [
+   "RT-DUTYFREE"
+  ],
+  "woori-3022-b10": [
+   "LS-SPORTS",
+   "LS-GOLF"
+  ],
+  "woori-3022-b13": [
+   "RT-HB",
+   "RT-LIVING"
+  ],
+  "woori-3022-b14": [
+   "FD-CAFE"
+  ],
+  "woori-3022-b15": [
+   "TR-TAXI",
+   "TR-PARK"
+  ],
+  "woori-3022-b16": [
+   "FD-FAMILY"
+  ],
+  "woori-3022-b17": [
+   "TR-PARK"
+  ],
+  "woori-3051-b01": [
+   "ON-MALL",
+   "ON-FASHION"
+  ],
+  "woori-3051-b03": [
+   "RT-OPTICAL"
+  ],
+  "woori-3051-b04": [
+   "FD-CAFE"
+  ],
+  "woori-3051-b05": [
+   "ON-DELIVERY",
+   "ON-GROCERY"
+  ],
+  "woori-3051-b07": [
+   "LS-TICKET"
+  ],
+  "woori-3051-b11": [
+   "SV-EXAM"
+  ],
+  "woori-3090-b02": [
+   "ON-FASHION"
+  ],
+  "woori-3090-b03": [
+   "RT-DEPT",
+   "RT-OUTLET"
+  ],
+  "woori-3090-b04": [
+   "ON-MALL",
+   "ON-GROCERY"
+  ],
+  "woori-3090-b05": [
+   "RT-CVS"
+  ],
+  "woori-3090-b06": [
+   "RT-HB",
+   "RT-LIVING"
+  ],
+  "woori-3090-b12": [
+   "TR-PARK"
+  ]
+ },
+ "unmapped_benefits": [
+  "shinhan-2977-b01 일본 돈키호테 50%",
+  "woori-2552-b03 4대 일상영역 중 한 곳 건당 1만원 이상 결제 시 1만원 적립"
+ ]
+}

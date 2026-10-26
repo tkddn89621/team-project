@@ -1,0 +1,94 @@
+{
+  "card_id": "lotte-2786",
+  "issuer": "롯데카드",
+  "name": "힐튼 아너스 아멕스 프리미엄",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 497000,
+    "overseas": 500000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2786",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "lotte-2786-b01",
+      "target_raw": "국내 가맹점 1,500원당 2 힐튼 아너스 포인트",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "lotte-2786-b02",
+      "target_raw": "오프라인 면세점 1,500원당 6 포인트",
+      "target_kind": "category",
+      "brands": [],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "lotte-2786-b03",
+      "target_raw": "해외 이용·국내외 힐튼 호텔 1,500원당 8 포인트",
+      "target_kind": "channel",
+      "brands": [
+        "힐튼호텔"
+      ],
+      "rate": null,
+      "fixed_amount": null,
+      "unit": null,
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "point",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "힐튼 주말 무료 숙박권 2매",
+    "힐튼 골드/다이아몬드 등급",
+    "공항라운지 연 4회"
+  ]
+}

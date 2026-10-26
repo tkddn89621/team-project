@@ -1,0 +1,147 @@
+{
+  "card_id": "bc-2591",
+  "issuer": "BC카드",
+  "name": "BC 바로 On&Off 카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 5000,
+    "overseas": 5000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2591",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 300000,
+      "monthly_limit": 15000
+    },
+    {
+      "min_prev_spend": 600000,
+      "monthly_limit": 25000
+    },
+    {
+      "min_prev_spend": 900000,
+      "monthly_limit": 40000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 국세·지방세·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "bc-2591-b01",
+      "target_raw": "국내 온라인 가맹점, 온/오프라인 간편결제(페이북, 삼성페이, 카카오페이, 네이버페이, PAYCO, 토스페이, 쿠페이, 스마일페이, SSG PAY, 11pay) 10%",
+      "target_kind": "channel",
+      "brands": [
+        "페이북",
+        "삼성페이",
+        "카카오페이",
+        "네이버페이",
+        "페이코",
+        "토스페이",
+        "쿠페이",
+        "스마일페이",
+        "SSG페이",
+        "11pay"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "국내(영역별)",
+      "excludes_raw": null,
+      "notes": "국내 온라인 가맹점 전체 포함",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2591-b02",
+      "target_raw": "국내 대상 식당 및 커피 전문점 10%",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": 1000,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "국내(영역별)",
+      "excludes_raw": null,
+      "notes": "\"대상 식당\" 범위 원문 미상",
+      "confidence": "medium",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2591-b03",
+      "target_raw": "대중교통(시내버스/지하철), 카카오T 10%",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철",
+        "카카오T 택시"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "국내(영역별)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "bc-2591-b04",
+      "target_raw": "해외 온/오프라인 가맹점 10%",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "무이자할부",
+    "국제 브랜드 서비스"
+  ],
+  "limit_groups": [
+    {
+      "group": "국내(영역별)",
+      "limits": [
+        10000,
+        20000,
+        35000
+      ]
+    }
+  ],
+  "notes": "국내 영역별 5천/1만/1.5만원, 국내 월 통합 1만/2만/3.5만원 + 해외 5천원"
+}

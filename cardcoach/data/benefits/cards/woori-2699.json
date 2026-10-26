@@ -1,0 +1,183 @@
+{
+  "card_id": "woori-2699",
+  "issuer": "우리카드",
+  "name": "카드의정석 TEN",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 12000,
+    "overseas": 12000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2699",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": 10000
+    },
+    {
+      "min_prev_spend": 800000,
+      "monthly_limit": 20000
+    }
+  ],
+  "spend_exclusions_raw": "무이자할부, 정부지원금, 아파트관리비, 공공임대료, 대학등록금, 국세·지방세·관세·공공요금, 상품권·기프트카드·선불카드 구매·충전, 교통카드 충전, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소",
+  "benefits": [
+    {
+      "benefit_id": "woori-2699-b01",
+      "target_raw": "[커피] 스타벅스, 투썸플레이스, 이디야커피, 메가MGC커피, 컴포즈커피, 매머드커피",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "투썸플레이스",
+        "이디야커피",
+        "메가MGC커피",
+        "컴포즈커피",
+        "매머드커피"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "TEN Discount(통합 1만/2만원)",
+      "excludes_raw": "상품권·선불카드 충전, 백화점/대형할인점/면세점/공항/미군부대/리조트 등 일부 입점 매장 제외",
+      "notes": "사이렌오더·브랜드 공식 앱 포함. 영역별 5천/1만원",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2699-b02",
+      "target_raw": "[편의점] CU, GS25, 세븐일레븐",
+      "target_kind": "brands",
+      "brands": [
+        "CU",
+        "GS25",
+        "세븐일레븐"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "TEN Discount(통합 1만/2만원)",
+      "excludes_raw": "백화점/대형할인점/면세점/공항 등 입점 매장 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2699-b03",
+      "target_raw": "[교통] 버스, 지하철(후불), 택시(오프라인·카카오T)",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철",
+        "택시",
+        "카카오T 택시"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "TEN Discount(통합 1만/2만원)",
+      "excludes_raw": "고속·시외·공항버스, 공항철도 제외",
+      "notes": "택시는 오프라인 결제도 포함",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2699-b04",
+      "target_raw": "[이동통신] SKT, KT, LGU+ 휴대전화 자동납부",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "TEN Discount(통합 1만/2만원)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2699-b05",
+      "target_raw": "[ONE Discount] 음식점, 주점",
+      "target_kind": "category",
+      "brands": [],
+      "rate": 1,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "ONE Discount(통합 1만/2만원)",
+      "excludes_raw": null,
+      "notes": "TEN과 중복 시 TEN 우선",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "woori-2699-b06",
+      "target_raw": "[ONE Discount] 온라인 간편결제(우리페이, 네이버페이, 카카오페이)",
+      "target_kind": "channel",
+      "brands": [
+        "우리WON페이",
+        "네이버페이",
+        "카카오페이"
+      ],
+      "rate": 1,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "easy_pay",
+      "shared_limit_group": "ONE Discount(통합 1만/2만원)",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [],
+  "notes": "TEN Discount 영역별 5천/1만원, 통합 1만/2만원. ONE Discount 별도 통합 1만/2만원"
+}

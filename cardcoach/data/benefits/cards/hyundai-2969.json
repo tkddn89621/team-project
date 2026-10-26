@@ -1,0 +1,238 @@
+{
+  "card_id": "hyundai-2969",
+  "issuer": "현대카드",
+  "name": "알파벳카드R",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 15000,
+    "overseas": 15000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2969",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": 15000
+    },
+    {
+      "min_prev_spend": 800000,
+      "monthly_limit": 30000
+    },
+    {
+      "min_prev_spend": 1200000,
+      "monthly_limit": 50000
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드, 세금·공과금, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "hyundai-2969-b01",
+      "target_raw": "[기본] 생활 요금: 아파트 관리비, 도시가스 요금, 전기 요금 정기결제",
+      "target_kind": "non_store",
+      "brands": [
+        "아파트관리비",
+        "도시가스",
+        "전기요금"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "기본 혜택",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2969-b02",
+      "target_raw": "[기본] 이동통신 요금 SKT, KT, LG U+ 정기결제",
+      "target_kind": "non_store",
+      "brands": [
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "기본 혜택",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2969-b03",
+      "target_raw": "[기본] 디지털 콘텐츠: 넷플릭스, 유튜브 프리미엄, TVING, 디즈니+, 멜론, 지니",
+      "target_kind": "non_store",
+      "brands": [
+        "넷플릭스",
+        "유튜브 프리미엄",
+        "티빙",
+        "디즈니플러스",
+        "멜론",
+        "지니"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "기본 혜택",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2969-b04",
+      "target_raw": "[기본] 온라인쇼핑 멤버십: 네이버플러스, 쿠팡 와우, 컬리멤버스",
+      "target_kind": "non_store",
+      "brands": [
+        "네이버플러스 멤버십",
+        "쿠팡 와우 멤버십",
+        "컬리멤버스"
+      ],
+      "rate": 10,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "기본 혜택",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2969-b05",
+      "target_raw": "[추가] 커피전문점: 스타벅스, 투썸플레이스, 폴바셋, 이디야커피, 메가MGC커피",
+      "target_kind": "brands",
+      "brands": [
+        "스타벅스",
+        "투썸플레이스",
+        "폴바셋",
+        "이디야커피",
+        "메가MGC커피"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "추가 혜택",
+      "excludes_raw": "백화점·할인점·쇼핑몰 입점 매장, 공동가맹점 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2969-b06",
+      "target_raw": "[추가] 편의점: GS25, CU, 세븐일레븐, 이마트24 (현장 결제)",
+      "target_kind": "brands",
+      "brands": [
+        "GS25",
+        "CU",
+        "세븐일레븐",
+        "이마트24"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "offline",
+      "shared_limit_group": "추가 혜택",
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    },
+    {
+      "benefit_id": "hyundai-2969-b07",
+      "target_raw": "[추가] 대중교통: 시내버스, 지하철, 택시",
+      "target_kind": "non_store",
+      "brands": [
+        "버스",
+        "지하철",
+        "택시"
+      ],
+      "rate": 5,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 5000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": "추가 혜택",
+      "excludes_raw": "시외·고속버스 제외",
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": null
+    }
+  ],
+  "other_services_raw": [
+    "메탈 플레이트"
+  ],
+  "limit_groups": [
+    {
+      "group": "기본 혜택",
+      "limits": [
+        10000,
+        20000,
+        35000
+      ]
+    },
+    {
+      "group": "추가 혜택",
+      "limits": [
+        5000,
+        10000,
+        15000
+      ]
+    }
+  ]
+}

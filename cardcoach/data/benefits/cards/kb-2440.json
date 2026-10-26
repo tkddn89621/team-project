@@ -1,0 +1,103 @@
+{
+  "card_id": "kb-2440",
+  "issuer": "KB국민카드",
+  "name": "KB ALL 카드",
+  "type": "credit",
+  "annual_fee": {
+    "domestic": 20000,
+    "overseas": 20000
+  },
+  "source_url": "https://www.card-gorilla.com/card/detail/2440",
+  "checked_at": "2026-10-27",
+  "tiers": [
+    {
+      "min_prev_spend": 0,
+      "monthly_limit": null
+    },
+    {
+      "min_prev_spend": 400000,
+      "monthly_limit": null
+    }
+  ],
+  "spend_exclusions_raw": "상품권·선불카드 구매·충전, 국세·지방세, 아파트관리비, 대학등록금, 각종 수수료·이자, 연회비, 현금서비스·카드론, 매출취소 등",
+  "benefits": [
+    {
+      "benefit_id": "kb-2440-b01",
+      "target_raw": "국내 가맹점 1% 청구할인",
+      "target_kind": "all_merchants",
+      "brands": [],
+      "rate": 1,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": null,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "실적·한도 없음",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 0
+    },
+    {
+      "benefit_id": "kb-2440-b02",
+      "target_raw": "해외 가맹점 2%",
+      "target_kind": "channel",
+      "brands": [],
+      "rate": 2,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 40000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "overseas",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": null,
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 0
+    },
+    {
+      "benefit_id": "kb-2440-b03",
+      "target_raw": "쇼핑 멤버십(네이버 플러스, 쿠팡 와우) 50%, OTT 10%, 이동통신 5% 자동납부",
+      "target_kind": "non_store",
+      "brands": [
+        "네이버플러스 멤버십",
+        "쿠팡 와우 멤버십",
+        "넷플릭스",
+        "유튜브 프리미엄",
+        "웨이브",
+        "티빙",
+        "디즈니플러스",
+        "SKT",
+        "KT",
+        "LG U+"
+      ],
+      "rate": 50,
+      "fixed_amount": null,
+      "unit": "%",
+      "max_per_txn": null,
+      "monthly_cap": 3000,
+      "monthly_count": null,
+      "min_amount": null,
+      "hours": null,
+      "days": null,
+      "channel": "any",
+      "shared_limit_group": null,
+      "excludes_raw": null,
+      "notes": "멤버십 50%, OTT 10%, 통신 5%",
+      "confidence": "high",
+      "reward_type": "discount",
+      "min_prev_spend": 400000
+    }
+  ],
+  "other_services_raw": []
+}
