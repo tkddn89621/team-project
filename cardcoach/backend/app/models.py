@@ -16,6 +16,9 @@ class Brand(Base):
     logo_url = Column(String, default="")
     # 로고 인식/OCR 결과 매칭용 키워드 (소문자, 콤마 구분)
     aliases = Column(String, default="")
+    # GPS 매칭용 좌표 (시연용 가상 좌표, 없으면 GPS 매칭 제외)
+    lat = Column(Float, nullable=True)
+    lng = Column(Float, nullable=True)
 
 
 class Card(Base):
@@ -25,16 +28,23 @@ class Card(Base):
     issuer = Column(String, nullable=False)        # 우리카드
     is_woori = Column(Boolean, default=False)
     color = Column(String, default="#2F6BFF")      # 카드 이미지 대신 색상
+    number_last4 = Column(String, default="")      # 카드번호는 끝 4자리만 저장, 표기 시 마스킹
+    target_spend = Column(Integer, default=0)      # 전월 실적 목표(원)
+    current_spend = Column(Integer, default=0)     # 이번 달 현재 실적(원)
+    monthly_discount_limit = Column(Integer, default=0)  # 월 통합 할인 한도(원)
+    monthly_discount_used = Column(Integer, default=0)   # 이번 달 이미 받은 할인(원)
 
 
 class BenefitRule(Base):
     __tablename__ = "benefit_rules"
     id = Column(Integer, primary_key=True)
     card_id = Column(Integer, ForeignKey("cards.id"), nullable=False)
-    brand_id = Column(Integer, ForeignKey("brands.id"), nullable=False)
+    # 브랜드 룰(brand_id) 또는 업종 룰(category) 중 하나. 같은 카드면 브랜드 룰 우선
+    brand_id = Column(Integer, ForeignKey("brands.id"), nullable=True)
+    category = Column(String, nullable=True)
     benefit_type = Column(String, default="청구할인")  # 청구할인 | 적립 | 캐시백
     rate = Column(Float, nullable=False)               # 0.30 = 30%
-    monthly_max_amount = Column(Integer, default=0)    # 월 최대 할인 금액(원), 0=제한 없음
+    max_per_txn = Column(Integer, default=0)           # 건당 최대 할인 금액(원), 0=제한 없음
 
     card = relationship("Card")
     brand = relationship("Brand")
