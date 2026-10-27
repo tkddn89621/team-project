@@ -16,7 +16,7 @@ from . import catalog
 from .models import Base, engine, SessionLocal, Brand, WalletCard, Selection, SeedMeta, Recognition
 
 # 시드 데이터(지갑·브랜드)를 고치면 이 값을 바꾼다 → 다음 시작 때 db를 자동으로 새로 만듦 (인식·결제 기록도 초기화)
-SEED_VERSION = "2026-10-27-catalog-v2-kimwoori"
+SEED_VERSION = "2026-10-27-catalog-v3-cardcolors"
 KST = timezone(timedelta(hours=9))
 
 # 시연 기준 위치. 프론트 .env 의 VITE_DEMO_GPS 와 맞춰 쓰면 '근처 매장' 매칭을 시연할 수 있음 (카카오 키가 없을 때만 사용)
@@ -24,9 +24,9 @@ DEMO_GPS = (37.56650, 126.97800)
 
 # 내 지갑: (카드 상품 id, 색, 끝4자리, 지난달 실적, 이번 달 실적, 고르지 않은 택1 혜택)
 WALLET = [
-    ("woori-2699",   "#1B3A8A", "1234", 410000, 180000, []),
-    ("woori-2687",   "#0F8A7E", "5678", 330000, 270000, []),
-    ("shinhan-2759", "#2B5BD7", "9012", 320000, 150000, []),
+    ("woori-2699",   "#1E1E22", "1234", 410000, 180000, []),
+    ("woori-2687",   "#E0383E", "5678", 330000, 270000, []),
+    ("shinhan-2759", "#2A3A6B", "9012", 320000, 150000, []),
 ]
 
 # 이번 달 이미 받은 할인 (결제 기록으로 넣어서 한도·횟수 계산에 그대로 반영): (카드, 브랜드, 금액, 혜택, 할인)

@@ -95,7 +95,12 @@ function BrandMark({ name, logo, code, size = 44, square = false }) {
   );
 }
 
-function CardThumb({ color }) {
+/* 카드 썸네일: frontend/public/cards/카드상품id.png 가 있으면 실제 카드 이미지(세로), 없으면 카드 색 */
+function CardThumb({ color, product }) {
+  const [broken, setBroken] = useState(false);
+  if (product && !broken) {
+    return <img className="cardthumb img" src={`/cards/${product}.png`} alt="" onError={() => setBroken(true)} />;
+  }
   return <div className="cardthumb" style={{ background: `linear-gradient(135deg, ${color}, ${color}99)` }} />;
 }
 
@@ -314,74 +319,205 @@ function RiskNote({ card }) {
 }
 
 /* ---------------- ⓪ 홈 (HOME) ---------------- */
-function HomeScreen({ mydata, onLinkMydata, onScan, onWallet, onOpenBrand }) {
-  const [history] = useState(loadHistory);
-  const [cards, setCards] = useState(null);
-  useEffect(() => { getCards(mydata).then(setCards).catch(() => setCards([])); }, [mydata]);
-  const risk = mostAtRisk(cards);
-  const now = new Date();
-  const saved = history
-    .filter((h) => { const d = new Date(h.at); return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth(); })
-    .reduce((sum, h) => sum + (h.benefit || 0), 0);
 
-  const recent = [];
-  const seen = new Set();
-  for (const h of history) {
-    if (seen.has(h.brand_id)) continue;
-    seen.add(h.brand_id);
-    recent.push(h);
-    if (recent.length === 3) break;
+/* 우리 WON 로고 모양 (홈 스캔 원 가운데) */
+function WonMark() {
+  return (
+    <svg className="wonmark" viewBox="0 0 160 120" aria-label="WON">
+      <defs>
+        <linearGradient id="wonL" x1="0" x2="1"><stop offset="0" stopColor="#C7D4FA" /><stop offset="1" stopColor="#A9BCF4" /></linearGradient>
+        <linearGradient id="wonR" x1="0" x2="1"><stop offset="0" stopColor="#8EA3F0" /><stop offset="1" stopColor="#6F88E6" /></linearGradient>
+        <linearGradient id="wonT" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#8FA4F0" /><stop offset="1" stopColor="#6C84E3" /></linearGradient>
+      </defs>
+      <rect x="22" y="14" width="78" height="44" rx="22" fill="url(#wonL)" />
+      <circle cx="104" cy="36" r="27" fill="url(#wonR)" />
+      <text x="80" y="108" textAnchor="middle" fontSize="40" fontWeight="800" letterSpacing="2" fill="url(#wonT)">WON</text>
+    </svg>
+  );
+}
+
+/* 대표카드: 이 기기에만 기억 (없으면 첫 카드) */
+const MAIN_CARD_KEY = "mainCard";
+function loadMainCard() {
+  try { return Number(localStorage.getItem(MAIN_CARD_KEY)) || null; } catch { return null; }
+}
+function saveMainCard(id) {
+  try { localStorage.setItem(MAIN_CARD_KEY, String(id)); } catch { /* 이번 세션만 */ }
+}
+
+/* 큰 카드 이미지 (없으면 카드 색) */
+function CardArt({ card, className = "" }) {
+  const [broken, setBroken] = useState(false);
+  if (card.product_id && !broken) {
+    return <img className={`cardart ${className}`} src={`/cards/${card.product_id}.png`} alt={card.name} onError={() => setBroken(true)} />;
+  }
+  return <div className={`cardart ${className}`} style={{ background: `linear-gradient(135deg, ${card.color}, ${card.color}99)` }} />;
+}
+
+/* 이번 달 실적 한 덩어리: 금액 / 목표 · 막대 · 안내 (대표카드 칸, 전체 카드 목록 공통) */
+function SpendSummary({ card }) {
+  if (!card.target_spend) return <div className="sub">실적 조건이 없는 카드예요</div>;
+  if (!card.spend_known) return <div className="sub">마이데이터를 연동하면 실적을 볼 수 있어요</div>;
+  const { goal } = spendGoal(card);
+  const pct = goal ? Math.min(100, Math.round((card.current_spend / goal) * 100)) : 0;
+  return (
+    <>
+      <div className="sumline">
+        <b>{won(card.current_spend)}</b>
+        <span className="goal"> / {won(goal)}</span>
+        {card.spend_estimated && <span className="pill gray">추정</span>}
+        <span className="pct">{pct}%</span>
+      </div>
+      <div className="bar"><div style={{ width: `${pct}%` }} /></div>
+      <div className="sub tipline">
+        {card.upgrade_gap ? <><b>{won(card.upgrade_gap)}</b> 더 쓰면 다음 달 혜택 유지 · {card.days_left}일 남음</> : "다음 달 혜택 확보"}
+      </div>
+    </>
+  );
+}
+
+/* 아래 시트: 접혀 있으면 대표카드, 위로 끌어 올리면 내 카드 전체의 전월·이번 달 실적 */
+const SHEET_PEEK = 176;   // 접혔을 때 보이는 높이 (탭바 위)
+const SHEET_TOP = 72;     // 펼쳤을 때 화면 위 여백
+const TABBAR_H = 82;
+
+function CardsSheet({ cards, mydata, onLinkMydata, onWallet }) {
+  const [mainId, setMainId] = useState(loadMainCard);
+  const [open, setOpen] = useState(false);
+  const [drag, setDrag] = useState(null);          // 끄는 중의 위치(px). null이면 open 상태대로
+  const [height, setHeight] = useState(() => window.innerHeight - TABBAR_H - SHEET_TOP);
+  const start = useRef(null);
+
+  useEffect(() => {
+    const onResize = () => setHeight(window.innerHeight - TABBAR_H - SHEET_TOP);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const closedY = Math.max(0, height - SHEET_PEEK);  // 접힘 = 시트를 이만큼 아래로 내림
+  const y = drag ?? (open ? 0 : closedY);
+
+  /* 끌기: 손가락·마우스 모두 (pointer events). 놓을 때 빠르게 튕겼거나 절반을 넘었으면 그쪽으로 */
+  function onDown(e) {
+    start.current = { y: e.clientY, base: y, t: Date.now(), moved: false };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }
+  function onMove(e) {
+    if (!start.current) return;
+    const dy = e.clientY - start.current.y;
+    if (Math.abs(dy) > 4) start.current.moved = true;
+    setDrag(Math.min(closedY, Math.max(0, start.current.base + dy)));
+  }
+  function onUp(e) {
+    const s = start.current;
+    start.current = null;
+    if (!s) return;
+    if (!s.moved) { setDrag(null); setOpen((o) => !o); return; }   // 톡 누르면 열고 닫기
+    const dy = e.clientY - s.y;
+    const speed = dy / Math.max(1, Date.now() - s.t);               // px/ms, 위로 튕기면 음수
+    const pos = Math.min(closedY, Math.max(0, s.base + dy));
+    setOpen(speed < -0.4 ? true : speed > 0.4 ? false : pos < closedY / 2);
+    setDrag(null);
   }
 
+  if (!cards || !cards.length) return null;
+  const main = cards.find((c) => c.card_id === mainId) || cards[0];
+  const pickMain = (id) => { setMainId(id); saveMainCard(id); };
+
   return (
-    <div className="screen home">
-      <header className="navbar"><div className="navtitle">카드 코치</div></header>
-      <div className="home-body">
-        <section className="hcard hero-card">
-          <div className="hero-title">계산하기 전에<br />간판부터 찍어보세요</div>
-          <div className="sub">내 카드 중 혜택이 가장 큰 카드를 알려드려요</div>
-          <button className="btn primary big scanbtn" onClick={onScan}><CameraIcon /> 간판 찍기</button>
-        </section>
-
-        <section className="hcard hrow">
-          <div className="grow">
-            <div className="amount">{won(saved)}</div>
-            <div className="sub">{saved > 0 ? `${now.getMonth() + 1}월에 추천대로 결제해서 아낀 돈` : "추천 카드로 결제하면 아낀 돈이 여기에 쌓여요"}</div>
+    <>
+      {open && <div className="sheet-dim" onClick={() => setOpen(false)} />}
+      <section className={`cardsheet ${drag != null ? "dragging" : ""}`}
+               style={{ height, transform: `translateY(${y}px)` }} aria-expanded={open}>
+        {/* 끄는 손잡이 + 대표카드 (이 부분을 잡고 올리고 내림) */}
+        <div className="sheet-grab" onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}>
+          <div className="handle" />
+          <div className="sheet-title">
+            <span>{open ? "내 카드 실적 한눈에" : "대표카드"}</span>
+            {open && <span className="sub">{cards.length}장</span>}
           </div>
-        </section>
-
-        {risk && (
-          <button className="hcard hrow riskcard" onClick={onWallet}>
-            <div className="grow">
-              <RiskNote card={risk} />
+          {!open && (
+            <div className="maincard">
+              <CardArt card={main} />
+              <div className="grow">
+                <div className="cardname clamp1">{main.name} {main.is_woori && <span className="pill">우리</span>}</div>
+                <SpendSummary card={main} />
+              </div>
             </div>
-            <ChevronIcon />
-          </button>
-        )}
+          )}
+        </div>
 
-        {!mydata && <MydataRow onLink={onLinkMydata} />}
-
-        {recent.length > 0 && (
-          <section className="hcard list">
-            <div className="rowtitle">최근 확인한 가맹점</div>
-            {recent.map((h) => (
-              <button key={h.brand_id} className="listrow" onClick={() => onOpenBrand(h)}>
-                <BrandMark name={h.name} logo={h.logo_url} code={h.industry_code} size={40} />
-                <div className="grow">
-                  <div className="listname">{h.name}</div>
-                  <div className="sub">{[h.card_name, h.benefit ? `${won(h.benefit)} 할인` : null].filter(Boolean).join(" · ")}</div>
+        {/* 펼쳤을 때: 카드마다 지난달 → 이번 달 실적 */}
+        <div className="sheet-body">
+          {cards.map((c) => {
+            const isMain = c.card_id === main.card_id;
+            return (
+              <div key={c.card_id} className="allcard">
+                <div className="allcard-head">
+                  <CardThumb color={c.color} product={c.product_id} />
+                  <div className="grow">
+                    <div className="cardname clamp1">{c.name} {c.is_woori && <span className="pill">우리</span>}</div>
+                    <div className="sub">
+                      {!c.spend_known ? "실적 확인 불가"
+                        : c.eligibility === "unmet" ? <span className="warn">지난달 {won(c.prev_spend)} · 실적 미달</span>
+                        : <>지난달 {won(c.prev_spend)} · 이번 달 혜택 받는 중</>}
+                    </div>
+                  </div>
+                  {isMain ? <span className="mainbadge">대표</span>
+                    : <button className="hbtn" onClick={() => pickMain(c.card_id)}>대표로</button>}
                 </div>
-                <ChevronIcon />
-              </button>
-            ))}
-          </section>
-        )}
+                <SpendSummary card={c} />
+              </div>
+            );
+          })}
+          {!mydata && <MydataRow onLink={onLinkMydata} />}
+          <button className="btn ghost big sheet-more" onClick={onWallet}>카드별 혜택 자세히 보기</button>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function HomeScreen({ mydata, onLinkMydata, onScan, onWallet }) {
+  const [cards, setCards] = useState(null);
+  useEffect(() => { getCards(mydata).then(setCards).catch(() => setCards([])); }, [mydata]);
+  // 홈에 있는 동안 페이지 자체를 고정 (아이폰은 스크롤할 게 없어도 페이지 전체가 튕겨서 배경이 움직임). 시트 목록만 스크롤
+  useEffect(() => {
+    document.documentElement.classList.add("lock");
+    return () => document.documentElement.classList.remove("lock");
+  }, []);
+
+  return (
+    <div className="screen home2">
+      <header className="home2-top">
+        <span className="appmark" aria-hidden><ScanIcon /></span>
+        <span className="apptitle">카드 코치</span>
+      </header>
+
+      <div className="home2-hero">
+        <button className="scanorb" onClick={onScan} aria-label="간판 찍고 혜택 찾기">
+          <span className="ring r1" /><span className="ring r2" />
+          <span className="corner tl" /><span className="corner tr" /><span className="corner bl" /><span className="corner br" />
+          <WonMark />
+        </button>
+        <div className="home2-actions">
+          <button className="camcircle" onClick={onScan} aria-label="카메라"><CameraIcon size={22} /></button>
+          <button className="btn primary scanbtn findbtn" onClick={onScan}>혜택 찾기</button>
+        </div>
+        <div className="home2-hint">계산하기 전에 간판을 찍으면 혜택이 가장 큰 카드를 알려드려요</div>
       </div>
 
+      <CardsSheet cards={cards} mydata={mydata} onLinkMydata={onLinkMydata} onWallet={onWallet} />
       <TabBar active="home" onWallet={onWallet} />
     </div>
   );
 }
+
+const ScanIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
+    <path d="M4 9V6a2 2 0 0 1 2-2h3M15 4h3a2 2 0 0 1 2 2v3M20 15v3a2 2 0 0 1-2 2h-3M9 20H6a2 2 0 0 1-2-2v-3M8 12h8" />
+  </svg>
+);
 
 /* 화면의 네모 틀이 실제 카메라 영상(픽셀)의 어디인지. 영상은 object-fit: cover 라 잘려 보이는 만큼 보정.
    틀보다 사방 margin 만큼 넓게 (간판 끝이 틀에 걸려도 잘리지 않게) */
@@ -830,7 +966,7 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
                   </div>
                 )}
                 <div className="row top">
-                  <CardThumb color={c.color} />
+                  <CardThumb color={c.color} product={c.product_id} />
                   <div className="grow">
                     <div className="cardname">{c.name} {c.is_woori && <span className="pill">우리</span>}</div>
                     {/* 혜택은 고른 카드만 펼쳐서 보여줌. 혜택 없는 카드는 이유를 한 줄 (혜택 없어도 결제·실적 반영은 가능) */}
@@ -1021,7 +1157,7 @@ function BenefitsByCategory({ mydata, reloadKey }) {
           return (
             <div key={`${x.card_id}-${x.benefit_id}`} className="catitem">
               <div className="catline">
-                <CardThumb color={x.color} />
+                <CardThumb color={x.color} product={x.product_id} />
                 <div className="grow listname clamp1">{x.card_name}</div>
                 <div className={`catrate ${x.blocked ? "off" : ""}`}>{x.rate_text}</div>
               </div>
@@ -1047,7 +1183,7 @@ function CardSheet({ cards, selected, onPick, onClose }) {
         <div className="sheetlist">
           {cards.map((c) => (
             <button key={c.card_id} className={`sheetrow ${c.card_id === selected ? "on" : ""}`} onClick={() => onPick(c.card_id)}>
-              <CardThumb color={c.color} />
+              <CardThumb color={c.color} product={c.product_id} />
               <div className="grow">
                 <div className="cardname">{c.name} {c.is_woori && <span className="pill">우리</span>}</div>
                 <div className="sub mono">{c.masked_number}</div>
@@ -1124,7 +1260,7 @@ function WalletScreen({ mydata, onLinkMydata, onResetMydata, onBack }) {
 
         <section className="hcard viewseg">
           <div className="seg">
-            <button className={view === "card" ? "on" : ""} onClick={() => setView("card")}>카드별</button>
+            <button className={view === "card" ? "on" : ""} onClick={() => setView("card")}>카드별 모아보기</button>
             <button className={view === "benefit" ? "on" : ""} onClick={() => setView("benefit")}>혜택별 모아보기</button>
           </div>
         </section>
@@ -1136,7 +1272,7 @@ function WalletScreen({ mydata, onLinkMydata, onResetMydata, onBack }) {
         ) : (
           <>
             <button className="hcard hrow cardpick" onClick={() => setSheet(true)}>
-              <CardThumb color={current.color} />
+              <CardThumb color={current.color} product={current.product_id} />
               <div className="grow">
                 <div className="cardname">{current.name} {current.is_woori && <span className="pill">우리</span>}</div>
                 <div className="sub mono">{current.masked_number}</div>

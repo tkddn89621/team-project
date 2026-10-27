@@ -170,9 +170,9 @@ def ask_ai(image_bytes: bytes, det: dict, cands: list, near: list, known: list, 
     if opt["distance_m"] is not None:
         top["distance_m"] = opt["distance_m"]
     rest = [c for c in cands if c["brand_id"] != opt["id"]]
-    if opt["distance_m"] is None:
-        # AI가 근처에 없는 브랜드를 알아봄 (예: 아크테릭스 옷) → 근처라는 이유만으로 붙은 매장(김치도가 등)은 다른 선택지로 안 보여줌
-        rest = [c for c in rest if c["source"] != "gps"]
+    # 근처라는 이유만으로 붙은 매장은 AI가 고른 곳과 같은 업종일 때만 다른 선택지로 남김
+    # (예: 과자 → GS25를 골랐으면 근처 CU는 남기고 김치도가·칼국수집은 뺌. 아크테릭스처럼 근처에 없는 브랜드면 대부분 빠짐)
+    rest = [c for c in rest if c["source"] != "gps" or c.get("category") == opt["category"]]
     return [top] + rest[:2], choice
 
 
@@ -453,6 +453,7 @@ def benefits_by_category(mydata: bool = Query(False), db: Session = Depends(get_
                 g["items"].append({
                     **{k: v for k, v in r.items() if k != "brands_by_code"},
                     "card_id": w.id, "card_name": state["name"], "is_woori": state["is_woori"], "color": state["color"],
+                    "product_id": w.card_id,
                     # 이 업종에 해당하는 브랜드만 (예: 커피 6곳 중 이 업종은 전부, 잡화 중 다이소만 등)
                     "brands": brands,
                 })
