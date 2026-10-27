@@ -16,6 +16,8 @@ class Brand(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)          # 버거킹
     industry_code = Column(String, nullable=True)  # FD-FAST (data/benefits/taxonomy.json)
+    # 업종을 추정했는지: AI가 알아본 목록 밖 브랜드인데 딱 맞는 업종이 없어 가장 가까운 업종으로 넣은 경우
+    category_estimated = Column(Boolean, default=False)
     category = Column(String, nullable=False)      # 업종 이름 (표시용, 업종코드의 name) 예: 패스트푸드·버거
     logo_url = Column(String, default="")
     site = Column(String, default="")              # 공식 사이트 도메인 (로고 파일이 없을 때 이 사이트 아이콘을 표시)

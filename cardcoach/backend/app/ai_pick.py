@@ -26,10 +26,11 @@ SCHEMA = {
         "candidate_id": {"type": "integer"},   # 후보 id, 목록에 없거나 판단 불가면 0
         "brand_name": {"type": "string"},      # 목록 밖 브랜드가 사진에 확실히 보이면 그 이름, 아니면 ""
         "category": {"type": "string", "enum": CATEGORIES},
+        "category_match": {"type": "string", "enum": ["exact", "similar"]},   # 업종이 정확히 같은지, 가장 가까운 것인지
         "confidence": {"type": "number"},      # 0~1
         "reason": {"type": "string"},          # 사용자에게 보여줄 한 문장
     },
-    "required": ["candidate_id", "brand_name", "category", "confidence", "reason"],
+    "required": ["candidate_id", "brand_name", "category", "category_match", "confidence", "reason"],
     "additionalProperties": False,
 }
 
@@ -38,10 +39,13 @@ PROMPT = """카드 혜택 추천 앱입니다. 사용자가 결제 직전에 매
 - 먼저 아래 후보 중에서 고르세요. 간판·로고·포장지·상품 종류(예: 과자·음료 → 편의점, 커피 → 카페, 버거 → 패스트푸드)와 현재 위치에서의 거리를 함께 고려하세요. 거리가 표시된 후보는 지금 근처에 실제로 있는 매장이라 더 유력합니다.
 - 후보에 없지만 사진에 특정 가맹점 브랜드가 확실히 보이면(로고·간판·포장지의 브랜드명) candidate_id 는 0, brand_name 에 그 브랜드 이름(한국에서 부르는 이름, 지점명 제외), category 에 업종을 쓰세요.
   상품 제조사(오리온, 농심 등)나 상품명은 가맹점이 아니니 brand_name 에 쓰지 마세요.
+  이때 category 는 목록에서 그 매장과 가장 가까운 업종을 쓰고, category_match 에 정확히 같은 업종이면 "exact",
+  가장 가깝지만 같지는 않으면 "similar" 를 쓰세요. (예: 동네 카페 → 카페 exact, 아웃도어 옷 매장 → 의류(SPA) similar)
+  비슷한 업종조차 없으면 "기타" 로 쓰세요.
 - 업종은 분명하지만(예: 껌·과자 → 편의점) 그 업종 매장이 여럿이고 어느 곳인지 근거(로고·간판·근처 거리)가 없으면
   하나를 짐작해서 고르지 말고 candidate_id 0, brand_name "", category 에 그 업종을 쓰세요. 사용자가 직접 고릅니다.
 - 가맹점 단서가 전혀 없으면(예: 축구공, 구단·후원사 로고) candidate_id 0, brand_name "", category "기타" 로 하세요.
-- 후보를 골랐으면 brand_name 은 "" 로, category 는 그 후보의 업종으로 쓰세요.
+- 후보를 골랐으면 brand_name 은 "" 로, category 는 그 후보의 업종으로, category_match 는 "exact" 로 쓰세요.
 - reason 은 사용자에게 보여줄 한국어 한 문장(30자 이내)으로 쓰세요.
 
 사진 분석 참고: {hints}
@@ -109,7 +113,8 @@ def pick(image_bytes: bytes, options: list, hints: str):
     brand_id = data["candidate_id"] if data["candidate_id"] in valid else None
     name = data["brand_name"].strip()
     return {"brand_id": brand_id,
-            "new_brand": {"name": name, "category": data["category"]} if name and brand_id is None else None,
+            "new_brand": {"name": name, "category": data["category"],
+                          "estimated": data.get("category_match") == "similar"} if name and brand_id is None else None,
             "category": data["category"],
             "confidence": max(0.0, min(1.0, float(data["confidence"]))),
             "reason": data["reason"]}

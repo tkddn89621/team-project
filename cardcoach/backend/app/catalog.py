@@ -91,6 +91,16 @@ def store_brands() -> list:
 
 
 @lru_cache(maxsize=1)
+def _brand_codes() -> dict:
+    return {canonical_brand(b["brand"]): b.get("code") for b in mapping()["brands"]}
+
+
+def brand_code(name: str):
+    """브랜드 이름(별칭 포함) → 업종코드. 연결표에 없으면 None"""
+    return _brand_codes().get(canonical_brand(name))
+
+
+@lru_cache(maxsize=1)
 def benefit_code_map() -> dict:
     return mapping().get("benefit_codes", {})
 

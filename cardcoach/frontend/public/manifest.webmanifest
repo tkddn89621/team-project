@@ -1,0 +1,16 @@
+{
+  "name": "카드 코치",
+  "short_name": "카드 코치",
+  "description": "찍어서 혜택 챙기고, 전월 실적까지 관리해 주는 결제 비서",
+  "lang": "ko",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

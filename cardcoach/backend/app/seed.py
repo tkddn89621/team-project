@@ -13,7 +13,7 @@
 from datetime import datetime, timedelta, timezone
 from sqlalchemy import inspect
 from . import catalog
-from .models import Base, engine, SessionLocal, Brand, WalletCard, Selection, SeedMeta
+from .models import Base, engine, SessionLocal, Brand, WalletCard, Selection, SeedMeta, Recognition
 
 # 시드 데이터(지갑·브랜드)를 고치면 이 값을 바꾼다 → 다음 시작 때 db를 자동으로 새로 만듦 (인식·결제 기록도 초기화)
 SEED_VERSION = "2026-10-27-catalog-v2-kimwoori"
@@ -72,7 +72,7 @@ def _schema_outdated() -> bool:
         return False   # 빈 db (처음 실행)
     for table in Base.metadata.sorted_tables:
         if not insp.has_table(table.name):
-            return True
+            continue   # 없는 테이블은 create_all이 만들어 줌 (시연 초기화 뒤 인식 기록만 남은 경우 등)
         existing = {c["name"] for c in insp.get_columns(table.name)}
         if {c.name for c in table.columns} - existing:
             return True
@@ -102,7 +102,7 @@ def seed():
     Base.metadata.create_all(engine)
     if _seed_outdated():
         print(f"seed version → {SEED_VERSION}, recreate")
-        Base.metadata.drop_all(engine)
+        _drop_demo_tables()
         Base.metadata.create_all(engine)
     db = SessionLocal()
     try:
@@ -139,9 +139,16 @@ def seed():
 
 
 def reset():
-    """시연 데이터 처음으로: 실적·결제 기록·자동 등록 가게를 모두 지우고 다시 시드"""
-    Base.metadata.drop_all(engine)
+    """시연 데이터 처음으로: 실적·결제 기록·자동 등록 가게를 모두 지우고 다시 시드.
+    인식 기록(recognitions)은 남김 — 잘못 인식한 사례를 나중에 확인할 수 있게 (다른 테이블과 연결 없음)"""
+    _drop_demo_tables()
     seed()
+
+
+def _drop_demo_tables():
+    """인식 기록(recognitions)만 남기고 지움"""
+    keep = {Recognition.__tablename__}
+    Base.metadata.drop_all(engine, tables=[t for t in Base.metadata.sorted_tables if t.name not in keep])
 
 
 if __name__ == "__main__":

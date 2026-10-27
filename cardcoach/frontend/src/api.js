@@ -47,6 +47,20 @@ export async function getCards(mydata) {
   return r.json();
 }
 
+/* 혜택별 모아보기: 업종마다 내 카드들의 이번 달 남은 혜택 */
+export async function getBenefitsByCategory(mydata) {
+  const r = await fetch(`${API}/benefits/by-category?mydata=${!!mydata}`);
+  if (!r.ok) throw new Error("혜택을 불러오지 못했어요");
+  return r.json();
+}
+
+/* 내 카드 상세: 카드 상태 + 이번 달 남은 혜택 + 이번 달 결제 기록 */
+export async function getCardDetail(cardId, mydata) {
+  const r = await fetch(`${API}/cards/${cardId}/detail?mydata=${!!mydata}`);
+  if (!r.ok) throw new Error("카드 정보를 불러오지 못했어요");
+  return r.json();
+}
+
 export async function getRecommendations(brandId, amount, mydata) {
   const q = new URLSearchParams({ brand_id: brandId, mydata: !!mydata });
   if (amount) q.set("amount", amount);

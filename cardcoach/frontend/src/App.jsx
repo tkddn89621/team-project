@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { API, recognize, getBrands, getCards, getRecommendations, postSelection, getPosition, resetDemo, refreshMydata } from "./api.js";
+import { API, recognize, getBrands, getCards, getRecommendations, postSelection, getPosition, resetDemo, refreshMydata, getCardDetail, getBenefitsByCategory } from "./api.js";
 
 const won = (n) => (n ?? 0).toLocaleString("ko-KR") + "원";
 // 40000 → "4만 원", 15000 → "1.5만 원", 8000 → "8천 원"
@@ -70,11 +70,11 @@ const INDUSTRY_EMOJI = {
 };
 
 /* 브랜드 로고. backend/logos/ 파일이나 공식 사이트 아이콘이 있으면 로고, 없거나 못 불러오면 업종 이모지 */
-function BrandMark({ name, logo, code, size = 44 }) {
+function BrandMark({ name, logo, code, size = 44, square = false }) {
   const [broken, setBroken] = useState(false);
   const [wide, setWide] = useState(false); // 가로로 긴 글자 로고(CU·GS25·세븐일레븐)는 가로형 배지로
   if (logo && !broken) {
-    const style = wide
+    const style = wide && !square   // square: 목록 줄 맞춤용 (가로 로고도 원 안에)
       ? { width: Math.round(size * 1.75), height: size, borderRadius: 10, padding: "6px 7px" }
       : { width: size, height: size };
     return (
@@ -240,69 +240,59 @@ function clearPending() {
   try { localStorage.removeItem(PENDING_KEY); } catch { /* 없으면 그만 */ }
 }
 
-/* 마이데이터 새로고침 행 + 결과 창 — 홈·내 카드 공통. 연동했을 때만 */
-function MydataRefresh({ onRefreshed }) {
-  const [busy, setBusy] = useState(false);
-  const [result, setResult] = useState(null); // 받아온 승인내역 목록
-
-  async function refresh() {
-    setBusy(true);
-    try {
-      const pending = loadPending();
-      const r = await refreshMydata(pending.map(({ brand_id, card_id, amount }) => ({ brand_id, card_id, amount })));
-      clearPending();
-      for (const a of r.approvals) {
-        addHistory({ brand_id: a.brand.brand_id, name: a.brand.name, logo_url: a.brand.logo_url, category: a.brand.category,
-                     industry_code: a.brand.industry_code, card_name: a.card.name, benefit: a.discount, at: Date.now() });
-      }
-      setResult(r.approvals);
-      onRefreshed?.();
-    } catch {
-      setResult([]);
-    } finally {
-      setBusy(false);
-    }
+/* 마이데이터 새로고침: 타사 카드 새 승인내역을 받아 반영. 결과는 ApprovalsModal 로 보여줌 */
+async function fetchApprovals() {
+  const pending = loadPending();
+  const r = await refreshMydata(pending.map(({ brand_id, card_id, amount }) => ({ brand_id, card_id, amount })));
+  clearPending();
+  for (const a of r.approvals) {
+    addHistory({ brand_id: a.brand.brand_id, name: a.brand.name, logo_url: a.brand.logo_url, category: a.brand.category,
+                 industry_code: a.brand.industry_code, card_name: a.card.name, benefit: a.discount, at: Date.now() });
   }
+  return r.approvals;
+}
 
+function ApprovalsModal({ approvals, onClose }) {
   return (
-    <>
-      <section className="hcard hrow">
-        <div className="grow">
-          <div className="rowtitle">마이데이터 연동 중</div>
-          <div className="sub">다른 카드사 카드로 결제했다면 새로고침해서 실적에 반영해요</div>
-        </div>
-        <button className="hbtn" disabled={busy} onClick={refresh}>{busy ? "불러오는 중" : "새로고침"}</button>
-      </section>
-
-      {result && (
-        <div className="modal" onClick={() => setResult(null)}>
-          <div className="modal-body" onClick={(e) => e.stopPropagation()}>
-            <div className="title">{result.length ? `새 결제 ${result.length}건을 불러왔어요` : "새 결제 내역이 없어요"}</div>
-            {result.map((a) => (
-              <div key={a.selection_id} className="approval">
-                <div className="row">
-                  <BrandMark name={a.brand.name} logo={a.brand.logo_url} code={a.brand.industry_code} size={40} />
-                  <div className="grow">
-                    <div className="listname">{a.brand.name}</div>
-                    <div className="sub">{a.card.name} · {won(a.amount)} 승인</div>
-                  </div>
-                </div>
-                <div className="kv">
-                  <div><span>할인 (추정)</span><b className="accent">-{won(a.discount)}</b></div>
-                  <div><span>이번 달 실적 (추정)</span><b>{won(a.before.current_spend)} → {won(a.card.current_spend)}</b></div>
-                  <div>
-                    <span>다음 달 혜택까지</span>
-                    <b>{a.card.upgrade_gap ? `${won(a.card.upgrade_gap)} 남음` : "최고 구간 확보"}</b>
-                  </div>
-                </div>
+    <div className="modal" onClick={onClose}>
+      <div className="modal-body" onClick={(e) => e.stopPropagation()}>
+        <div className="title">{approvals.length ? `새 결제 ${approvals.length}건을 불러왔어요` : "새 결제 내역이 없어요"}</div>
+        {approvals.map((a) => (
+          <div key={a.selection_id} className="approval">
+            <div className="row">
+              <BrandMark name={a.brand.name} logo={a.brand.logo_url} code={a.brand.industry_code} size={40} />
+              <div className="grow">
+                <div className="listname">{a.brand.name}</div>
+                <div className="sub">{a.card.name} · {won(a.amount)} 승인</div>
               </div>
-            ))}
-            {result.length > 0 && <div className="sub">{result[0].source}</div>}
-            <button className="btn primary big modal-cta" onClick={() => setResult(null)}>확인</button>
+            </div>
+            <div className="kv">
+              <div><span>할인 (추정)</span><b className="accent">-{won(a.discount)}</b></div>
+              <div><span>이번 달 실적 (추정)</span><b>{won(a.before.current_spend)} → {won(a.card.current_spend)}</b></div>
+              <div>
+                <span>다음 달 혜택까지</span>
+                <b>{a.card.upgrade_gap ? `${won(a.card.upgrade_gap)} 남음` : "최고 구간 확보"}</b>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
-    </>
+        ))}
+        {approvals.length > 0 && <div className="sub">{approvals[0].source}</div>}
+        <button className="btn primary big modal-cta" onClick={onClose}>확인</button>
+      </div>
+    </div>
+  );
+}
+
+/* 마이데이터 새로고침 행 — 내 카드 화면. 연동했을 때만 */
+function MydataRefreshRow({ busy, onRefresh }) {
+  return (
+    <section className="hcard hrow">
+      <div className="grow">
+        <div className="rowtitle">마이데이터 연동 중</div>
+        <div className="sub">다른 카드사 카드로 결제했다면 새로고침해서 실적에 반영해요</div>
+      </div>
+      <button className="hbtn" disabled={busy} onClick={onRefresh}>{busy ? "불러오는 중" : "새로고침"}</button>
+    </section>
   );
 }
 
@@ -325,10 +315,9 @@ function RiskNote({ card }) {
 
 /* ---------------- ⓪ 홈 (HOME) ---------------- */
 function HomeScreen({ mydata, onLinkMydata, onScan, onWallet, onOpenBrand }) {
-  const [history, setHistory] = useState(loadHistory);
+  const [history] = useState(loadHistory);
   const [cards, setCards] = useState(null);
-  const [reloadKey, setReloadKey] = useState(0);
-  useEffect(() => { getCards(mydata).then(setCards).catch(() => setCards([])); }, [mydata, reloadKey]);
+  useEffect(() => { getCards(mydata).then(setCards).catch(() => setCards([])); }, [mydata]);
   const risk = mostAtRisk(cards);
   const now = new Date();
   const saved = history
@@ -370,9 +359,7 @@ function HomeScreen({ mydata, onLinkMydata, onScan, onWallet, onOpenBrand }) {
           </button>
         )}
 
-        {mydata
-          ? <MydataRefresh onRefreshed={() => { setHistory(loadHistory()); setReloadKey((k) => k + 1); }} />
-          : <MydataRow onLink={onLinkMydata} />}
+        {!mydata && <MydataRow onLink={onLinkMydata} />}
 
         {recent.length > 0 && (
           <section className="hcard list">
@@ -683,13 +670,15 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
     const amt = amount ? Number(amount) : undefined;
     getRecommendations(brand.brand_id, amt, mydata).then((d) => {
       setData(d);
-      setSelected(d.best_card_id); // 조건이 바뀌면 다시 최선 카드로
+      // 조건이 바뀌면 다시 최선 카드로. 할인되는 카드가 없으면 실적 채우기 좋은 우리카드 → 아무 우리카드 → 첫 카드
+      setSelected(d.best_card_id ?? d.fill?.card_id ?? (d.cards.find((c) => c.is_woori) || d.cards[0])?.card_id ?? null);
     });
   }, [brand.brand_id, amount, mydata]);
 
   if (!data) return <div className="screen page-bg center"><div className="spinner dark" /></div>;
 
   const list = data.cards.filter((c) => (tab === "woori" ? c.is_woori : true));
+  if (data.fill) list.sort((a, b) => (b.card_id === data.fill.card_id) - (a.card_id === data.fill.card_id)); // 실적 채우기 카드를 맨 위로
   const wooriCount = data.cards.filter((c) => c.is_woori).length;
 
   const chosen = data.cards.find((c) => c.card_id === selected);
@@ -743,17 +732,27 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
             <BrandMark name={data.brand.name} logo={data.brand.logo_url} code={data.brand.industry_code} size={48} />
             <div className="grow">
               <div className="rowtitle">{data.brand.name}</div>
-              <div className="sub">{data.brand.category} · {data.hour}시 결제 기준</div>
+              <div className="sub">{data.brand.category}{data.brand.category_estimated && " (추정)"} · {data.hour}시 결제 기준</div>
             </div>
           </div>
           {!bestCard ? (
-            <div className="hero-title rec-title">{data.message}</div>
+            <>
+              <div className="hero-title rec-title">{data.message}</div>
+              {/* 할인은 0원이지만 다음 달 혜택에 도움 되는 카드 — '가장 큰 혜택'과 구분해서 안내 */}
+              {data.fill && (
+                <div className="sub rec-tip">결제는 <b>{data.fill.name}</b>{ro(data.fill.name)} 해서 실적을 채워요 · {data.fill.message}</div>
+              )}
+            </>
           ) : (
             <>
               <div className="hero-title rec-title"><span className="accent">{bestCard.name}</span>{ro(bestCard.name)} 결제하세요</div>
               {!exact && data.ranges_tip && <div className="sub rec-tip">{data.ranges_tip}</div>}
               {exact && <div className="sub rec-tip">{won(data.amount)} 결제하면 {won(bestCard.expected_benefit)} 아껴요</div>}
             </>
+          )}
+
+          {data.brand.category_estimated && (
+            <div className="estnote">처음 보는 매장이라 가장 가까운 업종({data.brand.category})으로 계산했어요. 카드사에 등록된 업종에 따라 혜택이 다를 수 있어요</div>
           )}
 
           {showRanges && (
@@ -812,22 +811,29 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
 
           {list.map((c) => {
             const best = c.card_id === data.best_card_id;
+            const fill = c.card_id === data.fill?.card_id;
             const usable = c.expected_benefit > 0;
             const on = selected === c.card_id;
             return (
               <button key={c.card_id} className={`cardopt ${on ? "on" : ""} ${!usable ? "none" : ""}`}
-                      onClick={() => usable && setSelected(c.card_id)}>
+                      onClick={() => setSelected(c.card_id)}>
                 {best && (
                   <div className="bestline">
                     <span className="badge">가장 큰 혜택</span>
                     {data.best_reason && <span className="reason">{data.best_reason}</span>}
                   </div>
                 )}
+                {fill && (
+                  <div className="bestline">
+                    <span className="badge fill">실적 채우기</span>
+                    <span className="reason fill">할인은 없지만 다음 달 혜택에 도움돼요</span>
+                  </div>
+                )}
                 <div className="row top">
                   <CardThumb color={c.color} />
                   <div className="grow">
                     <div className="cardname">{c.name} {c.is_woori && <span className="pill">우리</span>}</div>
-                    {/* 혜택은 고른 카드만 펼쳐서 보여줌. 혜택 없는 카드는 못 고르니 이유만 한 줄 */}
+                    {/* 혜택은 고른 카드만 펼쳐서 보여줌. 혜택 없는 카드는 이유를 한 줄 (혜택 없어도 결제·실적 반영은 가능) */}
                     {(on || !usable) && <div className={`rate ${best ? "accent" : ""}`}>{c.rate_label}</div>}
                   </div>
                   {on && (
@@ -864,7 +870,7 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
           다른 카드사 카드는 우리페이로 결제할 수 없어서(오픈페이 미지원) 버튼 없이 안내만 */}
       <div className="cta">
         {chosen && !chosen.is_woori ? (
-          <div className="cta-note">다른 카드사 카드는 우리페이로 결제할 수 없어요 · 계산대에서 실물 카드로 결제한 뒤 마이데이터를 새로고침하면 실적에 반영돼요</div>
+          <div className="cta-note">다른 카드사 카드는 우리페이로 결제할 수 없어요 · 계산대에서 실물 카드로 결제한 뒤 내 카드에서 이 카드를 골라 새로고침하면 실적에 반영돼요</div>
         ) : (
           <div className="btnrow cta-row">
             <button className="btn ghost" disabled={!selected} onClick={() => choose("card")}>실물 카드로</button>
@@ -910,11 +916,176 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
 }
 
 /* ---------------- ③ 내 카드 · 실적 관리 (WALLET) ---------------- */
+
+/* 이번 달 실적 목표: 다음 달에 들어갈(유지·상승) 구간의 기준 금액 */
+function spendGoal(card) {
+  const tiers = card.tiers || [];
+  const nx = card.next_tier_index;
+  const up = card.upgrade_gap != null ? (nx == null ? 0 : nx + 1) : null;
+  return { up, goal: up != null ? tiers[up].min_spend : (tiers.length ? tiers[tiers.length - 1].min_spend : card.target_spend) };
+}
+
+/* 실적 안내: "30,000원 더 사용하면 다음 달도 혜택(한도 15,000원)이 유지돼요" */
+function spendTip(card) {
+  const tiers = card.tiers || [];
+  const t = card.tier_index;
+  const { up } = spendGoal(card);
+  const name = (i) => (tiers.length > 1 ? `${i + 1}구간` : "혜택");
+  if (up == null) return <>다음 달 {tiers.length > 1 ? "최고 구간" : "혜택"}을 이미 확보했어요</>;
+  const lim = card.upgrade_limit != null ? `(한도 ${won(card.upgrade_limit)})` : "";
+  const what = t != null && up === t ? `다음 달도 ${name(up)}${lim}이 유지돼요`
+    : card.next_tier_index == null ? `다음 달 ${name(up)}${lim}을 받아요`
+    : `다음 달 ${name(up)}${lim}으로 올라가요`;
+  return <><b>{won(card.upgrade_gap)}</b> 더 사용하면 {what}<br /><span className="tip-sub">이번 달 {card.days_left}일 남았어요</span></>;
+}
+
+/* 남은 혜택 한 줄: 브랜드 로고 · 혜택 · 남은 한도(또는 횟수) 막대 */
+/* 남은 한도(또는 횟수) → 막대 비율과 글자 */
+function leftInfo(b) {
+  let pct = null, caption;
+  if (b.blocked) caption = <span className="warn">{b.blocked}</span>;
+  else if (b.count_limit) {
+    const left = Math.max(0, b.count_limit - b.count_used);
+    pct = (left / b.count_limit) * 100;
+    caption = `${left}회 남음 / 월 ${b.count_limit}회`;
+  } else if (b.limit != null) {
+    pct = b.limit ? (b.remaining / b.limit) * 100 : 0;
+    caption = `${won(b.remaining)} 남음 / ${won(b.limit)}`;
+  } else caption = "한도 없음";
+  return { pct, caption };
+}
+
+function LeftBar({ b }) {
+  const { pct, caption } = leftInfo(b);
+  return (
+    <div className="leftbar">
+      {pct != null && <div className="bar"><div style={{ width: `${pct}%` }} /></div>}
+      <div className="cap">{caption}</div>
+      {b.shared_group && !b.blocked && <div className="cap hint">{b.shared_group} 통합 한도</div>}
+    </div>
+  );
+}
+
+function BenefitLeftRow({ b }) {
+  return (
+    <div className="leftrow">
+      <BrandMark name={b.logo_name} logo={b.logo_url} code={b.industry_code} size={44} square />
+      <div className="grow">
+        <div className="listname">{b.title}</div>
+        <div className="sub">{b.rate_text}</div>
+      </div>
+      <LeftBar b={b} />
+    </div>
+  );
+}
+
+/* 업종 아이콘 아래 짧은 이름 (긴 업종명은 줄임) */
+const SHORT_CATEGORY = {
+  "FD-CAFE": "카페", "RT-CVS": "편의점", "RT-HB": "드럭스토어", "RT-LIVING": "생활용품", "FD-REST": "음식점",
+  "RT-SSM": "슈퍼마켓", "RT-MART": "대형마트", "RT-DEPT": "백화점", "RT-OUTLET": "아울렛", "RT-WAREHOUSE": "창고형마트",
+  "FD-FAST": "패스트푸드", "FD-BAR": "주점", "TR-FUEL": "주유소",
+};
+const shortCategory = (g) => SHORT_CATEGORY[g.code] || g.name.split(/[·(]/)[0];
+
+/* 혜택별 모아보기: 위에 업종 아이콘을 가로로 늘어놓고, 누른 업종의 카드별 남은 혜택을 아래에 보여줌
+   (받을 수 있는 혜택 먼저, 비율 높은 순) */
+function BenefitsByCategory({ mydata, reloadKey }) {
+  const [groups, setGroups] = useState(null);
+  const [picked, setPicked] = useState(null);
+  useEffect(() => { getBenefitsByCategory(mydata).then(setGroups).catch(() => setGroups([])); }, [mydata, reloadKey]);
+  if (!groups) return <div className="center pad-y"><div className="spinner dark" /></div>;
+  if (!groups.length) return <section className="hcard pad"><div className="sub">매장에서 받을 수 있는 혜택이 없어요</div></section>;
+  const shortBrands = (list) => (list.length <= 2 ? list.join("·") : `${list.slice(0, 2).join("·")} 외 ${list.length - 2}곳`);
+  const g = groups.find((x) => x.code === picked) || groups[0];
+
+  return (
+    <>
+      <section className="hcard catpick">
+        <div className="caticons">
+          {groups.map((x) => (
+            <button key={x.code} className={`caticon ${x.code === g.code ? "on" : ""}`} onClick={() => setPicked(x.code)}>
+              <span className="catbox">{INDUSTRY_EMOJI[x.code] || "🏷️"}</span>
+              <span className="catlabel">{shortCategory(x)}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="hcard list">
+        <div className="catdetail-head">
+          <div className="rowtitle">{g.name}</div>
+          <span className="sub">{g.cards > 1 ? `카드 ${g.cards}장 비교` : "카드 1장"}</span>
+        </div>
+        {g.items.map((x) => {
+          const { pct, caption } = leftInfo(x);
+          return (
+            <div key={`${x.card_id}-${x.benefit_id}`} className="catitem">
+              <div className="catline">
+                <CardThumb color={x.color} />
+                <div className="grow listname clamp1">{x.card_name}</div>
+                <div className={`catrate ${x.blocked ? "off" : ""}`}>{x.rate_text}</div>
+              </div>
+              {x.brands.length > 0 && <div className="sub catbrands">{shortBrands(x.brands)}</div>}
+              {pct != null && <div className="bar"><div style={{ width: `${pct}%` }} /></div>}
+              <div className="catcap">
+                <span>{caption}</span>
+                {x.shared_group && !x.blocked && <span className="hint">{x.shared_group} 통합 한도</span>}
+              </div>
+            </div>
+          );
+        })}
+      </section>
+    </>
+  );
+}
+
+function CardSheet({ cards, selected, onPick, onClose }) {
+  return (
+    <div className="modal" onClick={onClose}>
+      <div className="modal-body" onClick={(e) => e.stopPropagation()}>
+        <div className="title">카드 선택</div>
+        <div className="sheetlist">
+          {cards.map((c) => (
+            <button key={c.card_id} className={`sheetrow ${c.card_id === selected ? "on" : ""}`} onClick={() => onPick(c.card_id)}>
+              <CardThumb color={c.color} />
+              <div className="grow">
+                <div className="cardname">{c.name} {c.is_woori && <span className="pill">우리</span>}</div>
+                <div className="sub mono">{c.masked_number}</div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function WalletScreen({ mydata, onLinkMydata, onResetMydata, onBack }) {
   const [cards, setCards] = useState(null);
-
+  const [selected, setSelected] = useState(null);
+  const [detail, setDetail] = useState(null);
+  const [tab, setTab] = useState("spend"); // spend: 이번 달 실적 | history: 혜택 내역
+  const [view, setView] = useState("card"); // card: 카드별 | benefit: 혜택별 모아보기
+  const [sheet, setSheet] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
+  const [approvals, setApprovals] = useState(null); // 마이데이터 새로고침 결과
+  const [busy, setBusy] = useState(false);
+
   useEffect(() => { getCards(mydata).then(setCards).catch(() => setCards([])); }, [mydata, reloadKey]);
+  // 고른 카드가 목록에 없으면(연동 해제 등) 첫 카드로
+  const current = cards?.find((c) => c.card_id === selected) || cards?.[0];
+  useEffect(() => {
+    if (!current) return;
+    getCardDetail(current.card_id, mydata).then(setDetail).catch(() => setDetail(null));
+  }, [current?.card_id, mydata, reloadKey]);
+
+  /* 마이데이터 새로고침: 새 승인내역을 받아 반영하고 카드 정보 다시 */
+  async function refresh() {
+    setBusy(true);
+    try { setApprovals(await fetchApprovals()); } catch { setApprovals([]); }
+    setReloadKey((k) => k + 1);
+    setBusy(false);
+  }
 
   const urgent = mostAtRisk(cards);
 
@@ -926,8 +1097,14 @@ function WalletScreen({ mydata, onLinkMydata, onResetMydata, onBack }) {
     clearPending();
     onResetMydata();
     setCards(null);
+    setDetail(null);
+    setSelected(null);
     setReloadKey((k) => k + 1);
   }
+
+  const card = detail && current && detail.card.card_id === current.card_id ? detail.card : null;
+  const { goal } = card ? spendGoal(card) : { goal: 0 };
+  const pct = card && goal ? Math.min(100, Math.round((card.current_spend / goal) * 100)) : 0;
 
   return (
     <div className="screen page-bg wallet">
@@ -935,41 +1112,110 @@ function WalletScreen({ mydata, onLinkMydata, onResetMydata, onBack }) {
       <div className="page">
 
         {urgent && (
-          <section className="hcard hrow riskcard">
+          <button className="hcard hrow riskcard" onClick={() => { setSelected(urgent.card_id); setTab("spend"); }}>
             <div className="grow">
               <RiskNote card={urgent} />
             </div>
-          </section>
+            <ChevronIcon />
+          </button>
         )}
 
-        {mydata
-          ? <MydataRefresh onRefreshed={() => setReloadKey((k) => k + 1)} />
-          : <MydataRow onLink={onLinkMydata} />}
+        {!mydata && <MydataRow onLink={onLinkMydata} />}
 
-        {!cards ? (
+        <section className="hcard viewseg">
+          <div className="seg">
+            <button className={view === "card" ? "on" : ""} onClick={() => setView("card")}>카드별</button>
+            <button className={view === "benefit" ? "on" : ""} onClick={() => setView("benefit")}>혜택별 모아보기</button>
+          </div>
+        </section>
+
+        {view === "benefit" ? (
+          <BenefitsByCategory mydata={mydata} reloadKey={reloadKey} />
+        ) : !current ? (
           <div className="center pad-y"><div className="spinner dark" /></div>
         ) : (
-          cards.map((c) => (
-            <section key={c.card_id} className="hcard walletcard">
-              <div className="row">
-                <CardThumb color={c.color} />
-                <div className="grow">
-                  <div className="cardname">{c.name} {c.is_woori && <span className="pill">우리</span>}</div>
-                  <div className="sub mono">{c.masked_number}</div>
-                </div>
+          <>
+            <button className="hcard hrow cardpick" onClick={() => setSheet(true)}>
+              <CardThumb color={current.color} />
+              <div className="grow">
+                <div className="cardname">{current.name} {current.is_woori && <span className="pill">우리</span>}</div>
+                <div className="sub mono">{current.masked_number}</div>
               </div>
-              {c.eligibility !== "unmet" && (
-                <div className="limitline">
-                  <span>이번 달 남은 할인 한도</span>
-                  <b>{c.limit_unlimited ? "한도 없음" : `${won(c.monthly_remaining)}`}</b>
-                </div>
-              )}
-              <SpendBar card={c} />
+              <ChevronIcon />
+            </button>
+
+            {/* 타사 카드: 실물 카드 결제는 마이데이터 새로고침으로 들어옴 */}
+            {mydata && !current.is_woori && <MydataRefreshRow busy={busy} onRefresh={refresh} />}
+
+            <section className="hcard wtabs">
+              <button className={tab === "spend" ? "on" : ""} onClick={() => setTab("spend")}>이번 달 실적</button>
+              <button className={tab === "history" ? "on" : ""} onClick={() => setTab("history")}>혜택 내역</button>
             </section>
-          ))
+
+            {!card ? (
+              <div className="center pad-y"><div className="spinner dark" /></div>
+            ) : tab === "spend" ? (
+              <>
+                <section className="hcard pad">
+                  <div className="rowtitle">이번 달 사용 실적{card.spend_estimated && <span className="pill gray">추정</span>}</div>
+                  {!card.target_spend ? (
+                    <div className="sub">실적 조건이 없는 카드예요</div>
+                  ) : (
+                    <>
+                      <div className="spendline">
+                        <span className="spend-now">{won(card.current_spend)}</span>
+                        <span className="spend-goal">/ {won(goal)}</span>
+                        <span className="spend-pct">{pct}%</span>
+                      </div>
+                      <div className="bar big"><div style={{ width: `${pct}%` }} /></div>
+                      <div className="tipbox">
+                        <span className="tip-icon" aria-hidden>🏆</span>
+                        <div>{spendTip(card)}</div>
+                      </div>
+                      <div className="sub prevline">
+                        {card.eligibility === "unmet"
+                          ? <span className="warn">지난달 {won(card.prev_spend)} · 실적 미달로 이번 달 혜택이 없어요</span>
+                          : <>지난달 {won(card.prev_spend)} → 이번 달 할인 한도 {card.limit_unlimited ? "없음" : `${won(card.monthly_discount_limit)} 중 ${won(card.monthly_remaining)} 남음`}</>}
+                      </div>
+                      {card.spend_estimated && <div className="sub hint">마이데이터 승인내역으로 계산한 추정 실적이에요 (실적 제외 항목은 카드사 확정 때 빠질 수 있어요)</div>}
+                    </>
+                  )}
+                </section>
+
+                <section className="hcard list">
+                  <div className="rowtitle">이번 달 남은 혜택</div>
+                  {detail.benefits.length === 0 && <div className="sub">매장에서 받을 수 있는 혜택이 없어요</div>}
+                  {detail.benefits.map((b) => <BenefitLeftRow key={b.benefit_id} b={b} />)}
+                </section>
+              </>
+            ) : (
+              <section className="hcard list">
+                <div className="rowtitle">이번 달 결제</div>
+                {detail.history.length === 0 && <div className="sub">이번 달 이 카드로 결제한 내역이 없어요</div>}
+                {detail.history.map((h) => {
+                  const d = new Date(h.at);
+                  return (
+                    <div key={h.id} className="leftrow">
+                      <BrandMark name={h.brand} logo={h.logo_url} code={h.industry_code} size={44} square />
+                      <div className="grow">
+                        <div className="listname">{h.brand}</div>
+                        <div className="sub">{d.getMonth() + 1}월 {d.getDate()}일 · {won(h.amount)} 결제</div>
+                      </div>
+                      <div className={`histamt ${h.discount ? "" : "zero"}`}>{h.discount ? `-${won(h.discount)}` : "혜택 없음"}</div>
+                    </div>
+                  );
+                })}
+              </section>
+            )}
+          </>
         )}
         <button className="resetbtn" onClick={reset}>시연 데이터 처음으로</button>
       </div>
+      {sheet && cards && (
+        <CardSheet cards={cards} selected={current?.card_id}
+                   onPick={(id) => { setSelected(id); setSheet(false); }} onClose={() => setSheet(false)} />
+      )}
+      {approvals && <ApprovalsModal approvals={approvals} onClose={() => setApprovals(null)} />}
       <TabBar active="wallet" onHome={onBack} />
     </div>
   );
