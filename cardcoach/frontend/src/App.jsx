@@ -1,7 +1,25 @@
 import { useEffect, useRef, useState } from "react";
-import { API, recognize, getBrands, getCards, getRecommendations, postSelection, getPosition, resetDemo } from "./api.js";
+import { API, recognize, getBrands, getCards, getRecommendations, postSelection, getPosition, resetDemo, refreshMydata } from "./api.js";
 
 const won = (n) => (n ?? 0).toLocaleString("ko-KR") + "원";
+// 40000 → "4만 원", 15000 → "1.5만 원", 8000 → "8천 원"
+const shortWon = (n) => (n >= 10000 ? `${n / 10000}만 원` : n % 1000 === 0 ? `${n / 1000}천 원` : won(n));
+// 금액 구간 표시 (서버는 1천 원 단위): "4만 원 미만", "4만 원 ~ 5만 원", "5만 원 이상"
+function rangeLabel(s) {
+  const end = s.to == null ? null : s.to + 1000;
+  if (end == null) return s.from ? `${shortWon(s.from)} 이상` : "금액 상관없이";
+  return s.from ? `${shortWon(s.from)} ~ ${shortWon(end)}` : `${shortWon(end)} 미만`;
+}
+// 카드 이름 끝 글자의 받침: 0 없음, 8 ㄹ, 그 밖 있음. 괄호 안 영문 표기는 빼고 판단, 영문 끝 L·M·N은 받침으로 봄
+function jongOf(name) {
+  const base = name.replace(/\([^)]*\)\s*$/, "").trim() || name;
+  const ch = base[base.length - 1];
+  const code = ch.charCodeAt(0) - 0xac00;
+  if (code >= 0 && code < 11172) return code % 28;
+  return /[MN]/i.test(ch) ? 1 : /L/i.test(ch) ? 8 : 0;
+}
+const ro = (name) => { const j = jongOf(name); return j && j !== 8 ? "으로" : "로"; };   // 로/으로
+const eul = (name) => (jongOf(name) ? "을" : "를");                                      // 을/를
 
 /* ---------------- 아이콘 ---------------- */
 const CameraIcon = ({ size = 20 }) => (
@@ -108,7 +126,7 @@ function SpendBar({ card, compact = false }) {
       <div className="spend">
         <div className="bar"><div style={{ width: `${pct}%` }} /></div>
         <div className="sub">
-          이번 달 실적 {man(card.current_spend)}
+          이번 달 실적 {man(card.current_spend)}{card.spend_estimated && "(추정)"}
           {card.upgrade_gap ? ` · 다음 달 혜택까지 ${man(card.upgrade_gap)} 남음` : " · 다음 달 혜택 확보"}
         </div>
       </div>
@@ -128,8 +146,9 @@ function SpendBar({ card, compact = false }) {
       )}
       <div className="bar"><div style={{ width: `${pct}%` }} /></div>
       <div className="sub">
-        이번 달 {won(card.current_spend)}{coach}
+        이번 달 {won(card.current_spend)}{card.spend_estimated && "(추정)"}{coach}
       </div>
+      {card.spend_estimated && <div className="sub hint">마이데이터 승인내역으로 계산한 추정 실적이에요 (실적 제외 항목은 카드사 확정 때 빠질 수 있어요)</div>}
       {met && nx != null && nx < t && (
         <div className="sub" style={{ color: "#E07B00" }}>지금대로면 다음 달 {name(nx)}(한도 {won(tiers[nx].monthly_limit)})로 내려가요</div>
       )}
@@ -206,6 +225,87 @@ function clearHistory() {
   try { localStorage.removeItem(HISTORY_KEY); } catch { /* 없으면 그만 */ }
 }
 
+/* 시연용 '계산대에서 낸 타사 카드 결제'. 추천 화면에서 타사 카드를 고르고 나가면 기억해 두고,
+   마이데이터 새로고침 때 카드사 승인내역이 온 것처럼 보냄 (실서비스에선 카드사가 보내는 데이터) */
+const PENDING_KEY = "pendingApprovals";
+function loadPending() {
+  try { return JSON.parse(localStorage.getItem(PENDING_KEY)) || []; } catch { return []; }
+}
+function addPending(item) {
+  // 같은 가게·카드를 다시 보고 나가도 결제 1건으로 (마지막 금액 기준)
+  const rest = loadPending().filter((p) => !(p.brand_id === item.brand_id && p.card_id === item.card_id));
+  try { localStorage.setItem(PENDING_KEY, JSON.stringify([...rest, item])); } catch { /* 못 남기면 반영 안 됨 */ }
+}
+function clearPending() {
+  try { localStorage.removeItem(PENDING_KEY); } catch { /* 없으면 그만 */ }
+}
+
+/* 마이데이터 새로고침 행 + 결과 창 — 홈·내 카드 공통. 연동했을 때만 */
+function MydataRefresh({ onRefreshed }) {
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState(null); // 받아온 승인내역 목록
+
+  async function refresh() {
+    setBusy(true);
+    try {
+      const pending = loadPending();
+      const r = await refreshMydata(pending.map(({ brand_id, card_id, amount }) => ({ brand_id, card_id, amount })));
+      clearPending();
+      for (const a of r.approvals) {
+        addHistory({ brand_id: a.brand.brand_id, name: a.brand.name, logo_url: a.brand.logo_url, category: a.brand.category,
+                     industry_code: a.brand.industry_code, card_name: a.card.name, benefit: a.discount, at: Date.now() });
+      }
+      setResult(r.approvals);
+      onRefreshed?.();
+    } catch {
+      setResult([]);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <>
+      <section className="hcard hrow">
+        <div className="grow">
+          <div className="rowtitle">마이데이터 연동 중</div>
+          <div className="sub">다른 카드사 카드로 결제했다면 새로고침해서 실적에 반영해요</div>
+        </div>
+        <button className="hbtn" disabled={busy} onClick={refresh}>{busy ? "불러오는 중" : "새로고침"}</button>
+      </section>
+
+      {result && (
+        <div className="modal" onClick={() => setResult(null)}>
+          <div className="modal-body" onClick={(e) => e.stopPropagation()}>
+            <div className="title">{result.length ? `새 결제 ${result.length}건을 불러왔어요` : "새 결제 내역이 없어요"}</div>
+            {result.map((a) => (
+              <div key={a.selection_id} className="approval">
+                <div className="row">
+                  <BrandMark name={a.brand.name} logo={a.brand.logo_url} code={a.brand.industry_code} size={40} />
+                  <div className="grow">
+                    <div className="listname">{a.brand.name}</div>
+                    <div className="sub">{a.card.name} · {won(a.amount)} 승인</div>
+                  </div>
+                </div>
+                <div className="kv">
+                  <div><span>할인 (추정)</span><b className="accent">-{won(a.discount)}</b></div>
+                  <div><span>이번 달 실적 (추정)</span><b>{won(a.before.current_spend)} → {won(a.card.current_spend)}</b></div>
+                  <div>
+                    <span>다음 달 혜택까지</span>
+                    <b>{a.card.upgrade_gap ? `${won(a.card.upgrade_gap)} 남음` : "최고 구간 확보"}</b>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {result.length > 0 && <div className="sub">{result[0].source}</div>}
+            <button className="btn primary big modal-cta" onClick={() => setResult(null)}>확인</button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 /* 다음 달 혜택이 가장 많이 걸린 카드 (실적을 아는 카드 중) — 홈·내 카드의 월말 경고 */
 function mostAtRisk(cards) {
   return (cards || [])
@@ -225,9 +325,10 @@ function RiskNote({ card }) {
 
 /* ---------------- ⓪ 홈 (HOME) ---------------- */
 function HomeScreen({ mydata, onLinkMydata, onScan, onWallet, onOpenBrand }) {
-  const [history] = useState(loadHistory);
+  const [history, setHistory] = useState(loadHistory);
   const [cards, setCards] = useState(null);
-  useEffect(() => { getCards(mydata).then(setCards).catch(() => setCards([])); }, [mydata]);
+  const [reloadKey, setReloadKey] = useState(0);
+  useEffect(() => { getCards(mydata).then(setCards).catch(() => setCards([])); }, [mydata, reloadKey]);
   const risk = mostAtRisk(cards);
   const now = new Date();
   const saved = history
@@ -269,7 +370,9 @@ function HomeScreen({ mydata, onLinkMydata, onScan, onWallet, onOpenBrand }) {
           </button>
         )}
 
-        {!mydata && <MydataRow onLink={onLinkMydata} />}
+        {mydata
+          ? <MydataRefresh onRefreshed={() => { setHistory(loadHistory()); setReloadKey((k) => k + 1); }} />
+          : <MydataRow onLink={onLinkMydata} />}
 
         {recent.length > 0 && (
           <section className="hcard list">
@@ -572,6 +675,7 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
   const [tab, setTab] = useState("all"); // all | woori
   const [selected, setSelected] = useState(null);
   const [amount, setAmount] = useState("");
+  const [showAmount, setShowAmount] = useState(false); // 금액 입력은 선택: 열어야 보임
   const [toast, setToast] = useState("");
   const [paid, setPaid] = useState(null); // 결제 반영 결과
 
@@ -589,6 +693,18 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
   const wooriCount = data.cards.filter((c) => c.is_woori).length;
 
   const chosen = data.cards.find((c) => c.card_id === selected);
+  const exact = data.amount != null; // 금액을 넣었으면 정확한 할인액, 아니면 금액 구간으로 안내
+  const bestCard = data.cards.find((c) => c.card_id === data.best_card_id);
+  const segs = (data.ranges || []).filter((s) => s.card_id);
+  const showRanges = !exact && (segs.length > 1 || (segs[0] && segs[0].from > 0));
+
+  /* 타사 카드를 고른 채 나가면: 계산대에서 그 카드 실물로 냈다고 보고 기억 → 마이데이터 새로고침 때 승인내역으로 들어옴 */
+  function leave() {
+    if (chosen && !chosen.is_woori) {
+      addPending({ brand_id: brand.brand_id, card_id: chosen.card_id, amount: amount ? Number(amount) : null, at: Date.now() });
+    }
+    onBack();
+  }
 
   /* 앱이 결제하는 건 아님: 고른 카드로 결제했다고 반영 → 실적·사용 한도가 바로 바뀜 (우리카드 승인 / 타사는 마이데이터) */
   async function choose(method) {
@@ -617,7 +733,7 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
   return (
     <div className="screen page-bg rec">
       <header className="navbar">
-        <button className="iconbtn" onClick={onBack} aria-label="뒤로"><BackIcon /></button>
+        <button className="iconbtn" onClick={leave} aria-label="뒤로"><BackIcon /></button>
         <div className="navtitle">카드 추천</div>
       </header>
 
@@ -630,15 +746,41 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
               <div className="sub">{data.brand.category} · {data.hour}시 결제 기준</div>
             </div>
           </div>
-          <div className="hero-title rec-title">{data.message}</div>
-          <label className="field">
-            <span className="field-label">예상 결제금액</span>
-            <span className="field-box">
-              <input inputMode="numeric" placeholder="10,000" value={amount ? Number(amount).toLocaleString("ko-KR") : ""}
-                     onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))} />
-              <span>원</span>
-            </span>
-          </label>
+          {!bestCard ? (
+            <div className="hero-title rec-title">{data.message}</div>
+          ) : (
+            <>
+              <div className="hero-title rec-title"><span className="accent">{bestCard.name}</span>{ro(bestCard.name)} 결제하세요</div>
+              {!exact && data.ranges_tip && <div className="sub rec-tip">{data.ranges_tip}</div>}
+              {exact && <div className="sub rec-tip">{won(data.amount)} 결제하면 {won(bestCard.expected_benefit)} 아껴요</div>}
+            </>
+          )}
+
+          {showRanges && (
+            <div className="ranges">
+              {data.ranges.map((s) => (
+                <div key={s.from} className={`range ${s.card_id ? "" : "none"}`}>
+                  <span className="range-amt">{rangeLabel(s)}</span>
+                  <span className="range-card">{s.name || "할인 없음"}</span>
+                  <span className="range-max">{s.card_id && s.max_benefit ? `최대 ${won(s.max_benefit)}` : ""}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {showAmount || amount ? (
+            <label className="field">
+              <span className="field-label">결제 금액</span>
+              <span className="field-box">
+                <input autoFocus inputMode="numeric" placeholder="10,000"
+                       value={amount ? Number(amount).toLocaleString("ko-KR") : ""}
+                       onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))} />
+                <span>원</span>
+              </span>
+            </label>
+          ) : (
+            <button className="amount-link" onClick={() => setShowAmount(true)}>결제 금액을 알면 정확히 계산해요 ›</button>
+          )}
         </section>
 
         {!mydata && <MydataRow onLink={onLinkMydata} />}
@@ -685,16 +827,20 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
                   <CardThumb color={c.color} />
                   <div className="grow">
                     <div className="cardname">{c.name} {c.is_woori && <span className="pill">우리</span>}</div>
-                    <div className={`rate ${best ? "accent" : ""}`}>{c.rate_label}</div>
+                    {/* 혜택은 고른 카드만 펼쳐서 보여줌. 혜택 없는 카드는 못 고르니 이유만 한 줄 */}
+                    {(on || !usable) && <div className={`rate ${best ? "accent" : ""}`}>{c.rate_label}</div>}
                   </div>
-                  <div className="optright">
-                    {usable && <div className="save">-{won(c.expected_benefit)}</div>}
-                  </div>
+                  {on && (
+                    <div className="optright">
+                      {exact && <div className="save">-{won(c.expected_benefit)}</div>}
+                      {!exact && c.benefit_ceiling != null && <div className="save">최대 {won(c.benefit_ceiling)}</div>}
+                    </div>
+                  )}
                 </div>
-                <div className="optbody">
+                {on && <div className="optbody">
                   {c.blocked_reason && c.benefit_label && <div className="sub">원래 혜택: {c.benefit_label}</div>}
                   {c.benefit_note && <div className="sub clamp1">{c.benefit_note}</div>}
-                  {usable && (
+                  {usable && exact && (
                     <div className="sub">
                       결제 예상 <b>{won(c.final_payment)}</b>
                       {c.limited_by_monthly && " · 월 한도 남은 만큼만"}
@@ -707,22 +853,24 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
                     </div>
                   )}
                   <SpendBar card={c} compact />
-                </div>
+                </div>}
               </button>
             );
           })}
         </section>
       </div>
 
-      {/* 우리페이(타사 카드도 오픈페이로 등록해 결제)가 기본, 계산대 실물 카드는 보조 */}
+      {/* 우리카드는 우리페이로 결제가 기본, 계산대 실물 카드는 보조.
+          다른 카드사 카드는 우리페이로 결제할 수 없어서(오픈페이 미지원) 버튼 없이 안내만 */}
       <div className="cta">
-        {chosen && !chosen.is_woori && (
-          <div className="cta-note">{chosen.name}를 우리페이에 등록해 결제해요 (오픈페이)</div>
+        {chosen && !chosen.is_woori ? (
+          <div className="cta-note">다른 카드사 카드는 우리페이로 결제할 수 없어요 · 계산대에서 실물 카드로 결제한 뒤 마이데이터를 새로고침하면 실적에 반영돼요</div>
+        ) : (
+          <div className="btnrow cta-row">
+            <button className="btn ghost" disabled={!selected} onClick={() => choose("card")}>실물 카드로</button>
+            <button className="btn primary" disabled={!selected} onClick={() => choose("pay")}>우리페이로 결제하기</button>
+          </div>
         )}
-        <div className="btnrow cta-row">
-          <button className="btn ghost" disabled={!selected} onClick={() => choose("card")}>실물 카드로</button>
-          <button className="btn primary" disabled={!selected} onClick={() => choose("pay")}>우리페이로 결제하기</button>
-        </div>
       </div>
       {toast && <div className="toast">{toast}</div>}
       {paid && (
@@ -749,6 +897,7 @@ function RecScreen({ brand, recognitionId, mydata, onLinkMydata, askMydata, onMy
               )}
             </div>
             <div className="sub">{paid.source}</div>
+            {!amount && <div className="sub">금액을 넣지 않아서 시연용으로 {won(paid.amount)}을 결제했다고 가정했어요 (실제로는 가게 단말기 금액)</div>}
             <button className="btn primary big modal-cta" onClick={onDone}>확인</button>
           </div>
         </div>
@@ -774,6 +923,7 @@ function WalletScreen({ mydata, onLinkMydata, onResetMydata, onBack }) {
     if (!window.confirm("시연 데이터를 처음 상태로 되돌릴까요? (실적·한도·결제 기록 초기화, 마이데이터 연동 해제)")) return;
     await resetDemo();
     clearHistory();
+    clearPending();
     onResetMydata();
     setCards(null);
     setReloadKey((k) => k + 1);
@@ -792,7 +942,9 @@ function WalletScreen({ mydata, onLinkMydata, onResetMydata, onBack }) {
           </section>
         )}
 
-        {!mydata && <MydataRow onLink={onLinkMydata} />}
+        {mydata
+          ? <MydataRefresh onRefreshed={() => setReloadKey((k) => k + 1)} />
+          : <MydataRow onLink={onLinkMydata} />}
 
         {!cards ? (
           <div className="center pad-y"><div className="spinner dark" /></div>

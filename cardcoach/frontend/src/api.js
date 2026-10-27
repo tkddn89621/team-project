@@ -69,6 +69,18 @@ export async function postSelection(body) {
   return r.json();
 }
 
+/* 마이데이터 새로고침: 타사 카드 새 승인내역을 실적에 반영.
+   시연에선 계산대에서 실물 카드로 냈다고 기억해 둔 결제(approvals)를 승인내역 대신 보냄 */
+export async function refreshMydata(approvals) {
+  const r = await fetch(`${API}/mydata/refresh`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ approvals }),
+  });
+  if (!r.ok) throw new Error("마이데이터 새로고침 실패");
+  return r.json();
+}
+
 /* 시연 데이터 처음으로 (실적·한도·결제 기록 초기화) */
 export async function resetDemo() {
   const r = await fetch(`${API}/demo/reset`, { method: "POST" });

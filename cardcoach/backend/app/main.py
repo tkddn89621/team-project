@@ -7,6 +7,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 import calendar
 import os
+import re
 from datetime import datetime, timedelta, timezone
 from concurrent.futures import ThreadPoolExecutor
 
@@ -307,6 +308,7 @@ def card_state(w: WalletCard, mydata: bool, usage: dict) -> dict:
         "card_id": w.id, "product_id": w.card_id, "name": card["name"], "issuer": card["issuer"], "is_woori": woori,
         "color": w.color, "masked_number": mask_number(w.number_last4),
         "spend_known": known,
+        "spend_estimated": known and not woori,     # 타사 카드: 마이데이터 승인내역으로 계산한 추정 실적
         "target_spend": target,                     # 혜택을 받기 위한 최소 실적 (첫 구간)
         "tiers": tier_info,
         "prev_spend": w.prev_spend if known else None,
@@ -358,18 +360,29 @@ NO_BENEFIT = {
 }
 
 
-def evaluate(db: Session, brand: Brand, amount: int, hour: int, weekday: int, mydata: bool) -> list:
-    """보이는 카드마다: 이 가게(브랜드·업종코드)에 걸린 혜택 중 가장 큰 것 → 할인액·최종 결제금액 → 추천 순 정렬"""
+def wallet_context(db: Session, brand: Brand, mydata: bool) -> list:
+    """금액과 상관없는 부분(카드 상태·이 가게에 걸린 혜택)을 한 번만 계산. 금액을 바꿔 가며 rank 할 때 재사용"""
     usage = usage_this_month(db)
-    rows = []
+    ctx = []
     for w in visible_cards(db, mydata):
         card = catalog.cards()[w.card_id]
-        row = card_state(w, mydata, usage)
+        state = card_state(w, mydata, usage)
         benefits = engine.enabled_benefits(card, set(w.disabled_benefits or []))
+        here = [b for b in benefits if engine.in_store(b) and engine.applies(b, brand.name, brand.industry_code)]
+        ctx.append((w, card, state, benefits, here))
+    return [usage, ctx]
+
+
+def rank(context: list, brand: Brand, amount: int, hour: int, weekday: int) -> list:
+    """보이는 카드마다: 이 가게(브랜드·업종코드)에 걸린 혜택 중 가장 큰 것 → 할인액·최종 결제금액 → 추천 순 정렬"""
+    usage, ctx = context
+    rows = []
+    for w, card, state, benefits, here in ctx:
+        row = dict(state)
         prev = w.prev_spend if row["spend_known"] else None
         results = [engine.evaluate(card, b, benefits, row["tier_index"], prev, amount, hour, weekday, usage, w.id,
                                    brand.industry_code)
-                   for b in benefits if engine.in_store(b) and engine.applies(b, brand.name, brand.industry_code)]
+                   for b in here]
         if results:
             spec = {b["benefit_id"]: engine.specificity(b) for b in benefits}
             # 받을 수 있는 할인이 가장 큰 혜택. 다 막혔으면 가장 구체적인 혜택의 막힌 이유를 보여줌
@@ -386,6 +399,78 @@ def evaluate(db: Session, brand: Brand, amount: int, hour: int, weekday: int, my
     return rows
 
 
+def evaluate(db: Session, brand: Brand, amount: int, hour: int, weekday: int, mydata: bool) -> list:
+    return rank(wallet_context(db, brand, mydata), brand, amount, hour, weekday)
+
+
+# 금액을 모를 때: 이 금액들로 하나씩 돌려 보고 1등 카드가 바뀌는 지점을 찾는다 (규칙 계산이라 빠름)
+AMOUNT_GRID = range(1000, 200001, 1000)
+
+
+def amount_ranges(context: list, brand: Brand, hour: int, weekday: int) -> list:
+    """금액 구간별 1등 카드: [{from, to, card_id, name, is_woori, max_benefit}]. to=None 이면 그 이상 전부.
+    card_id=None 구간은 할인되는 카드가 없음 (예: '1만 원 이상 결제 시' 조건)"""
+    segs, top = [], None
+    for a in AMOUNT_GRID:
+        rows = rank(context, brand, a, hour, weekday)
+        top = rows[0] if rows and rows[0]["expected_benefit"] > 0 else None
+        cid = top["card_id"] if top else None
+        if segs and segs[-1]["card_id"] == cid:
+            segs[-1]["to"] = a
+            segs[-1]["max_benefit"] = top["expected_benefit"] if top else 0
+        else:
+            segs.append({"from": a, "to": a, "card_id": cid, "name": top["name"] if top else None,
+                         "is_woori": top["is_woori"] if top else None,
+                         "max_benefit": top["expected_benefit"] if top else 0})
+    if segs:
+        segs[-1]["to"] = None
+        # 끝이 열린 구간: 한도에 막혀 더 안 늘어날 때만 '최대 N원'. 금액 따라 계속 늘면 None (화면은 할인율로)
+        capped = top and (top["fixed_amount"] or top["expected_benefit"] < AMOUNT_GRID[-1] * top["rate"] / 100 - 1)
+        if top and not capped:
+            segs[-1]["max_benefit"] = None
+    for s in segs:
+        if s["from"] == AMOUNT_GRID[0]:
+            s["from"] = 0
+    return segs
+
+
+def ranges_tip(segs: list) -> Optional[str]:
+    """구간을 한 문장으로: '4만 원 넘게 결제하면 신한카드 처음이 더 아껴요'"""
+    cards = [s for s in segs if s["card_id"]]
+    if not cards:
+        return None
+    first = cards[0]
+    if first["from"] > 0:
+        return f"{short_won(first['from'])} 이상 결제해야 할인돼요"
+    if len(cards) == 1:
+        return "얼마를 결제하든 이 카드가 가장 많이 아껴요"
+    nxt = cards[1]
+    return f"{short_won(nxt['from'])} 넘게 결제하면 {subject(nxt['name'])} 더 아껴요"
+
+
+def short_won(n: int) -> str:
+    """40000 → '4만 원', 15000 → '1.5만 원', 8000 → '8천 원'"""
+    if n >= 10000:
+        return f"{n / 10000:g}만 원"
+    return f"{n // 1000}천 원" if n % 1000 == 0 else f"{n:,}원"
+
+
+def benefit_ceiling(r: dict) -> Optional[int]:
+    """금액이 커져도 이 이상은 못 받는 할인 (건당 한도·이번 달 남은 한도 중 작은 것). 없으면 None"""
+    caps = [x for x in (r.get("max_per_txn") or None, r.get("benefit_remaining"), r.get("fixed_amount") or None)
+            if x is not None]
+    return min(caps) if caps else None
+
+
+def subject(name: str) -> str:
+    """주격 조사: '신한카드 처음(ANNIVERSE)' → '…이', 'SHOPPING+' → '…가'. 괄호 안은 빼고 마지막 글자로 판단"""
+    base = re.sub(r"\([^)]*\)\s*$", "", name).strip() or name
+    ch = base[-1]
+    if "가" <= ch <= "힣":
+        return name + ("이" if (ord(ch) - 0xAC00) % 28 else "가")
+    return name + ("이" if ch.upper() in "LMNR" else "가")   # TEN→텐이, SHOPPING+→플러스가
+
+
 COACH_SHARE = 0.10        # 지킬 수 있는 다음 달 한도의 10%까지는 이번 할인을 양보할 만하다고 봄
 COACH_SHARE_LATE = 0.20   # 월말(7일 이하)이면 20%까지
 COACH_EFFICIENCY = 2.0    # 1등 카드보다 '1원 쓸 때 지키는 다음 달 혜택'이 2배 이상일 때만 (너무 자주 뜨지 않게)
@@ -396,8 +481,9 @@ def protect_rate(r: dict) -> float:
     return r["at_stake"] / r["upgrade_gap"] if r["spend_known"] and r["upgrade_gap"] and r["at_stake"] else 0.0
 
 
-def coach_for(rows: list, best: dict, amount: int):
-    """1등은 아니지만, 이번 할인을 조금 양보하고 그 카드로 내면 다음 달 혜택을 지키는 데 도움이 되는 카드"""
+def coach_for(rows: list, best: dict, amount: int, exact: bool = True):
+    """1등은 아니지만, 이번 할인을 조금 양보하고 그 카드로 내면 다음 달 혜택을 지키는 데 도움이 되는 카드.
+    exact=False: 금액을 몰라서 기준 금액으로 비교한 것 → 양보액을 숫자로 말하지 않음"""
     picks = []
     for r in rows:
         if r is best or not protect_rate(r):
@@ -413,8 +499,10 @@ def coach_for(rows: list, best: dict, amount: int):
     r, give_up = max(picks, key=lambda x: protect_rate(x[0]))
     return {
         "card_id": r["card_id"], "name": r["name"], "give_up": give_up, "at_stake": r["at_stake"],
-        "gap_before": r["upgrade_gap"], "gap_after": max(0, r["upgrade_gap"] - amount), "days_left": r["days_left"],
-        "message": ((f"할인은 {give_up:,}원 적지만, " if give_up else "할인은 같아요. ") +
+        "gap_before": r["upgrade_gap"], "gap_after": max(0, r["upgrade_gap"] - amount) if exact else None,
+        "days_left": r["days_left"],
+        "message": ((("할인은 같아요. " if exact else f"{short_won(amount)}까지는 할인이 같아요. ") if not give_up else
+                     f"할인은 {give_up:,}원 적지만, " if exact else "할인은 조금 적지만, ") +
                     f"다음 달 혜택 {r['at_stake']:,}원을 지키려면 "
                     f"이번 달 {r['upgrade_gap']:,}원 더 써야 해요 (남은 {r['days_left']}일)"),
     }
@@ -428,17 +516,29 @@ def recommendations(brand_id: int = Query(...), amount: Optional[int] = Query(No
     brand = db.get(Brand, brand_id)
     if not brand:
         raise HTTPException(404, "브랜드 없음")
-    base_amount = amount or DEFAULT_AMOUNT
     now = now_kst()
     at_hour = now.hour if hour is None else hour
-    rows = evaluate(db, brand, base_amount, at_hour, now.weekday(), mydata)
+    context = wallet_context(db, brand, mydata)
+    ranges = None
+    if amount:
+        base_amount = amount
+    else:
+        # 금액을 모르면: 금액 구간별 1등 카드를 구하고, 첫 구간(소액) 안에서 1만 원 가까이로 목록·코칭을 비교
+        ranges = amount_ranges(context, brand, at_hour, now.weekday())
+        first = next((s for s in ranges if s["card_id"]), None)
+        base_amount = DEFAULT_AMOUNT
+        if first:
+            base_amount = max(first["from"], AMOUNT_GRID[0], min(DEFAULT_AMOUNT, first["to"] or DEFAULT_AMOUNT))
+    rows = rank(context, brand, base_amount, at_hour, now.weekday())
+    for r in rows:
+        r["benefit_ceiling"] = benefit_ceiling(r) if r["expected_benefit"] > 0 else None
     best = rows[0] if rows and rows[0]["expected_benefit"] > 0 else None
 
     reason = None
     if best:
         nxt = rows[1] if len(rows) > 1 else None
         if not nxt or nxt["final_payment"] > best["final_payment"]:
-            reason = "결제금액이 가장 적어요"
+            reason = "결제금액이 가장 적어요" if amount else "가장 많이 아껴요"
         elif nxt["spend_gap"] < best["spend_gap"]:
             reason = "할인이 같아서, 이번 달 실적 채우기가 더 급한 카드를 골랐어요"
         else:
@@ -447,13 +547,16 @@ def recommendations(brand_id: int = Query(...), amount: Optional[int] = Query(No
     return {
         "brand": {"brand_id": brand.id, "name": brand.name, "category": brand.category,
                   "industry_code": brand.industry_code, "logo_url": logo_url(brand.name)},
-        "amount": base_amount,
+        "amount": amount,                 # 사용자가 넣은 금액. 없으면 None → ranges 로 안내
+        "compare_amount": base_amount,    # 목록 비교에 쓴 금액
+        "ranges": ranges,                 # 금액 구간별 1등 카드 (금액을 모를 때만)
+        "ranges_tip": ranges_tip(ranges) if ranges else None,
         "hour": at_hour,
         "mydata_linked": mydata,
         "cards": rows,
         "best_card_id": best["card_id"] if best else None,
         "best_reason": reason,
-        "coach": coach_for(rows, best, base_amount) if best else None,   # 다음 달 혜택을 지키는 대안 카드
+        "coach": coach_for(rows, best, base_amount, exact=bool(amount)) if best else None,   # 다음 달 혜택을 지키는 대안 카드
         "message": f"{brand.name}에서 받을 수 있는 최대 혜택을 찾았어요!" if best else f"{brand.name}에서 지금 할인되는 카드가 없어요",
     }
 
@@ -466,47 +569,84 @@ class SelectionIn(BaseModel):
     expected_amount: Optional[int] = None
     mydata: bool = False
     hour: Optional[int] = None
-    method: str = "pay"   # pay: 우리페이(타사 카드는 오픈페이로 등록해 결제) | card: 계산대에서 실물 카드
+    method: str = "pay"   # pay: 우리페이 | card: 계산대에서 실물 카드. 우리카드만 (타사 카드는 마이데이터 새로고침으로 반영)
 
 
 def payment_source(method: str, woori: bool) -> str:
     """결제 정보가 어떻게 들어와 실적에 반영되는지"""
     if method == "pay":
-        return ("우리페이 결제 · 우리카드 승인 데이터로 바로 반영" if woori
-                else "우리페이(오픈페이) 결제 · 우리 앱을 거친 결제라 바로 반영")
-    return ("실물 카드 결제 · 우리카드 승인 데이터로 바로 반영" if woori
-            else "실물 카드 결제 · 마이데이터로 반영 (실서비스에선 보통 다음 날, 시연에선 바로)")
+        return "우리페이 결제 · 우리카드 승인 데이터로 바로 반영"
+    if method == "mydata":
+        return "마이데이터 승인내역으로 반영 · 실적·할인은 승인 기준 추정 (카드사 확정은 매입 후)"
+    return "실물 카드 결제 · 우리카드 승인 데이터로 바로 반영"
 
 
-@app.post("/selections")
-def create_selection(body: SelectionIn, db: Session = Depends(get_db)):
-    """우리카드는 자사 승인 데이터로 바로, 타사 카드는 마이데이터로 들어온다고 보고(시연에선 바로) 실적·사용 한도에 반영"""
-    brand, w = db.get(Brand, body.brand_id), db.get(WalletCard, body.card_id)
-    if not brand or not w:
-        raise HTTPException(404, "브랜드 또는 카드 없음")
-    amount = body.expected_amount or DEFAULT_AMOUNT
+def apply_payment(db: Session, brand: Brand, w: WalletCard, amount: int, hour: int, mydata: bool, method: str,
+                  recognition_id: Optional[int] = None) -> dict:
+    """결제 1건을 이번 달 실적·혜택 사용액에 반영하고, 반영 전후 카드 상태를 돌려줌"""
     now = now_kst()
-    hour = now.hour if body.hour is None else body.hour
-    row = next((r for r in evaluate(db, brand, amount, hour, now.weekday(), body.mydata) if r["card_id"] == w.id), None)
+    row = next((r for r in evaluate(db, brand, amount, hour, now.weekday(), mydata) if r["card_id"] == w.id), None)
     if not row:
         raise HTTPException(400, "마이데이터를 연동해야 쓸 수 있는 카드예요")
+    if method == "pay" and not row["is_woori"]:
+        raise HTTPException(400, "다른 카드사 카드는 우리페이로 결제할 수 없어요")
     before = {"current_spend": w.current_spend, "upgrade_gap": row["upgrade_gap"], "next_tier_index": row["next_tier_index"]}
 
     discount = row["expected_benefit"]
     w.current_spend += amount
-    s = Selection(recognition_id=body.recognition_id, brand_id=brand.id, card_id=w.id, expected_amount=amount,
+    s = Selection(recognition_id=recognition_id, brand_id=brand.id, card_id=w.id, expected_amount=amount,
                   benefit_id=row["benefit_id"] if discount else None, limit_group=row["limit_group"] if discount else None,
                   discount=discount)
     db.add(s); db.commit(); db.refresh(s)
 
-    after = card_state(w, body.mydata, usage_this_month(db))
+    after = card_state(w, mydata, usage_this_month(db))
     return {
         "selection_id": s.id, "ok": True,
+        "brand": {"brand_id": brand.id, "name": brand.name, "industry_code": brand.industry_code,
+                  "logo_url": logo_url(brand.name), "category": brand.category},
         "amount": amount, "discount": discount, "paid": amount - discount,
-        "method": body.method,
-        "source": payment_source(body.method, after["is_woori"]),
+        "method": method,
+        "source": payment_source(method, after["is_woori"]),
         "before": before, "card": after,
     }
+
+
+@app.post("/selections")
+def create_selection(body: SelectionIn, db: Session = Depends(get_db)):
+    """우리카드: 우리페이 또는 실물 카드 결제를 자사 승인 데이터로 바로 반영 (타사 카드는 /mydata/refresh)"""
+    brand, w = db.get(Brand, body.brand_id), db.get(WalletCard, body.card_id)
+    if not brand or not w:
+        raise HTTPException(404, "브랜드 또는 카드 없음")
+    if not is_woori(catalog.cards()[w.card_id]):
+        raise HTTPException(400, "다른 카드사 카드 결제는 마이데이터 새로고침으로 반영돼요")
+    hour = now_kst().hour if body.hour is None else body.hour
+    return apply_payment(db, brand, w, body.expected_amount or DEFAULT_AMOUNT, hour, body.mydata, body.method,
+                         body.recognition_id)
+
+
+class ApprovalIn(BaseModel):
+    brand_id: int
+    card_id: int
+    amount: Optional[int] = None
+    hour: Optional[int] = None
+
+
+class MydataRefreshIn(BaseModel):
+    # 시연용: 고객이 계산대에서 타사 실물 카드로 낸 결제. 실서비스에선 카드사가 마이데이터로 보내주는 승인내역
+    approvals: list[ApprovalIn] = []
+
+
+@app.post("/mydata/refresh")
+def mydata_refresh(body: MydataRefreshIn, db: Session = Depends(get_db)):
+    """마이데이터 새로고침: 타사 카드의 새 승인내역을 받아 이번 달 실적·할인 사용액에 반영 (승인 기준이라 추정)"""
+    results = []
+    for a in body.approvals:
+        brand, w = db.get(Brand, a.brand_id), db.get(WalletCard, a.card_id)
+        if not brand or not w or is_woori(catalog.cards()[w.card_id]):
+            continue   # 우리카드는 자사 승인 데이터로 이미 반영됨
+        hour = now_kst().hour if a.hour is None else a.hour
+        results.append(apply_payment(db, brand, w, a.amount or DEFAULT_AMOUNT, hour, True, "mydata"))
+    return {"approvals": results}
 
 
 @app.post("/demo/reset")
