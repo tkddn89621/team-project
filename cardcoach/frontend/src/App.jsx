@@ -491,7 +491,7 @@ function HomeScreen({ mydata, onLinkMydata, onScan, onWallet }) {
     <div className="screen home2">
       <header className="home2-top">
         <span className="appmark" aria-hidden><ScanIcon /></span>
-        <span className="apptitle">카드 코치</span>
+        <span className="apptitle">WON픽</span>
       </header>
 
       <div className="home2-hero">

@@ -1,4 +1,4 @@
-# 💳 카드 코치 (Card Coach)
+# 💳 WON픽 (Card Coach)
 
 > 찍어서 혜택 챙기고, 전월 실적까지 관리해 주는 AI 결제 비서
 

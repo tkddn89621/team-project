@@ -34,7 +34,7 @@ from .seed import seed, reset as reset_seed
 from .recognize import detect, decide, seeded_near, brand_in_text, CONFIDENCE_AUTO, GPS_RADIUS_M
 from . import places, ai_pick, catalog, engine
 
-app = FastAPI(title="내 지갑 카드 코치 API")
+app = FastAPI(title="WON픽 API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 LOGO_DIR = os.path.join(os.path.dirname(__file__), "..", "logos")

@@ -1,6 +1,6 @@
 {
-  "name": "카드 코치",
-  "short_name": "카드 코치",
+  "name": "WON픽",
+  "short_name": "WON픽",
   "description": "찍어서 혜택 챙기고, 전월 실적까지 관리해 주는 결제 비서",
   "lang": "ko",
   "start_url": "/",
