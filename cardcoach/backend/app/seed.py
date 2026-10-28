@@ -13,7 +13,7 @@
 from datetime import datetime, timedelta, timezone
 from sqlalchemy import inspect
 from . import catalog
-from .models import Base, engine, SessionLocal, Brand, WalletCard, Selection, SeedMeta, Recognition
+from .models import Base, engine, SessionLocal, Brand, WalletCard, Selection, SeedMeta, Recognition, Confirmation
 
 # 시드 데이터(지갑·브랜드)를 고치면 이 값을 바꾼다 → 다음 시작 때 db를 자동으로 새로 만듦 (인식·결제 기록도 초기화)
 SEED_VERSION = "2026-10-27-catalog-v3-cardcolors"
@@ -146,8 +146,8 @@ def reset():
 
 
 def _drop_demo_tables():
-    """인식 기록(recognitions)만 남기고 지움"""
-    keep = {Recognition.__tablename__}
+    """인식 기록(recognitions·confirmations)만 남기고 지움"""
+    keep = {Recognition.__tablename__, Confirmation.__tablename__}
     Base.metadata.drop_all(engine, tables=[t for t in Base.metadata.sorted_tables if t.name not in keep])
 
 

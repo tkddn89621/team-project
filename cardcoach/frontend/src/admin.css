@@ -1,0 +1,115 @@
+/* WON픽 관리자 (PC 전용). 고객 앱과 같은 색 체계 + 다크 모드 */
+:root {
+  --bg: #F4F6FA;
+  --surface: #FFFFFF;
+  --ink: #1E2124;
+  --ink-2: #4E5358;
+  --muted: #6C7278;
+  --line: #E6E8EB;
+  --accent: #4587EC;          /* 미터 채움 */
+  --accent-track: #DCE8FB;    /* 같은 파랑의 옅은 단계 */
+  --good: #0CA30C;   --good-text: #006300;  --good-bg: #E7F6E7;
+  --warning: #FAB219; --warning-text: #8A5A00; --warning-bg: #FFF4DA;
+  --critical: #D03B3B; --critical-text: #B32626; --critical-bg: #FCE9E9;
+  --shadow: 0 1px 2px rgba(20, 30, 60, .06);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111315;
+    --surface: #1B1E21;
+    --ink: #ECEEF0;
+    --ink-2: #C3C7CB;
+    --muted: #8C9298;
+    --line: #2C3034;
+    --accent: #5B97F0;
+    --accent-track: #22324A;
+    --good-text: #4CC84C;  --good-bg: #16301A;
+    --warning-text: #FAB219; --warning-bg: #3A2E12;
+    --critical-text: #F07A7A; --critical-bg: #3A1D1D;
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; font-size: 14px; }
+button, input { font: inherit; color: inherit; }
+
+.admin { max-width: 1360px; margin: 0 auto; padding: 24px 32px 48px; }
+.muted { color: var(--muted); font-weight: 400; }
+.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 머리 */
+.top { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 20px; flex-wrap: wrap; }
+.top h1 { margin: 0 0 4px; font-size: 22px; }
+.top-right { display: flex; align-items: center; gap: 16px; }
+.seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+.seg button { border: 0; background: none; padding: 7px 14px; border-radius: 7px; cursor: pointer; color: var(--muted); }
+.seg button.on { background: var(--accent); color: #fff; font-weight: 600; }
+.refresh { display: flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); }
+.link { border: 0; background: none; color: var(--muted); text-decoration: underline; cursor: pointer; padding: 0; }
+
+.banner { background: var(--warning-bg); color: var(--warning-text); border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow); }
+.panel h2 { margin: 0 0 4px; font-size: 16px; display: flex; gap: 8px; align-items: baseline; }
+.panel h2 .muted { font-size: 13px; }
+.panel > p.muted { margin: 0 0 12px; font-size: 13px; }
+
+/* 비밀번호 */
+.auth { max-width: 460px; margin-bottom: 16px; }
+.auth-row { display: flex; gap: 8px; }
+.auth-row input { flex: 1; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.primary { border: 0; background: var(--accent); color: #fff; border-radius: 8px; padding: 10px 18px; font-weight: 600; cursor: pointer; }
+.primary:disabled { opacity: .5; cursor: default; }
+
+/* 숫자 카드 */
+.kpis { display: grid; grid-template-columns: 1.4fr repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; box-shadow: var(--shadow); min-width: 0; }
+.tile-label { color: var(--muted); font-size: 13px; }
+.tile-value { font-size: 28px; font-weight: 700; margin-top: 6px; line-height: 1.1; }
+.tile-value small { font-size: 15px; font-weight: 600; margin-left: 2px; color: var(--ink-2); }
+.tile.hero .tile-value { font-size: 52px; }
+.tile-sub { margin-top: 8px; font-size: 12.5px; color: var(--ink-2); line-height: 1.5; word-break: keep-all; }
+@media (max-width: 1180px) { .kpis { grid-template-columns: repeat(3, 1fr); } }
+
+/* 미터: 채움은 파랑, 빈 곳은 같은 파랑의 옅은 단계. 한도에 가까우면 채움 색 + 문구 */
+.meter-wrap { margin: 4px 0 6px; }
+.meter { height: 8px; border-radius: 999px; background: var(--accent-track); overflow: hidden; }
+.meter > div { height: 100%; background: var(--accent); border-radius: 999px; min-width: 4px; }
+.meter.warning > div { background: var(--warning); }
+.meter.critical > div { background: var(--critical); }
+.meter-text { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; font-variant-numeric: tabular-nums; color: var(--muted); }
+
+/* 상태 표시: 색 + 아이콘 + 글자 */
+.status { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.status.good { background: var(--good-bg); color: var(--good-text); }
+.status.warning { background: var(--warning-bg); color: var(--warning-text); }
+.status.critical { background: var(--critical-bg); color: var(--critical-text); }
+
+/* 본문: 최근 인식 표 + 오른쪽 목록 */
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; align-items: start; }
+@media (max-width: 1180px) { .grid { grid-template-columns: 1fr; } }
+.table-scroll { overflow-x: auto; margin: 8px -20px -18px; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-size: 12px; font-weight: 600; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 12px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.45; }
+th:first-child, td:first-child { padding-left: 20px; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: var(--bg); }
+td .muted { font-size: 12.5px; }
+.cell-main { font-weight: 600; }
+.clue { color: var(--ink-2); max-width: 220px; word-break: keep-all; overflow-wrap: anywhere; }
+.ai { font-size: 12px; color: var(--ink-2); margin-top: 2px; max-width: 280px; }
+
+.side { display: flex; flex-direction: column; gap: 16px; }
+.list { list-style: none; margin: 0; padding: 0; }
+.list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; row-gap: 2px; padding: 9px 0; border-top: 1px solid var(--line); }
+.list li:first-child { border-top: 0; }
+.list li > .muted { grid-column: 1 / -1; font-size: 12.5px; }      /* 이유는 이름 아래 줄 */
+.list .count { grid-column: 2; grid-row: 1; font-weight: 600; font-variant-numeric: tabular-nums; }
+.list li .clue { max-width: none; }
+.empty { color: var(--muted); padding: 24px 0 8px; text-align: center; }
+.empty.small { padding: 8px 0; text-align: left; }

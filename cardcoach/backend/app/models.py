@@ -54,6 +54,18 @@ class Recognition(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
+class Confirmation(Base):
+    """인식 결과를 사용자가 확정한 기록 (관리자 화면: 맞게 인식했는지, 직접 고쳤는지).
+    시연 초기화 때 브랜드 표가 다시 만들어지므로 id 대신 이름을 그대로 남긴다"""
+    __tablename__ = "confirmations"
+    id = Column(Integer, primary_key=True)
+    recognition_id = Column(Integer, nullable=False, index=True)
+    brand_name = Column(String, nullable=False)
+    category = Column(String, default="")
+    via = Column(String, nullable=False)      # top: 1순위 그대로 | candidate: 다른 후보 | search: 직접 검색
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
 class Selection(Base):
     """결제 기록 (앱이 결제하진 않음: 고른 카드로 결제했다는 승인 데이터). 이번 달 사용 한도·횟수 계산에 쓴다"""
     __tablename__ = "selections"

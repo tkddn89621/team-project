@@ -37,6 +37,15 @@ export async function recognize(file, pos) {
   }
 }
 
+/* 매장 확정 기록 (관리자 화면용). 실패해도 사용자 흐름은 그대로라 기다리지 않음 */
+export function confirmRecognition(recognitionId, brandId) {
+  fetch(`${API}/recognitions/${recognitionId}/confirm`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ brand_id: brandId }),
+  }).catch(() => {});
+}
+
 export async function getBrands() {
   const r = await fetch(`${API}/brands`);
   return r.json();

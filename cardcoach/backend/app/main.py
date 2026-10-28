@@ -29,10 +29,10 @@ def _load_dotenv():
 
 _load_dotenv()
 
-from .models import SessionLocal, Brand, WalletCard, Recognition, Selection
+from .models import SessionLocal, Brand, WalletCard, Recognition, Selection, Confirmation
 from .seed import seed, reset as reset_seed
 from .recognize import detect, decide, seeded_near, brand_in_text, CONFIDENCE_AUTO, GPS_RADIUS_M
-from . import places, ai_pick, catalog, engine
+from . import places, ai_pick, catalog, engine, admin
 
 app = FastAPI(title="WON픽 API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -232,6 +232,24 @@ async def create_recognition(image: UploadFile = File(...),
         "auto_confirm": auto_confirm,          # true면 FIND에서 바로 REC로
         "candidates": [{**c, "logo_url": logo_url(c["name"])} for c in cands],  # source: logo | text | image | gps | ai(+ai_reason) | ai_category(업종만, 고르게 함), 근처면 distance_m
     }
+
+
+class ConfirmIn(BaseModel):
+    brand_id: int
+
+
+@app.post("/recognitions/{rec_id}/confirm")
+def confirm_recognition(rec_id: int, body: ConfirmIn, db: Session = Depends(get_db)):
+    """사용자가 매장을 확정함 (맞아요·다른 후보·직접 검색·자동 확정). 관리자 화면에서 인식이 맞았는지·고쳤는지 보는 용도"""
+    rec = db.get(Recognition, rec_id)
+    b = db.get(Brand, body.brand_id)
+    if not rec or not b:
+        raise HTTPException(404, "인식 기록이나 매장이 없어요")
+    ids = [c.get("brand_id") for c in rec.candidates or []]
+    via = "top" if ids[:1] == [b.id] else "candidate" if b.id in ids else "search"
+    db.add(Confirmation(recognition_id=rec.id, brand_name=b.name, category=b.category, via=via))
+    db.commit()
+    return {"via": via}
 
 
 # ---------- 브랜드 목록 (인식 실패 fallback 선택용) ----------
@@ -842,6 +860,10 @@ def demo_reset():
 @app.get("/health")
 def health():
     return {"ok": True}
+
+
+# 관리자 대시보드 API (화면은 PC에서만: frontend/admin.html)
+app.include_router(admin.router)
 
 
 # ---------- 배포용: 화면(빌드된 프론트)도 이 서버가 함께 내보냄 ----------

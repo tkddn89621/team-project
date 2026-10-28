@@ -15,9 +15,21 @@ const https = fs.existsSync(keyFile) && fs.existsSync(certFile)
 // localhost 대신 127.0.0.1: Node가 localhost를 IPv6(::1)로 풀어 uvicorn에 못 붙는 문제 방지
 const backend = { target: 'http://127.0.0.1:8000', changeOrigin: true }
 
+// 관리자 화면(admin.html)은 PC 개발 서버에서만: localhost:5173/admin 으로 열림.
+// 배포 빌드(npm run build)는 index.html만 묶으므로 배포 주소에는 관리자 화면이 없다
+const adminPage = {
+  name: 'admin-page',
+  configureServer(server) {
+    server.middlewares.use((req, _res, next) => {
+      if (req.url === '/admin' || req.url === '/admin/') req.url = '/admin.html'
+      next()
+    })
+  },
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), adminPage],
   server: {
     host: true, // 같은 와이파이의 폰에서 접속 가능 (npm run dev -- --host 와 같음)
     // Cloudflare 임시 터널(https://○○.trycloudflare.com)로 폰 데이터에서도 접속 허용

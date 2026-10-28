@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { API, recognize, getBrands, getCards, getRecommendations, postSelection, getPosition, resetDemo, refreshMydata, getCardDetail, getBenefitsByCategory } from "./api.js";
+import { API, recognize, getBrands, getCards, getRecommendations, postSelection, getPosition, resetDemo, refreshMydata, getCardDetail, getBenefitsByCategory, confirmRecognition } from "./api.js";
 
 const won = (n) => (n ?? 0).toLocaleString("ko-KR") + "원";
 // 40000 → "4만 원", 15000 → "1.5만 원", 8000 → "8천 원"
@@ -1398,7 +1398,10 @@ export default function App() {
                     onOpenBrand={(b) => { setBrand(b); setRecId(null); setRecBack("home"); setScreen("rec"); }} />
       )}
       {screen === "find" && (
-        <FindScreen onConfirm={(b, id) => { setBrand(b); setRecId(id); setRecBack("find"); setScreen("rec"); }}
+        <FindScreen onConfirm={(b, id) => {
+                      if (id && b.brand_id) confirmRecognition(id, b.brand_id);   // 관리자 화면: 맞게 인식했는지·고쳤는지
+                      setBrand(b); setRecId(id); setRecBack("find"); setScreen("rec");
+                    }}
                     onBack={() => setScreen("home")} />
       )}
       {screen === "rec" && brand && (
