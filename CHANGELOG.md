@@ -2,6 +2,11 @@
 
 새 항목은 위에 추가합니다. 형식: 날짜 · 무엇이 바뀌었나 · 팀원이 해야 할 일
 
+## 2026-10-28 (3) — README: 바로 써보기
+
+- README 맨 위에 '바로 써보기' (시연 주소, 1분 사용법, 가상 인물·데이터·상표 안내). 실행 방법은 시연 주소로 안내
+- 내 PC에서 실행하기(설정 파일·API 키 발급)는 [DEVELOP.md](DEVELOP.md)로 옮김
+
 ## 2026-10-28 (2) — Render로 배포
 
 - 시연 주소: https://wonpick.onrender.com (Railway는 신규 가입이 막혀 Render 사용. 같은 Dockerfile 그대로)

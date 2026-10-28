@@ -7,9 +7,33 @@
 
 시연 페르소나: **김우리(26)** · 우리 카드의정석 TEN · 우리 카드의정석2 SHOPPING+ · 신한카드 처음 3장 보유 (기획서 페르소나, 가상 인물. 카드 혜택은 실제 상품 기준)
 
+## 🚀 바로 써보기
+
+### **https://wonpick.onrender.com**
+
+설치 없이 브라우저에서 바로 열립니다 (PC·폰 모두, 크롬 권장). 폰에서는 공유 → **홈 화면에 추가**로 앱처럼 쓸 수 있어요.
+
+**1분 사용법**
+
+1. **사진 고르기**: 홈의 **혜택 찾기** → 촬영 화면 왼쪽 아래 **앨범** 버튼 → 매장 간판·음식 사진 선택 (폰은 바로 촬영해도 됩니다)
+2. **추천**: 인식된 매장이 맞으면 **맞아요** → "OO로 결제하세요"와 금액 구간별 1등 카드. 다른 카드를 누르면 그 카드의 혜택이 펼쳐집니다
+3. **결제**: **우리페이로 결제하기** → 이번 달 실적과 남은 할인 한도에 바로 반영 (실제 결제는 일어나지 않아요)
+4. **내 카드 실적**: 홈 아래 **대표카드**를 위로 끌어 올리면 '내 카드 실적 한눈에'. 아래 탭 **내 카드**에서 카드별·혜택별 모아보기
+
+- 마이데이터를 **연동**하면 타사 카드(신한카드 처음)까지 함께 비교합니다 (연동은 목업)
+- 처음 상태로 되돌리기: **내 카드** 화면 맨 아래 **시연 데이터 처음으로**
+
+> **안내**
+> - 김우리(26)는 가상 인물이고, 카드 번호·실적·사용 내역은 모두 가상 데이터입니다. 카드 혜택은 실제 상품의 공개 자료(2026년 10월 기준)를 정리했습니다.
+> - 시연 주소는 접속한 모든 사람이 같은 시연 지갑을 함께 씁니다.
+> - 브랜드 로고·카드 이미지의 상표권은 각 회사에 있으며 시연 목적으로만 사용했습니다.
+
+---
+
 - 기획·명세: [Card_Coach_Spec.md](Card_Coach_Spec.md)
 - 코드 상세(API·인식 로직): [cardcoach/README.md](cardcoach/README.md)
 - 변경 기록: [CHANGELOG.md](CHANGELOG.md)
+- 개발자용 실행 방법: [DEVELOP.md](DEVELOP.md)
 
 ---
 
@@ -19,6 +43,8 @@
 team-project/
 ├─ Card_Coach_Spec.md        기획서
 ├─ CHANGELOG.md              변경 기록
+├─ DEVELOP.md                개발자용: 내 PC에서 실행하기 (설정 파일·API 키)
+├─ Dockerfile                배포용 (Render: 화면+API 서버 하나)
 └─ cardcoach/
    ├─ backend/               FastAPI + SQLite (인식·추천 API)
    │  └─ app/
@@ -35,63 +61,6 @@ team-project/
    └─ frontend/              React + Vite (모바일 웹)
       └─ src/App.jsx         화면 전부 (인식 / 추천 / 내 카드·실적)
 ```
-
-## 처음 실행하기
-
-필요한 것: Python 3.10+, Node.js 20+
-
-**1) 코드 받기**
-```
-git clone https://github.com/tkddn89621/team-project.git
-cd team-project/cardcoach
-```
-
-**2) 백엔드** (터미널 1, 켜둔 채로)
-```
-cd backend
-pip install -r requirements.txt
-python -m uvicorn app.main:app --reload --port 8000 --host 0.0.0.0
-```
-`Application startup complete` 가 나오면 성공. DB(`cardcoach.db`)는 자동으로 만들어집니다.
-
-**3) 프론트** (터미널 2, 켜둔 채로)
-```
-cd frontend
-npm install
-npm run dev -- --host
-```
-
-**4) 접속**
-- PC: http://localhost:5173
-- 폰: PC와 **같은 와이파이**에서 `https://<PC IP>:5173` (프론트 터미널의 `Network:` 주소, `certs/` 없으면 http)
-- 폰 데이터로: Cloudflare 임시 터널 ([cardcoach/README.md](cardcoach/README.md) 참고). 테스트 끝나면 터널 끄기
-
-> 백엔드 명령은 `backend` 폴더에서, 프론트 명령은 `frontend` 폴더에서 실행해야 합니다.
-> `No module named 'app'` 이 나오면 폴더를 잘못 찾아간 것.
-
-## 설정 파일 (.env) — GitHub에 올라가지 않음
-
-| 파일 | 내용 | 없으면 |
-|---|---|---|
-| `backend/.env` | `GOOGLE_VISION_API_KEY=...` | 사진 대신 **파일 이름**으로 인식하는 시연 모드 (`starbucks.jpg` → 스타벅스) |
-| `backend/.env` | `KAKAO_REST_API_KEY=...` | 근처 실제 매장 검색 없이 seed.py 시연용 좌표만 사용 |
-| `backend/.env` | `ANTHROPIC_API_KEY=...` | 애매한 사진을 Claude가 판단하는 단계를 건너뜀 (규칙 결과 그대로) |
-| `frontend/.env` | `VITE_DEMO_GPS=37.56650,126.97800` | 폰의 실제 GPS 사용 (https에서만) |
-
-`.env.example` 을 복사해서 `.env` 로 만들고 값을 채우세요.
-
-**Vision API 키 받기** (실제 사진 인식용)
-1. https://console.cloud.google.com → 새 프로젝트 → 결제 계정 연결 (월 1,000건/기능 무료 ≈ 사진 330장)
-2. `Cloud Vision API` 검색 → 사용
-3. `사용자 인증 정보` → 사용자 인증 정보 만들기 → **API 키** → API 제한: Cloud Vision API만 체크
-4. `backend/.env` 에 `GOOGLE_VISION_API_KEY=AIza...` 저장 → 백엔드 재시작
-
-**카카오 키** (근처 실제 매장): https://developers.kakao.com → 앱 → 앱 생성 → 플랫폼 키의 **REST API 키** → 제품 설정 → 카카오맵 사용 ON. 장소 검색 하루 10만 건 무료 (사진 1장당 5건)
-
-**Claude 키** (애매한 사진 판단): https://console.anthropic.com → API 키. 유료(애매한 사진 1장당 약 15~20원)지만 Claude Max·Team 구독자는 claude.ai 결제 설정 → API credits에서 월 크레딧 연결 가능
-
-> ⚠️ API 키는 커밋·단톡방 공유 금지. 각자 발급하거나 1:1로 전달.
-> 서비스 계정 키(JSON)는 조직 정책으로 막혀 있을 수 있어서 API 키 방식을 씁니다.
 
 ## 시연 시나리오
 
