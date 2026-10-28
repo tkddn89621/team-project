@@ -68,9 +68,6 @@ function Kpis({ today, month }) {
       <Tile label="Claude 호출" value={<>{num(today.claude_calls)}<small>회</small></>}>
         예상 비용 약 ${today.claude_cost_usd.toFixed(2)}
       </Tile>
-      <Tile label="오늘 결제" value={<>{num(today.payments)}<small>건</small></>}>
-        {won(today.pay_amount)} · 할인 {won(today.pay_discount)}
-      </Tile>
       <Tile label="Vision 이번 달" value={<>{num(month.vision)}<small>장</small></>}>
         <Meter used={month.vision} total={month.vision_free} label="Google Vision 월 무료 사용량" />
         <div>월 무료 {num(month.vision_free)}장</div>
@@ -98,7 +95,7 @@ function RecentTable({ rows }) {
     <div className="table-scroll">
       <table>
         <thead>
-          <tr><th>시간</th><th>인식 결과</th><th>사진 단서</th><th>근처 매장</th><th>사용자 확정</th><th>결제</th></tr>
+          <tr><th>시간</th><th>인식 결과</th><th>사진 단서</th><th>사용자 확정</th><th>결제</th></tr>
         </thead>
         <tbody>
           {rows.map((r) => (
@@ -118,7 +115,6 @@ function RecentTable({ rows }) {
                 ) : <span className="status critical">✕ 인식 실패</span>}
               </td>
               <td className="clue">{r.clues}</td>
-              <td>{r.nearby || <span className="muted">{r.located ? "근처 매장 없음" : "위치 정보 없음"}</span>}</td>
               <td><Confirmed c={r.confirmed} /></td>
               <td>
                 {r.paid ? (
@@ -212,7 +208,7 @@ export default function Admin() {
       <header className="top">
         <div>
           <h1>WON픽 관리자</h1>
-          <div className="muted">고객이 앱을 쓰면 몇 초 안에 여기 쌓여요 · 위치는 좌표 대신 가장 가까운 매장 이름만 보여 줘요</div>
+          <div className="muted">고객이 앱을 쓰면 몇 초 안에 여기 쌓여요</div>
         </div>
         <div className="top-right">
           <div className="seg" role="tablist" aria-label="데이터를 가져올 서버">

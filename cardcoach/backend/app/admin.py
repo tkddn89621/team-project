@@ -83,9 +83,8 @@ def dashboard(db: Session = Depends(get_db)):
 
     conf_today = _latest_confirmations(db, [r.id for r in today])
     via = Counter(c.via for c in conf_today.values())
-    pays_today = db.query(Selection).filter(Selection.created_at >= _since()).all()
 
-    # 최근 인식 목록: 위치는 좌표 대신 가장 가까운 매장 이름만 보여 줌
+    # 최근 인식 목록 (위치 정보는 관리자 화면에 내보내지 않음)
     ids = [r.id for r in recent]
     conf = _latest_confirmations(db, ids)
     pays = {s.recognition_id: s for s in db.query(Selection).filter(Selection.recognition_id.in_(ids)).order_by(Selection.id)} if ids else {}
@@ -101,8 +100,6 @@ def dashboard(db: Session = Depends(get_db)):
             "top": top and {"name": top["name"], "source": top.get("source"), "confidence": top.get("confidence")},
             "others": [x["name"] for x in cands[1:]],
             "clues": _clues(raw),
-            "nearby": (raw.get("kakao_places") or [None])[0],
-            "located": bool(raw.get("gps")),
             "ai_called": "ai" in raw,
             "ai_reason": ai.get("reason") if isinstance(ai, dict) else None,
             "confirmed": c and {"name": c.brand_name, "via": c.via},
@@ -135,9 +132,6 @@ def dashboard(db: Session = Depends(get_db)):
             "claude_calls": claude, "claude_cost_usd": round(claude * CLAUDE_COST_USD, 2),
             "confirmed": len(conf_today), "via": {k: via[k] for k in ("top", "candidate", "search")},
             "top_rate": round(via["top"] * 100 / len(conf_today)) if conf_today else None,
-            "payments": len(pays_today),
-            "pay_amount": sum(p.expected_amount or 0 for p in pays_today),
-            "pay_discount": sum(p.discount or 0 for p in pays_today),
         },
         "month": {"vision": sum((r.raw or {}).get("mode") == "vision" for r in month), "vision_free": VISION_FREE_MONTH},
         "recent": rows,
