@@ -48,6 +48,16 @@ npm run dev          # https://localhost:5173 (certs/ 가 없으면 http)
   ```
   `certs/`는 `.gitignore`에 있어 GitHub에 올라가지 않는다.
 
+### 시연용 배포 (Railway)
+저장소 맨 위 `Dockerfile`이 프론트를 빌드하고, FastAPI 서버 하나가 화면과 API(`/api/...`)를 함께 내보낸다. 주소가 고정되고 https가 자동이라 터널·인증서가 필요 없다.
+1. Railway → New Project → Deploy from GitHub repo → 이 저장소 (Dockerfile 자동 인식)
+2. **Variables**: `ANTHROPIC_API_KEY`, `GOOGLE_VISION_API_KEY`, `KAKAO_REST_API_KEY`, `DAILY_RECOG_LIMIT`(하루 사진 인식 횟수 제한, 예: 200)
+3. **Volume**: 서비스에 Volume을 붙이고 Mount path를 `/data`로 (DB 파일 `/data/cardcoach.db`. 없으면 재배포 때 인식·결제 기록이 지워짐)
+4. **Settings → Networking → Generate Domain** → 나온 주소로 접속
+- `main`에 올리면 자동으로 다시 배포된다.
+- `DAILY_RECOG_LIMIT`를 넘으면 인식 대신 '직접 고르기' 화면이 뜬다. 주소를 아는 누구나 사진을 올릴 수 있어서 API 요금이 무한정 나가지 않게 막는 장치. PC 개발 때는 설정하지 않으면 제한 없음.
+- 시연 위치(`VITE_DEMO_GPS`)는 배포에 들어가지 않는다 → 폰의 실제 GPS 사용.
+
 ## 인식 모드
 | 모드 | 조건 | 동작 |
 |---|---|---|

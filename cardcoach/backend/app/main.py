@@ -176,6 +176,18 @@ def ask_ai(image_bytes: bytes, det: dict, cands: list, near: list, known: list, 
     return [top] + rest[:2], choice
 
 
+def check_daily_limit(db: Session):
+    """배포 주소가 퍼져도 Vision·Claude 요금이 무한정 나가지 않게: DAILY_RECOG_LIMIT(하루 인식 횟수)를 넘으면 거절.
+    화면은 인식 실패와 같이 '직접 고르기'로 넘어감. 값이 없으면 제한 없음 (PC 개발용)"""
+    limit = os.getenv("DAILY_RECOG_LIMIT")
+    if not limit:
+        return
+    today = datetime.now(KST).replace(hour=0, minute=0, second=0, microsecond=0)
+    since = today.astimezone(timezone.utc).replace(tzinfo=None)   # created_at은 UTC(시간대 없음)로 저장됨
+    if db.query(Recognition).filter(Recognition.created_at >= since).count() >= int(limit):
+        raise HTTPException(429, "오늘 시연용 인식 횟수를 다 썼어요")
+
+
 @app.post("/recognitions")
 async def create_recognition(image: UploadFile = File(...),
                              lat: Optional[float] = Form(None), lng: Optional[float] = Form(None),
@@ -183,6 +195,7 @@ async def create_recognition(image: UploadFile = File(...),
     data = await image.read()
     if len(data) > 10 * 1024 * 1024:
         raise HTTPException(413, "이미지는 10MB 이하여야 합니다")
+    check_daily_limit(db)
     coords = (lat, lng) if lat is not None and lng is not None else None
     # Vision(사진 분석)과 카카오 로컬(근처 매장) 검색을 동시에
     with ThreadPoolExecutor(1) as ex:
@@ -829,3 +842,21 @@ def demo_reset():
 @app.get("/health")
 def health():
     return {"ok": True}
+
+
+# ---------- 배포용: 화면(빌드된 프론트)도 이 서버가 함께 내보냄 ----------
+# PC 개발 때는 Vite 개발 서버가 화면을 띄우고 /api 를 떼서 이 서버로 넘김. 배포 때는 서버 하나라 그 일을 여기서 함
+FRONT_DIST = os.getenv("FRONT_DIST") or os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist")
+
+
+@app.middleware("http")
+async def strip_api_prefix(request, call_next):
+    path = request.scope["path"]
+    if path == "/api" or path.startswith("/api/"):
+        request.scope["path"] = path[4:] or "/"
+    return await call_next(request)
+
+
+if os.path.isdir(FRONT_DIST):
+    # 맨 마지막에 붙여야 위의 API 경로가 먼저 잡힘. /cards/woori-2699.png 같은 카드 이미지도 여기서
+    app.mount("/", StaticFiles(directory=FRONT_DIST, html=True), name="front")

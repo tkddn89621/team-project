@@ -1,10 +1,12 @@
 """DB에는 바뀌는 것만 둔다: 가게(브랜드), 내 지갑(가진 카드 + 실적), 인식·결제 기록.
 카드 상품과 혜택 규칙은 data/benefits 파일(catalog.py)에서 읽는다 — 카드 수천 장으로 늘어도 DB 구조는 그대로."""
+import os
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey, DateTime, JSON, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-DATABASE_URL = "sqlite:///./cardcoach.db"
+# 배포(Railway)에서는 DB_FILE=/data/cardcoach.db 처럼 디스크(Volume) 위치를 지정 → 재배포해도 기록 유지
+DATABASE_URL = "sqlite:///" + os.getenv("DB_FILE", "./cardcoach.db")
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 Base = declarative_base()
