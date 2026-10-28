@@ -2,6 +2,11 @@
 
 새 항목은 위에 추가합니다. 형식: 날짜 · 무엇이 바뀌었나 · 팀원이 해야 할 일
 
+## 2026-10-28 (2) — Render로 배포
+
+- 시연 주소: https://wonpick.onrender.com (Railway는 신규 가입이 막혀 Render 사용. 같은 Dockerfile 그대로)
+- 배포 방법·요금·시연 뒤 삭제 안내를 `cardcoach/README.md` '시연용 배포 (Render)'에 정리
+
 ## 2026-10-28 — 시연용 배포 준비 (Railway)
 
 - 저장소 맨 위 `Dockerfile`: 프론트를 빌드해서 FastAPI 서버 하나가 화면과 API를 함께 내보냄 (`/api/...` 앞부분은 서버가 떼서 처리 — PC 개발 때 Vite 프록시와 같은 동작)

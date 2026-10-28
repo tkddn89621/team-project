@@ -48,13 +48,18 @@ npm run dev          # https://localhost:5173 (certs/ 가 없으면 http)
   ```
   `certs/`는 `.gitignore`에 있어 GitHub에 올라가지 않는다.
 
-### 시연용 배포 (Railway)
+### 시연용 배포 (Render)
+시연 주소: https://wonpick.onrender.com
+
 저장소 맨 위 `Dockerfile`이 프론트를 빌드하고, FastAPI 서버 하나가 화면과 API(`/api/...`)를 함께 내보낸다. 주소가 고정되고 https가 자동이라 터널·인증서가 필요 없다.
-1. Railway → New Project → Deploy from GitHub repo → 이 저장소 (Dockerfile 자동 인식)
-2. **Variables**: `ANTHROPIC_API_KEY`, `GOOGLE_VISION_API_KEY`, `KAKAO_REST_API_KEY`, `DAILY_RECOG_LIMIT`(하루 사진 인식 횟수 제한, 예: 200)
-3. **Volume**: 서비스에 Volume을 붙이고 Mount path를 `/data`로 (DB 파일 `/data/cardcoach.db`. 없으면 재배포 때 인식·결제 기록이 지워짐)
-4. **Settings → Networking → Generate Domain** → 나온 주소로 접속
-- `main`에 올리면 자동으로 다시 배포된다.
+1. Render → New → **Web Service** → GitHub 연결 → 이 저장소 (Language: Docker 자동 인식, Branch: `main`, Region: Singapore)
+2. **Instance Type**: Free는 15분 안 쓰면 잠들어 첫 접속이 30초~1분 걸림 → 시연 날은 **Starter**(쓴 시간만큼 과금, 하루 약 0.25달러)
+3. **Environment Variables**: `ANTHROPIC_API_KEY`, `GOOGLE_VISION_API_KEY`, `KAKAO_REST_API_KEY`, `DAILY_RECOG_LIMIT`(하루 사진 인식 횟수 제한, 예: 500)
+4. **Advanced → Health Check Path**: `/health`
+- `main`에 올리면 자동으로 다시 배포된다. 디스크(Disk)를 붙이지 않았으면 이때 DB가 새로 만들어져 인식·결제 기록과 오늘 인식 횟수가 초기화된다 (시연 데이터는 자동 생성). 기록을 남기려면 유료 Disk를 Mount path `/data`로 붙임 (DB 파일 `/data/cardcoach.db`)
+- 사용한 인식 횟수: Render **Logs**에서 `recognitions` 검색 → `POST /recognitions ... 200` 한 줄이 사진 1장
+- 시연이 끝나면 Settings → **Delete Web Service** (지우기 전까지 과금, 주소를 아는 누구나 API를 쓸 수 있음)
+- Railway도 같은 Dockerfile로 배포 가능 (2026-10 현재 신규 가입 중단)
 - `DAILY_RECOG_LIMIT`를 넘으면 인식 대신 '직접 고르기' 화면이 뜬다. 주소를 아는 누구나 사진을 올릴 수 있어서 API 요금이 무한정 나가지 않게 막는 장치. PC 개발 때는 설정하지 않으면 제한 없음.
 - 시연 위치(`VITE_DEMO_GPS`)는 배포에 들어가지 않는다 → 폰의 실제 GPS 사용.
 
